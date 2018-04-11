@@ -7,6 +7,7 @@ readonly RESTART_ENVIRONMENT="$BIN_DIR/restart_environment"
 . "$BIN_DIR/start.stage2.functions"
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
+   readonly restart="false"
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
    /bin/rm "$RUNTIME_ENVIRONMENT"
    makeallfromenvlist
