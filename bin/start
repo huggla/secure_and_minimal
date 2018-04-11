@@ -3,7 +3,7 @@ set -e +a +m +s +i -f
 
 readonly SUDO_USER
 readonly BIN_DIR="$(/usr/bin/dirname $0)"
-readonly RUNTIME_ENVIRONMENT="$BIN_DIR/runtime_environment"
+readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
    if [ "$SUDO_USER" != "root" ]
