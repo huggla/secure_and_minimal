@@ -2,8 +2,8 @@
 set -e +a +m +s +i -f
 
 readonly BIN_DIR="$(/usr/bin/dirname "$0")"
-readonly RUNTIME_ENVIRONMENT="$BIN_DIR/runtime_environment"
-readonly RESTART_ENVIRONMENT="$BIN_DIR/restart_environment"
+readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
+readonly RESTART_ENVIRONMENT="/environment/restart_environment"
 . "$BIN_DIR/start.stage2.functions"
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
