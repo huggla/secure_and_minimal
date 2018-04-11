@@ -15,6 +15,7 @@ RUN addgroup -S sudoer \
  && mkdir -m 700 /environment \
  && touch "$RUNTIME_ENVIRONMENT" "$RESTART_ENVIRONMENT" \
  && apk add --no-cache sudo \
+ && mkdir -p /usr/local/sbin \
  && chown root:sudoer /usr/local/sbin \
  && chmod ug=rx,o= /usr/local/sbin \
  && ln /usr/bin/sudo /usr/local/sbin/sudo \
