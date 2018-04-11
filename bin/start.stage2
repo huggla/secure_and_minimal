@@ -23,6 +23,7 @@ then
       echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
    fi
 else
+   readonly restart="true"
    env_list="$(listfromfile "$RESTART_ENVIRONMENT")"
    readonly NAME="$(var - NAME)"
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
