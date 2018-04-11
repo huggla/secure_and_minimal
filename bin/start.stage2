@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e +a +m +s +i -f
+
+readonly BIN_DIR="$(/usr/bin/dirname "$0")"
+readonly RUNTIME_ENVIRONMENT="$BIN_DIR/runtime_environment"
+readonly RESTART_ENVIRONMENT="$BIN_DIR/restart_environment"
+. "$BIN_DIR/start.stage2.functions"
+if [ -f "$RUNTIME_ENVIRONMENT" ]
+then
+   env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
+   /bin/rm "$RUNTIME_ENVIRONMENT"
+   makeallfromenvlist
+   readonly NAME="$(var - NAME)"
+   if [ -n "$NAME" ]
+   then
+      echo "REV_NAME=\"$NAME\"" >> "$RESTART_ENVIRONMENT"
+   fi
+   readonly CONFIG_FILE="$(var - CONFIG_FILE)"
+   if [ -n "$CONFIG_FILE" ]
+   then
+      echo "REV_CONFIG_FILE=\"$CONFIG_FILE\"" >> "$RESTART_ENVIRONMENT"
+      readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+      echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
+   fi
+else
+   env_list="$(listfromfile "$RESTART_ENVIRONMENT")"
+   readonly NAME="$(var - NAME)"
+   readonly CONFIG_FILE="$(var - CONFIG_FILE)"
+   readonly CONFIG_DIR="$(var - CONFIG_DIR)"
+fi
+if [ -f "$BIN_DIR/start.stage3" ]
+then
+   . "$BIN_DIR/start.stage3"
+fi
