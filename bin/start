@@ -1,6 +1,16 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
+# Set by sudo command:
+# -------------------------------------------
+# SUDO_USER
+# -------------------------------------------
+
+# Could be set in Dockerfile:
+# -------------------------------------------
+# REV_NAME
+# -------------------------------------------
+
 readonly SUDO_USER
 readonly BIN_DIR="$(/usr/bin/dirname $0)"
 readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
