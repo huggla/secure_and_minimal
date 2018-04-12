@@ -3,7 +3,6 @@ FROM alpine:3.7
 ENV BIN_DIR="/usr/local/bin" \
     LANG="en_US.UTF-8" \
     SUDOERS_DIR="/etc/sudoers.d" \
-    SUDO_CMD="/usr/local/sbin/sudo" \
     RUNTIME_ENVIRONMENT="/environment/runtime_environment" \
     RESTART_ENVIRONMENT="/environment/restart_environment"
 
@@ -17,9 +16,9 @@ RUN addgroup -S sudoer \
  && touch "$RUNTIME_ENVIRONMENT" "$RESTART_ENVIRONMENT" \
  && apk add --no-cache sudo \
  && mkdir -p /usr/local/sbin \
- && chown root:sudoer /usr/local/sbin \
- && chmod ug=rx,o= /usr/local/sbin \
  && ln /usr/bin/sudo /usr/local/sbin/sudo \
+ && chown root:sudoer /usr/local/sbin \
+ && chmod g=rx,uo= /usr/local/sbin \
  && echo 'Defaults lecture="never"' > "$SUDOERS_DIR/docker1" \
  && echo 'Defaults env_keep = "REV_*"' > "$SUDOERS_DIR/docker2" \
  && echo "sudoer ALL=(root) NOPASSWD: $BIN_DIR/start" >> "$SUDOERS_DIR/docker2" \
