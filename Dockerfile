@@ -1,8 +1,9 @@
 FROM alpine:3.7
 
 ENV BIN_DIR="/usr/local/bin" \
-    SUDOERS_DIR="/etc/sudoers.d" \
     LANG="en_US.UTF-8" \
+    SUDOERS_DIR="/etc/sudoers.d" \
+    SUDO_CMD="/usr/local/sbin/sudo" \
     RUNTIME_ENVIRONMENT="/environment/runtime_environment" \
     RESTART_ENVIRONMENT="/environment/restart_environment"
 
