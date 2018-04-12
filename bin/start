@@ -6,9 +6,16 @@ readonly BIN_DIR="$(/usr/bin/dirname $0)"
 readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
+   if [ -n "$REV_NAME" ]
+   then
+      runas="root, $REV_NAME"
+   else
+      runas="root"
+   fi
+   echo "$SUDO_USER $(/bin/hostname)=($runas) NOPASSWD: $BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > /etc/sudoers.d/docker2
    if [ "$SUDO_USER" != "root" ]
    then
-      echo "$SUDO_USER $(/bin/hostname)=(root) NOPASSWD: $BIN_DIR/start" > /etc/sudoers.d/docker2
+      echo "$SUDO_USER $(/bin/hostname)=(root) NOPASSWD: $BIN_DIR/start" >> /etc/sudoers.d/docker2
    fi
    /usr/bin/env | /bin/grep -i "^REV_" > "$RUNTIME_ENVIRONMENT"
 fi
