@@ -11,10 +11,11 @@ set -e +a +m +s +i -f
 # REV_NAME
 # -------------------------------------------
 
-if [ -n "$SUDO_USER" ]
+if [ -z "$SUDO_USER" ]
 then
-   readonly SUDO_USER
+   SUDO_USER="root"
 fi
+readonly SUDO_USER
 readonly BIN_DIR="$(/usr/bin/dirname $0)"
 if [ ! -f "$BIN_DIR/start.stage3" ]
 then
