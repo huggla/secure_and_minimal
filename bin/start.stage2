@@ -11,13 +11,13 @@ then
    readonly restart="false"
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
    /bin/rm "$RUNTIME_ENVIRONMENT"
-   readonly NAME="$(var - NAME)"
-   if [ -n "$NAME" ]
+   readonly LINUX_USER="$(var - LINUX_USER)"
+   if [ -n "$LINUX_USER" ]
    then
-      getent group $NAME || addgroup -S $NAME
-      getent passwd $NAME || adduser -D -S -H -s /bin/false -u 101 -G $NAME $NAME
-      chown root:$REV_NAME "$BIN_DIR/"*
-      echo "REV_NAME=\"$NAME\"" >> "$RESTART_ENVIRONMENT"
+      getent group $LINUX_USER || addgroup -S $LINUX_USER
+      getent passwd $LINUX_USER || adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER
+      chown root:$LINUX_USER "$BIN_DIR/"*
+      echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
    fi
    chmod u=rx,g=rx,o= "$BIN_DIR/"*
    makeallfromenvlist
@@ -31,7 +31,7 @@ then
 else
    readonly restart="true"
    env_list="$(listfromfile "$RESTART_ENVIRONMENT")"
-   readonly NAME="$(var - NAME)"
+   readonly LINUX_USER="$(var - LINUX_USER)"
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    readonly CONFIG_DIR="$(var - CONFIG_DIR)"
 fi
