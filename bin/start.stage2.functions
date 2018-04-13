@@ -80,8 +80,11 @@ makepwfileforuser(){
    if [ -n "$1" ]
    then
       local currentuser="$1"
-   else
+   elif [ -n "$NAME" ]
+   then
       local currentuser="$NAME"
+   else
+      exit 1
    fi
    local user_lc="$(tolower "$currentuser")"
    local pwfile="$(var - password_file_$user_lc)"
