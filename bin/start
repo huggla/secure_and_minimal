@@ -8,7 +8,7 @@ set -e +a +m +s +i -f
 
 # Could be set in Dockerfile:
 # -------------------------------------------
-# REV_NAME
+# REV_LINUX_USER
 # -------------------------------------------
 
 if [ -z "$SUDO_USER" ]
@@ -25,9 +25,9 @@ fi
 readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
-   if [ -n "$REV_NAME" ]
+   if [ -n "$REV_LINUX_USER" ]
    then
-      runas="root, $REV_NAME"
+      runas="root, $REV_LINUX_USER"
    else
       runas="root"
    fi
