@@ -17,9 +17,9 @@ makedir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
    set +e
-   if [ -n "$NAME" ]
+   if [ -n "$LINUX_USER" ]
    then
-      /bin/chown root:$NAME "$dir"
+      /bin/chown root:$LINUX_USER "$dir"
    fi
    /bin/chmod u=rwx,g=x,o= "$dir"
    set -e
@@ -29,9 +29,9 @@ makefile(){
    makedir "$(/usr/bin/dirname "$file")"
    set +e
    /bin/touch "$file"
-   if [ -n "$NAME" ]
+   if [ -n "$LINUX_USER" ]
    then
-      /bin/chown root:$NAME "$file"
+      /bin/chown root:$LINUX_USER "$file"
    fi
    /bin/chmod u=rw,g=r,o= "$file"
    set -e
@@ -74,9 +74,9 @@ makepwfileforuser(){
    if [ -n "$1" ]
    then
       local currentuser="$1"
-   elif [ -n "$NAME" ]
+   elif [ -n "$LINUX_USER" ]
    then
-      local currentuser="$NAME"
+      local currentuser="$LINUX_USER"
    else
       exit 1
    fi
