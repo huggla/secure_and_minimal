@@ -14,8 +14,14 @@ then
    readonly LINUX_USER="$(var - LINUX_USER)"
    if [ -n "$LINUX_USER" ]
    then
-      (/usr/bin/getent group $LINUX_USER || /usr/sbin/addgroup -S $LINUX_USER)
-      (/usr/bin/getent passwd $LINUX_USER || /usr/sbin/adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER)
+      if [ ! $(/usr/bin/getent group $LINUX_USER) ]
+      then
+         /usr/sbin/addgroup -S $LINUX_USER
+      fi
+      if [ ! $(/usr/bin/getent passwd $LINUX_USER) ]
+      then
+         /usr/sbin/adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER
+      fi
       /bin/chown root:$LINUX_USER "$BIN_DIR/"*
       echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
    fi
