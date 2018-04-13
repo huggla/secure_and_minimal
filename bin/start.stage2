@@ -22,10 +22,10 @@ then
       then
          /usr/sbin/adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER
       fi
-      /bin/chown root:$LINUX_USER "$BIN_DIR/"*
+      /bin/chown root:$LINUX_USER $BIN_DIR/*
       echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
    fi
-   /bin/chmod u=rx,g=rx,o= "$BIN_DIR/"*
+   /bin/chmod u=rx,g=rx,o= $BIN_DIR/*
    makeallfromenvlist
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    if [ -n "$CONFIG_FILE" ]
