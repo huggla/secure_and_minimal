@@ -14,19 +14,31 @@ var(){
    fi
 }
 makedir(){
+   if [ -n "$NAME" ]
+   then
+      local name=$NAME
+   else
+      local name="root"
+   fi
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
    set +e
-   /bin/chown root:$NAME "$dir"
+   /bin/chown root:$name "$dir"
    /bin/chmod u=rwx,g=x,o= "$dir"
    set -e
 }
 makefile(){
+   if [ -n "$NAME" ]
+   then
+      local name=$NAME
+   else
+      local name="root"
+   fi
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    makedir "$(/usr/bin/dirname "$file")"
    set +e
    /bin/touch "$file"
-   /bin/chown root:$NAME "$file"
+   /bin/chown root:$name "$file"
    /bin/chmod u=rw,g=r,o= "$file"
    set -e
 }
