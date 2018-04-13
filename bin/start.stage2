@@ -14,12 +14,12 @@ then
    readonly LINUX_USER="$(var - LINUX_USER)"
    if [ -n "$LINUX_USER" ]
    then
-      getent group $LINUX_USER || addgroup -S $LINUX_USER
-      getent passwd $LINUX_USER || adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER
-      chown root:$LINUX_USER "$BIN_DIR/"*
+      (/usr/bin/getent group $LINUX_USER || /usr/sbin/addgroup -S $LINUX_USER)
+      (/usr/bin/getent passwd $LINUX_USER || /usr/sbin/adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER)
+      /bin/chown root:$LINUX_USER "$BIN_DIR/"*
       echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
    fi
-   chmod u=rx,g=rx,o= "$BIN_DIR/"*
+   /bin/chmod u=rx,g=rx,o= "$BIN_DIR/"*
    makeallfromenvlist
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    if [ -n "$CONFIG_FILE" ]
