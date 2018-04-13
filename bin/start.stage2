@@ -11,8 +11,8 @@ then
    readonly restart="false"
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
    /bin/rm "$RUNTIME_ENVIRONMENT"
-   makeallfromenvlist
    readonly NAME="$(var - NAME)"
+   makeallfromenvlist
    if [ -n "$NAME" ]
    then
       echo "REV_NAME=\"$NAME\"" >> "$RESTART_ENVIRONMENT"
