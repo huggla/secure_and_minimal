@@ -12,13 +12,13 @@ then
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
    /bin/rm "$RUNTIME_ENVIRONMENT"
    readonly NAME="$(var - NAME)"
-   makeallfromenvlist
    if [ -n "$NAME" ]
    then
       getent group $NAME || addgroup -S $NAME
       getent passwd $NAME || adduser -D -S -H -s /bin/false -u 101 -G $NAME $NAME
       echo "REV_NAME=\"$NAME\"" >> "$RESTART_ENVIRONMENT"
    fi
+   makeallfromenvlist
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    if [ -n "$CONFIG_FILE" ]
    then
