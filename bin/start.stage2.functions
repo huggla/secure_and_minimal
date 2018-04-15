@@ -21,7 +21,7 @@ makedir(){
    then
       /bin/chown -R root:$LINUX_USER "$dir"
    fi
-   /bin/chmod u=rwx,g=rx,o= "$dir"
+   /bin/chmod -R u=rwX,g=rX,o= "$dir"
    set -e
 }
 makefile(){
