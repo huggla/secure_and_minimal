@@ -1,2 +1,2 @@
 # alpine
-Based on official Alpine image.
+Based on the official Alpine Docker image, with improved security.
