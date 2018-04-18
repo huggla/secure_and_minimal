@@ -21,7 +21,7 @@ then
       fi
       if [ ! $(/usr/bin/getent passwd $LINUX_USER) ]
       then
-         /usr/sbin/adduser -D -S -H -s /bin/false -u 101 -G $LINUX_USER $LINUX_USER
+         /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $LINUX_USER $LINUX_USER
       fi
       /bin/chown -R root:$LINUX_USER "$BIN_DIR"
       echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
