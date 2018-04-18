@@ -19,7 +19,7 @@ makedir(){
    set +e
    if [ -n "$LINUX_USER" ]
    then
-      /bin/chown -R root:$LINUX_USER "$dir"
+      /bin/chown -R :$LINUX_USER "$dir"
    fi
    /bin/chmod -R u=rwX,g=rX,o= "$dir"
    set -e
@@ -31,7 +31,7 @@ makefile(){
    /bin/touch "$file"
    if [ -n "$LINUX_USER" ]
    then
-      /bin/chown root:$LINUX_USER "$file"
+      /bin/chown :$LINUX_USER "$file"
    fi
    /bin/chmod u=rw,g=r,o= "$file"
    set -e
