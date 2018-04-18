@@ -9,7 +9,7 @@ ENV BIN_DIR="/usr/local/bin" \
 COPY ./bin ${BIN_DIR}
 
 RUN addgroup -S sudoer \
- && adduser -D -S -H -s /bin/false -u 100 -G sudoer sudoer \
+ && adduser -D -S -H -s /bin/false -u 101 -G sudoer sudoer \
  && chmod go= /bin /sbin /usr/bin /usr/sbin "$BIN_DIR" \
  && chmod u+x "$BIN_DIR/"* \
  && mkdir -m 700 /environment \
