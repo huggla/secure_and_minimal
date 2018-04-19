@@ -15,26 +15,28 @@ var(){
 }
 trysetpermissionsof(){
    local obj="$1"
+   local flag="$2"
    set +e
    if [ -n "$LINUX_USER" ]
    then
       if [ "$(/bin/stat -c "%U" "$obj")" != "$LINUX_USER" ]
       then
-         /bin/chown -R :$LINUX_USER "$obj"
-         /bin/chmod -R g+rX "$obj"
+
+         /bin/chown $flag :$LINUX_USER "$obj"
+         /bin/chmod $flag g+rX "$obj"
       fi
    fi
-   /bin/chmod -R o= "$obj"
+   /bin/chmod $flag o= "$obj"
    set -e
 }
 trymakedir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
-   trysetpermissionsof "$dir"
+   trysetpermissionsof "$dir" "$2"
 }
 trymakefile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   trymakedir "$(/usr/bin/dirname "$file")"
+   trymakedir "$(/usr/bin/dirname "$file")" "$2"
    set +e
    /bin/touch "$file"
    set -e
