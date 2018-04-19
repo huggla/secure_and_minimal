@@ -21,7 +21,6 @@ trysetpermissionsof(){
    then
       if [ "$(/bin/stat -c "%U" "$obj")" != "$LINUX_USER" ]
       then
-
          /bin/chown $flag :$LINUX_USER "$obj"
          /bin/chmod $flag g+rX "$obj"
       fi
