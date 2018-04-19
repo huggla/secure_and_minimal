@@ -69,7 +69,7 @@ makeallfromenvlist(){
          local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
          for obj in $objects
          do
-            make$type "$obj"
+            trymake$type "$obj"
          done
       done
    done
@@ -90,7 +90,7 @@ makepwfileforuser(){
    then
       pwfile="/environment/$user_lc-pw"
    fi
-   makefile "$pwfile"
+   trymakefile "$pwfile"
    if [ ! -s "$pwfile" ]
    then
       local user_pw="$(var - password_$user_lc)"
