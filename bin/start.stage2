@@ -36,6 +36,7 @@ then
       echo "REV_CONFIG_FILE=\"$CONFIG_FILE\"" >> "$RESTART_ENVIRONMENT"
       readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
       /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
+      /bin/chmod -R g+w "$CONFIG_DIR"
       echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
    fi
 else
