@@ -11,8 +11,7 @@ then
    readonly restart="false"
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
    /bin/rm "$RUNTIME_ENVIRONMENT"
-   readonly LINUX_USER="$(var - LINUX_USER)"
-   set +f
+   LINUX_USER="$(var - LINUX_USER)"
    if [ -n "$LINUX_USER" ]
    then
       if [ ! $(/usr/bin/getent group $LINUX_USER) ]
@@ -24,16 +23,19 @@ then
          /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $LINUX_USER $LINUX_USER
       fi
       /bin/chown -R root:$LINUX_USER "$BIN_DIR"
-      echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
+   else
+      LINUX_USER="root"
    fi
+   readonly LINUX_USER
+   echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
    /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"
-   set -f
    makeallfromenvlist
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    if [ -n "$CONFIG_FILE" ]
    then
       echo "REV_CONFIG_FILE=\"$CONFIG_FILE\"" >> "$RESTART_ENVIRONMENT"
       readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+      /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
       echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
    fi
 else
