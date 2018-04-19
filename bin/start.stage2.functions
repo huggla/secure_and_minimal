@@ -13,32 +13,36 @@ var(){
       echo $tmp | /usr/bin/awk -v param=$2 -F '=' '$1==param{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}'
    fi
 }
-makedir(){
+trysetpermissionsof(){
+   local obj="$1"
+   set +e
+   if [ -n "$LINUX_USER" ]
+   then
+      if [ "$(/bin/stat -c "%U" "$obj")" != "$LINUX_USER" ]
+      then
+         /bin/chown -R :$LINUX_USER "$obj"
+         /bin/chmod -R g+rX "$obj"
+      fi
+   fi
+   /bin/chmod -R o= "$obj"
+   set -e
+}
+trymakedir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
-   set +e
-   if [ -n "$LINUX_USER" ]
-   then
-      /bin/chown -R :$LINUX_USER "$dir"
-   fi
-   /bin/chmod -R u=rwX,g=rX,o= "$dir"
-   set -e
+   trysetpermissionsof "$dir"
 }
-makefile(){
+trymakefile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   makedir "$(/usr/bin/dirname "$file")"
+   trymakedir "$(/usr/bin/dirname "$file")"
    set +e
    /bin/touch "$file"
-   if [ -n "$LINUX_USER" ]
-   then
-      /bin/chown :$LINUX_USER "$file"
-   fi
-   /bin/chmod u=rw,g=r,o= "$file"
    set -e
+   trysetpermissionsof "$file"
 }
-trydeletefile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   /bin/rm -f "$file"
+trydelete(){
+   local obj="$(echo "$1" | /usr/bin/tr -d "'")"
+   /bin/rm -rf "$obj"
 }
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
