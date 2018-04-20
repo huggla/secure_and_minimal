@@ -105,3 +105,15 @@ makepwfileforuser(){
    fi
    echo "$pwfile"
 }
+setenvironmentvars(){
+   local IFS=?
+   local vars="$(echo $1 | /usr/bin/awk -v section=$1 -F ' ' '$1==section{s=""; for (i=2; i < NF; i++) s = s $i " "; print s $NF}')"
+   for var in $vars
+   do
+      $var
+   done
+   $2
+}
+      
+      
+      
