@@ -54,7 +54,7 @@ tolower(){
 listfromfile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
-   echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047'
+   echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043'
 }
 makeallfromenvlist(){
    local IFS=$(echo -en "\n\b,")
