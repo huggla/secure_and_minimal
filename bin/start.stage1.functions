@@ -1,0 +1,12 @@
+firstrun(){
+   local runas="root"
+   if [ "$LINUX_USER" != "root" ]
+   then
+      local runas="$runas, $LINUX_USER"
+   fi
+   echo "root $HOSTNAME=($runas) NOPASSWD: $BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$SUDOERS_DIR/docker-var"
+   echo "$SUDO_USER $HOSTNAME=(root) NOPASSWD: $BIN_DIR/start.stage1" >> "$SUDOERS_DIR/docker-var"
+   /usr/bin/env | /bin/grep -i "^CONST_" > "$RUNTIME_ENVIRONMENT"
+   /usr/bin/env | /bin/grep -i "^CONST_" > "$RESTART_ENVIRONMENT"
+   /usr/bin/env | /bin/grep -i "^VAR_" >> "$RUNTIME_ENVIRONMENT"
+}
