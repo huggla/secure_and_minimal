@@ -5,7 +5,8 @@ ENV LANG="en_US.UTF-8"
 
 # Constants
 ENV CONST_BIN_DIR="/usr/local/bin" \
-    CONST_SUDOERS_DIR="/etc/sudoers.d"
+    CONST_SUDOERS_DIR="/etc/sudoers.d" \
+    CONST_ENVIRONMENT_DIR="/environment"
 
 COPY ./bin ${CONST_BIN_DIR}
 
@@ -27,8 +28,7 @@ RUN addgroup -S sudoer \
  && chmod u=rw,go= "$CONST_SUDOERS_DIR/docker-var"
 
 # Variables
-ENV VAR_LINUX_USER="root" \
-    VAR_ENVIRONMENT_DIR="/environment"
+ENV VAR_LINUX_USER="root"
 
 USER sudoer
 
