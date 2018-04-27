@@ -40,7 +40,7 @@ then
    fi
 else
    readonly restart="true"
-   env_list="$(listfromfile "$restart_environment")"
+   env_list="$(listFromFile "$restart_environment")"
 fi
 #   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"      
 . "$bin_dir/start.stage3"
