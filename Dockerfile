@@ -18,12 +18,13 @@ RUN addgroup -S sudoer \
  && ln /usr/bin/sudo /usr/local/sbin/sudo \
  && chown root:sudoer /usr/local/sbin \
  && chmod ug=rx,o= /usr/local/sbin \
- && echo 'Defaults lecture="never"' > "$CONST_SUDOERS_DIR/docker1" \
- && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$CONST_SUDOERS_DIR/docker1" \
- && echo 'Defaults env_keep = "CONST_ VAR_"' > "$CONST_SUDOERS_DIR/docker2" \
- && echo 'Defaults !root_sudo' >> "$CONST_SUDOERS_DIR/docker2" \
- && echo "sudoer ALL=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker2" \
- && chmod u=rw,go= "$CONST_SUDOERS_DIR/docker"*
+ && echo 'Defaults lecture="never"' > "$CONST_SUDOERS_DIR/docker-const" \
+ && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$CONST_SUDOERS_DIR/docker-const" \
+ && echo 'Defaults env_keep = "CONST_ VAR_"' > "$CONST_SUDOERS_DIR/docker-var" \
+ && echo 'Defaults !root_sudo' >> "$CONST_SUDOERS_DIR/docker-var" \
+ && echo "sudoer ALL=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker-var" \
+ && chmod u=r,go= "$CONST_SUDOERS_DIR/docker-const" \
+ && chmod u=rw,go= "$CONST_SUDOERS_DIR/docker-var"
 
 # Variables
 ENV VAR_LINUX_USER="root" \
