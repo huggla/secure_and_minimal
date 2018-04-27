@@ -22,4 +22,8 @@ RUN addgroup -S sudoer \
  && echo "sudoer ALL=(root) NOPASSWD: $BIN_DIR/start" >> "$SUDOERS_DIR/docker2" \
  && chmod u=rw,go= "$SUDOERS_DIR/docker"*
 
+ENV REV_LINUX_USER="root"
+
+USER sudoer
+
 CMD ["sudo","start"]
