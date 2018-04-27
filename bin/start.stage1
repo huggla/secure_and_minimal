@@ -11,6 +11,7 @@ if [ isSomethingToDo ]
 then
    if [ isFirstRun ]
    then
+      createLinuxUser
       updateSudoersConf
       writeRuntimeEnvironment
    fi
