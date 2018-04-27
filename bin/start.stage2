@@ -5,6 +5,7 @@ set -e +a +m +s +i -f
 # -------------------------------------------
 # ENVIRONMENT_DIR
 # LINUX_USER
+# CONFIG_FILE/CONFIG_DIR
 
 # Set by shell:
 # -------------------------------------------
@@ -32,34 +33,14 @@ then
    env_list="$(listFromFile "$runtime_environment")"
    /bin/rm "$runtime_environment"
    makeAllFromEnvList
+   if [ -n "$CONFIG_DIR" ]
+   then
+      /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
+      /bin/chmod -R 7770 "$CONFIG_DIR"
+   fi
 else
    readonly restart="true"
    env_list="$(listfromfile "$restart_environment")"
 fi
-
-if [ isFirstRun ]
-then
-
-   
-   
-#   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"
-   makeAllFromEnvList
-   readonly CONFIG_FILE="$(var - CONFIG_FILE)"
-   if [ -n "$CONFIG_FILE" ]
-   then
-      echo "REV_CONFIG_FILE=\"$CONFIG_FILE\"" >> "$RESTART_ENVIRONMENT"
-      readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
-      /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
-      /bin/chmod -R g+w "$CONFIG_DIR"
-      echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
-   fi
-else
-
-   readonly LINUX_USER="$(var - LINUX_USER)"
-   readonly CONFIG_FILE="$(var - CONFIG_FILE)"
-   readonly CONFIG_DIR="$(var - CONFIG_DIR)"
-fi
-if [ -f "$BIN_DIR/start.stage3" ]
-then
-   . "$BIN_DIR/start.stage3"
-fi
+#   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"      
+. "$bin_dir/start.stage3"
