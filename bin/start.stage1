@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
+. start.common.functions
 . start.stage1.functions
 
 if [ isSomethingToDo ]
