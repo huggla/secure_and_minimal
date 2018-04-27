@@ -13,7 +13,7 @@ var(){
       echo $tmp | /usr/bin/awk -v param=$2 -F '=' '$1==param{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}'
    fi
 }
-trysetpermissionsof(){
+trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
    set +e
@@ -28,35 +28,35 @@ trysetpermissionsof(){
    /bin/chmod $flag o= "$obj"
    set -e
 }
-trymakedir(){
+tryMakeDir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
-   trysetpermissionsof "$dir" "$2"
+   trySetPermissionsOf "$dir" "$2"
 }
-trymakefile(){
+tryMakeFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   trymakedir "$(/usr/bin/dirname "$file")" "$2"
+   tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
    set +e
    /bin/touch "$file"
    set -e
-   trysetpermissionsof "$file"
+   trySetPermissionsOf "$file"
 }
-trydelete(){
+tryDelete(){
    local obj="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/rm -rf "$obj"
 }
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
 }
-tolower(){
+toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
-listfromfile(){
+listFromFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
-makeallfromenvlist(){
+makeAllFromEnvList(){
    local IFS=$(echo -en "\n\b,")
    local envlist="$env_list"
    local types="file,dir"
@@ -70,12 +70,12 @@ makeallfromenvlist(){
          local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
          for obj in $objects
          do
-            trymake$type "$obj"
+            tryMake$type "$obj"
          done
       done
    done
 }
-makepwfileforuser(){
+makePwFileForUser(){
    if [ -n "$1" ]
    then
       local currentuser="$1"
@@ -91,7 +91,7 @@ makepwfileforuser(){
    then
       pwfile="/environment/$user_lc-pw"
    fi
-   trymakefile "$pwfile"
+   tryMakeFile "$pwfile"
    if [ ! -s "$pwfile" ]
    then
       local user_pw="$(var - password_$user_lc)"
