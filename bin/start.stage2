@@ -23,8 +23,8 @@ readonly restart_environment="$CONST_ENVIRONMENT_DIR/restart_environment"
 if [ isFirstRun ]
 then
    readonly restart="false"
-   env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
-   /bin/rm "$RUNTIME_ENVIRONMENT"
+   env_list="$(listfromfile "$runtime_environment")"
+   /bin/rm "$runtime_environment"
    LINUX_USER="$(var - LINUX_USER)"
    if [ -n "$LINUX_USER" ]
    then
