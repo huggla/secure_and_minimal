@@ -12,13 +12,13 @@ COPY ./bin ${bin_dir}
 
 RUN addgroup -S sudoer \
  && adduser -D -S -H -s /bin/false -u 101 -G sudoer sudoer \
- && chmod go= /bin /sbin /usr/bin /usr/sbin "$bin_dir" \
+ && chmod go= /bin /sbin /usr/bin /usr/sbin \
  && chmod u+x "$bin_dir/"* \
  && apk add --no-cache sudo \
  && mkdir -p /usr/local/sbin \
  && ln /usr/bin/sudo /usr/local/sbin/sudo \
  && chown root:sudoer /usr/local/sbin \
- && chmod ug=rx,o= /usr/local/sbin \
+ && chmod ug=rx,o= /usr/local/sbin "$bin_dir" \
  && echo 'Defaults lecture="never"' > "$sudoers_dir/docker-const" \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$sudoers_dir/docker-const" \
  && echo 'Defaults env_keep = "CONST_ VAR_"' > "$sudoers_dir/docker-var" \
