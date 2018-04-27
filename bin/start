@@ -1,42 +1,38 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
+if [ ! -f "$CONST_BIN_DIR/start.stage3" ]
+then
+   echo "Nothing to do! Exiting."
+   exit 0
+fi
+
 # Set by sudo command:
 # -------------------------------------------
 # SUDO_USER
 # -------------------------------------------
 
-# Could be set in Dockerfile:
+# Set in Dockerfile or at runtime:
 # -------------------------------------------
-# REV_LINUX_USER
+# CONST_BIN_DIR
+# CONST_SUDOERS_DIR
+# VAR_LINUX_USER
+# VAR_ENVIRONMENT_DIR
 # -------------------------------------------
 
-if [ -z "$SUDO_USER" ]
-then
-   SUDO_USER="root"
-fi
 readonly SUDO_USER
-readonly BIN_DIR="$(/usr/bin/dirname $0)"
-if [ ! -f "$BIN_DIR/start.stage3" ]
-then
-   echo "Nothing to do! Exiting."
-   exit 0
-fi
-readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
+readonly BIN_DIR="$CONST_BIN_DIR"
+readonly LINUX_USER="$VAR_LINUX_USER"
+readonly ENVIRONMENT_DIR="$VAR_ENVIRONMENT_DIR/"
+readonly RUNTIME_ENVIRONMENT="$ENVIRONMENT_DIR/runtime_environment"
+readonly RESTART_ENVIRONMENT="$ENVIRONMENT_DIR/restart_environment"
+readonly HOSTNAME="$(/bin/hostname)"
+
+. start.stage1.functions
+
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
-   if [ -n "$REV_LINUX_USER" ]
-   then
-      runas="root, $REV_LINUX_USER"
-   else
-      runas="root"
-   fi
-   echo "root $(/bin/hostname)=($runas) NOPASSWD: $BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > /etc/sudoers.d/docker2
-   if [ "$SUDO_USER" != "root" ]
-   then
-      echo "$SUDO_USER $(/bin/hostname)=(root) NOPASSWD: $BIN_DIR/start" >> /etc/sudoers.d/docker2
-   fi
-   /usr/bin/env | /bin/grep -i "^REV_" > "$RUNTIME_ENVIRONMENT"
-   /usr/bin/env | /bin/grep -i "^BEV_" > "$RUNTIME_ENVIRONMENT"
+   firstrun
 fi
+
 exec /usr/bin/env -i "$BIN_DIR/start.stage2"
