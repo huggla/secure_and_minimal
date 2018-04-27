@@ -1,0 +1,12 @@
+# Set in Dockerfile:
+# -------------------------------------------
+# CONST_ENVIRONMENT_DIR
+
+isFirstRun(){
+   if [ -f "$CONST_ENVIRONMENT_DIR/runtime_environment" ]
+   then
+      return 0
+   else
+      return 1
+   fi
+}
