@@ -14,6 +14,7 @@
 # -------------------------------------------
 # VAR_LINUX_USER
 
+
 isFirstRun(){
    if [ -f "$CONST_ENVIRONMENT_DIR/runtime_environment" ]
    then
