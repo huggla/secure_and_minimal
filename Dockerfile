@@ -34,4 +34,4 @@ ENV VAR_LINUX_USER="root"
 
 USER sudoer
 
-CMD ["sudo","start.stage1"]
+CMD ["sudo","start"]
