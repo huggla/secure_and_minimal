@@ -1,15 +1,21 @@
-firstrun(){
-   local runtime_environment="$VAR_ENVIRONMENT_DIR/runtime_environment"
-   if [ -f "$runtime_environment" ]
+isFirstRun(){
+   if [ -f "$VAR_ENVIRONMENT_DIR/runtime_environment" ]
    then
-      local hostname="$(/bin/hostname)"
-      local runas="root"
-      if [ "$VAR_LINUX_USER" != "root" ]
-      then
-         local runas="$runas, $VAR_LINUX_USER"
-      fi
-      echo "root $hostname=($runas) NOPASSWD: $CONST_BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$CONST_SUDOERS_DIR/docker-var"
-      echo "$SUDO_USER $hostname=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker-var"
-      /usr/bin/env | /bin/grep -i "^VAR_" > "$runtime_environment"
+      return 0
    fi
+}
+
+updateSudoersConf(){
+   local hostname="$(/bin/hostname)"
+   local runas="root"
+   if [ "$VAR_LINUX_USER" != "root" ]
+   then
+      local runas="$runas, $VAR_LINUX_USER"
+   fi
+   echo "root $hostname=($runas) NOPASSWD: $CONST_BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$CONST_SUDOERS_DIR/docker-var"
+   echo "$SUDO_USER $hostname=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker-var"
+}
+
+writeRuntimeEnvironment(){
+   /usr/bin/env | /bin/grep -i "^VAR_" > "$VAR_ENVIRONMENT_DIR/runtime_environment"
 }
