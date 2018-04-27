@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
-bin_dir="$(/usr/bin/dirname $0)"
+readonly bin_dir="$(/usr/bin/dirname $0)"
 cd "$bin_dir"
 
 . start.common.functions
