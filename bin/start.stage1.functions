@@ -14,7 +14,6 @@
 # -------------------------------------------
 # VAR_LINUX_USER
 
-
 bin_dir="$(/usr/bin/dirname $0)"
 
 isSomethingToDo(){
