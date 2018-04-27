@@ -1,7 +1,31 @@
+# Set by sudo command:
+# -------------------------------------------
+# SUDO_USER
+# -------------------------------------------
+
+# Set in Dockerfile or at runtime:
+# -------------------------------------------
+# CONST_BIN_DIR
+# CONST_SUDOERS_DIR
+# VAR_LINUX_USER
+# VAR_ENVIRONMENT_DIR
+# -------------------------------------------
+
+isSomethingToDo(){
+   if [ -f "$CONST_BIN_DIR/start.stage3" ]
+   then
+      return 0
+   else
+      return 1
+   fi
+}
+
 isFirstRun(){
    if [ -f "$VAR_ENVIRONMENT_DIR/runtime_environment" ]
    then
       return 0
+   else
+      return 1
    fi
 }
 
@@ -18,4 +42,8 @@ updateSudoersConf(){
 
 writeRuntimeEnvironment(){
    /usr/bin/env | /bin/grep -i "^VAR_" > "$VAR_ENVIRONMENT_DIR/runtime_environment"
+}
+
+startStage2(){
+   exec /usr/bin/env -i CONST_BIN_DIR=$CONST_BIN_DIR CONST_SUDOERS_DIR=$CONST_SUDOERS_DIR "$BIN_DIR/start.stage2"
 }
