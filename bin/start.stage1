@@ -20,20 +20,8 @@ then
    exit 0
 fi
 
-readonly SUDO_USER
-readonly BIN_DIR="$CONST_BIN_DIR"
-readonly SUDOERS_DIR="$CONST_SUDOERS_DIR"
-readonly LINUX_USER="$VAR_LINUX_USER"
-readonly ENVIRONMENT_DIR="$VAR_ENVIRONMENT_DIR/"
-readonly RUNTIME_ENVIRONMENT="$ENVIRONMENT_DIR/runtime_environment"
-readonly RESTART_ENVIRONMENT="$ENVIRONMENT_DIR/restart_environment"
-readonly HOSTNAME="$(/bin/hostname)"
-
 . start.stage1.functions
 
-if [ -f "$RUNTIME_ENVIRONMENT" ]
-then
-   firstrun
-fi
+firstrun
 
-exec /usr/bin/env -i "$BIN_DIR/start.stage2"
+exec /usr/bin/env -i CONST_BIN_DIR=$CONST_BIN_DIR CONST_SUDOERS_DIR=$CONST_SUDOERS_DIR "$BIN_DIR/start.stage2"
