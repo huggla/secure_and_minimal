@@ -22,8 +22,10 @@ readonly runtime_environment="$CONST_ENVIRONMENT_DIR/runtime_environment"
 readonly restart_environment="$CONST_ENVIRONMENT_DIR/restart_environment"
 if [ -n "$CONFIG_FILE" ]
 then
-   readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+   CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
 fi
+readonly CONFIG_FILE
+readonly CONFIG_DIR
 if [ isFirstRun ]
 then
    readonly restart="false"
