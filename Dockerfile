@@ -21,7 +21,7 @@ RUN addgroup -S sudoer \
  && chmod ug=rx,o= /usr/local/sbin \
  && echo 'Defaults lecture="never"' > "$SUDOERS_DIR/docker1" \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$SUDOERS_DIR/docker1" \
- && echo 'Defaults env_keep = "REV_*"' > "$SUDOERS_DIR/docker2" \
+ && echo 'Defaults env_keep = "BEV_ REV_"' > "$SUDOERS_DIR/docker2" \
  && echo 'Defaults !root_sudo' >> "$SUDOERS_DIR/docker2" \
  && echo "sudoer ALL=(root) NOPASSWD: $BIN_DIR/start" >> "$SUDOERS_DIR/docker2" \
  && chmod u=rw,go= "$SUDOERS_DIR/docker"*
