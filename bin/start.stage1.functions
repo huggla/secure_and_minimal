@@ -1,23 +1,24 @@
 # Set in parent script:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-# -------------------------------------------
 
 # Set by sudo command:
 # -------------------------------------------
 # SUDO_USER
+
+# Set in Dockerfile:
 # -------------------------------------------
+# CONST_ENVIRONMENT_DIR
 
 # Set in Dockerfile or at runtime:
 # -------------------------------------------
-# CONST_BIN_DIR
-# CONST_SUDOERS_DIR
-# CONST_ENVIRONMENT_DIR
 # VAR_LINUX_USER
-# -------------------------------------------
+
+
+bin_dir="$(/usr/bin/dirname $0)"
 
 isSomethingToDo(){
-   if [ -f "$CONST_BIN_DIR/start.stage3" ]
+   if [ -f "$bin_dir/start.stage3" ]
    then
       return 0
    else
@@ -36,13 +37,14 @@ isFirstRun(){
 
 updateSudoersConf(){
    local hostname="$(/bin/hostname)"
+   local sudoers_file="/etc/sudoers.d/docker-var"
    local runas="root"
    if [ "$VAR_LINUX_USER" != "root" ]
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "root $hostname=($runas) NOPASSWD: $CONST_BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$CONST_SUDOERS_DIR/docker-var"
-   echo "$SUDO_USER $hostname=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker-var"
+   echo "root $hostname=($runas) NOPASSWD: $bin_dir/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$sudoers_file"
+   echo "$SUDO_USER $hostname=(root) NOPASSWD: $bin_dir/start.stage1" >> "$sudoers_file"
 }
 
 writeRuntimeEnvironment(){
@@ -50,5 +52,5 @@ writeRuntimeEnvironment(){
 }
 
 startStage2(){
-   exec /usr/bin/env -i CONST_BIN_DIR=$CONST_BIN_DIR CONST_SUDOERS_DIR=$CONST_SUDOERS_DIR CONST_ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR "$BIN_DIR/start.stage2"
+   exec /usr/bin/env -i CONST_ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR "$bin_dir/start.stage2"
 }
