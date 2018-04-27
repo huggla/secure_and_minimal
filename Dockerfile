@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-# Build only variables
+# Build-only variables
 ENV LANG="en_US.UTF-8" \
     bin_dir="/usr/local/bin" \
     sbin_dir="/usr/local/sbin" \
