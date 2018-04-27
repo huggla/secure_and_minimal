@@ -12,8 +12,8 @@
 # -------------------------------------------
 # CONST_BIN_DIR
 # CONST_SUDOERS_DIR
+# CONST_ENVIRONMENT_DIR
 # VAR_LINUX_USER
-# VAR_ENVIRONMENT_DIR
 # -------------------------------------------
 
 isSomethingToDo(){
@@ -26,7 +26,7 @@ isSomethingToDo(){
 }
 
 isFirstRun(){
-   if [ -f "$VAR_ENVIRONMENT_DIR/runtime_environment" ]
+   if [ -f "$CONST_ENVIRONMENT_DIR/runtime_environment" ]
    then
       return 0
    else
@@ -46,9 +46,9 @@ updateSudoersConf(){
 }
 
 writeRuntimeEnvironment(){
-   /usr/bin/env | /bin/grep -i "^VAR_" > "$VAR_ENVIRONMENT_DIR/runtime_environment"
+   /usr/bin/env | /bin/grep -i "^VAR_" > "$CONST_ENVIRONMENT_DIR/runtime_environment"
 }
 
 startStage2(){
-   exec /usr/bin/env -i CONST_BIN_DIR=$CONST_BIN_DIR CONST_SUDOERS_DIR=$CONST_SUDOERS_DIR "$BIN_DIR/start.stage2"
+   exec /usr/bin/env -i CONST_BIN_DIR=$CONST_BIN_DIR CONST_SUDOERS_DIR=$CONST_SUDOERS_DIR CONST_ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR "$BIN_DIR/start.stage2"
 }
