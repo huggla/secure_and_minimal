@@ -62,7 +62,7 @@ makeAllFromEnvList(){
    local types="File,Dir"
    for type in $types
    do
-      type_lc="$(toLower $type)"
+      local type_lc="$(toLower $type)"
       set +e
       local matches="$(echo "$envlist" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
       set -e
