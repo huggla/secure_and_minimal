@@ -9,13 +9,18 @@ set -e +a +m +s +i -f
 # -------------------------------------------
 # IFS
 
+
+readonly bin_dir="$(/usr/bin/dirname $0)"
+cd "$bin_dir"
+
+. start.common.functions
+. start.stage2.functions"
+
 readonly ifs_bak=$IFS
 readonly runtime_environment="$CONST_ENVIRONMENT_DIR/runtime_environment"
 readonly restart_environment="$CONST_ENVIRONMENT_DIR/restart_environment"
 
-. "$BIN_DIR/start.stage2.functions"
-
-if [ -f "$RUNTIME_ENVIRONMENT" ]
+if [ isFirstRun ]
 then
    readonly restart="false"
    env_list="$(listfromfile "$RUNTIME_ENVIRONMENT")"
