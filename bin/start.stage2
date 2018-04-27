@@ -1,11 +1,20 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
-readonly IFS_bak=$IFS
-readonly BIN_DIR="$(/usr/bin/dirname "$0")"
-readonly RUNTIME_ENVIRONMENT="/environment/runtime_environment"
-readonly RESTART_ENVIRONMENT="/environment/restart_environment"
+# Passed from stage1:
+# -------------------------------------------
+# CONST_ENVIRONMENT_DIR
+
+# Set by shell:
+# -------------------------------------------
+# IFS
+
+readonly ifs_bak=$IFS
+readonly runtime_environment="$CONST_ENVIRONMENT_DIR/runtime_environment"
+readonly restart_environment="$CONST_ENVIRONMENT_DIR/restart_environment"
+
 . "$BIN_DIR/start.stage2.functions"
+
 if [ -f "$RUNTIME_ENVIRONMENT" ]
 then
    readonly restart="false"
