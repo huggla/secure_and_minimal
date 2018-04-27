@@ -22,7 +22,7 @@ RUN addgroup -S sudoer \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$CONST_SUDOERS_DIR/docker1" \
  && echo 'Defaults env_keep = "CONST_ VAR_"' > "$CONST_SUDOERS_DIR/docker2" \
  && echo 'Defaults !root_sudo' >> "$CONST_SUDOERS_DIR/docker2" \
- && echo "sudoer ALL=(root) NOPASSWD: $CONST_BIN_DIR/start" >> "$CONST_SUDOERS_DIR/docker2" \
+ && echo "sudoer ALL=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker2" \
  && chmod u=rw,go= "$CONST_SUDOERS_DIR/docker"*
 
 # Variables
@@ -31,4 +31,4 @@ ENV VAR_LINUX_USER="root" \
 
 USER sudoer
 
-CMD ["sudo","start"]
+CMD ["sudo","start.stage1"]
