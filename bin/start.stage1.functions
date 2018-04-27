@@ -14,6 +14,8 @@
 # Set in Dockerfile or at runtime:
 # -------------------------------------------
 # VAR_LINUX_USER
+# VAR_CONFIG_FILE
+# VAR_CONFIG_DIR
 
 
 isSomethingToDo(){
@@ -54,5 +56,13 @@ writeRuntimeEnvironment(){
 }
 
 startStage2(){
-   exec /usr/bin/env -i ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR LINUX_USER=$VAR_LINUX_USER "$bin_dir/start.stage2"
+   if [ -n "$VAR_CONFIG_FILE" ]
+   then
+      local config_var_name="CONFIG_FILE"
+      local config_var_value="$VAR_CONFIG_FILE"
+   else
+      local config_var_name="CONFIG_DIR"
+      local config_var_value="$VAR_CONFIG_DIR"
+   fi
+   exec /usr/bin/env -i ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value "$bin_dir/start.stage2"
 }
