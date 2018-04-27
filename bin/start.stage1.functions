@@ -2,7 +2,6 @@ firstrun(){
    local runtime_environment="$VAR_ENVIRONMENT_DIR/runtime_environment"
    if [ -f "$runtime_environment" ]
    then
-      local restart_environment="$VAR_ENVIRONMENT_DIR/restart_environment"
       local hostname="$(/bin/hostname)"
       local runas="root"
       if [ "$VAR_LINUX_USER" != "root" ]
@@ -11,8 +10,6 @@ firstrun(){
       fi
       echo "root $hostname=($runas) NOPASSWD: $CONST_BIN_DIR/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$CONST_SUDOERS_DIR/docker-var"
       echo "$SUDO_USER $hostname=(root) NOPASSWD: $CONST_BIN_DIR/start.stage1" >> "$CONST_SUDOERS_DIR/docker-var"
-      /usr/bin/env | /bin/grep -i "^CONST_" > "$runtime_environment"
-      /usr/bin/env | /bin/grep -i "^CONST_" > "$restart_environment"
-      /usr/bin/env | /bin/grep -i "^VAR_" >> "$runtime_environment"
+      /usr/bin/env | /bin/grep -i "^VAR_" > "$runtime_environment"
    fi
 }
