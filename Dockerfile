@@ -3,6 +3,7 @@ FROM alpine:3.7
 # Build only variables
 ENV LANG="en_US.UTF-8" \
     bin_dir="/usr/local/bin" \
+    sbin_dir="/usr/local/sbin" \
     sudoers_dir="/etc/sudoers.d"
 
 # Constants
@@ -13,12 +14,12 @@ COPY ./bin ${bin_dir}
 RUN addgroup -S sudoer \
  && adduser -D -S -H -s /bin/false -u 101 -G sudoer sudoer \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
- && chmod u+x "$bin_dir/"* \
  && apk add --no-cache sudo \
- && mkdir -p /usr/local/sbin \
- && ln /usr/bin/sudo /usr/local/sbin/sudo \
- && chown root:sudoer /usr/local/sbin \
- && chmod ug=rx,o= /usr/local/sbin "$bin_dir" \
+ && mkdir -p "$sbin_dir" \
+ && chown :sudoer /usr/bin/sudo "$sbin_dir" \
+ && chmod o-rx /usr/bin/sudo \
+ && ln /usr/bin/sudo "$sbin_dir/sudo" \
+ && chmod -R 7750 "$bin_dir" \
  && echo 'Defaults lecture="never"' > "$sudoers_dir/docker-const" \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$sudoers_dir/docker-const" \
  && echo 'Defaults env_keep = "CONST_ VAR_"' > "$sudoers_dir/docker-var" \
