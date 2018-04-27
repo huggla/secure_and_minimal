@@ -20,6 +20,7 @@ RUN addgroup -S sudoer \
  && chmod o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo "$sbin_dir/sudo" \
  && chmod -R 7750 "$bin_dir" \
+ && ln -s "$bin_dir/start.stage1" "$bin_dir/start" \
  && echo 'Defaults lecture="never"' > "$sudoers_dir/docker-const" \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$sudoers_dir/docker-const" \
  && echo 'Defaults env_keep = "CONST_ VAR_"' > "$sudoers_dir/docker-var" \
