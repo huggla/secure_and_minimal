@@ -3,7 +3,8 @@ set -e +a +m +s +i -f
 
 # Passed from stage1:
 # -------------------------------------------
-# CONST_ENVIRONMENT_DIR
+# ENVIRONMENT_DIR
+# LINUX_USER
 
 # Set by shell:
 # -------------------------------------------
@@ -14,7 +15,7 @@ readonly bin_dir="$(/usr/bin/dirname $0)"
 cd "$bin_dir"
 
 . start.common.functions
-. start.stage2.functions"
+. start.stage2.functions
 
 readonly ifs_bak=$IFS
 readonly runtime_environment="$CONST_ENVIRONMENT_DIR/runtime_environment"
@@ -23,27 +24,21 @@ readonly restart_environment="$CONST_ENVIRONMENT_DIR/restart_environment"
 if [ isFirstRun ]
 then
    readonly restart="false"
-   env_list="$(listfromfile "$runtime_environment")"
+   env_list="$(listFromFile "$runtime_environment")"
    /bin/rm "$runtime_environment"
-   LINUX_USER="$(var - LINUX_USER)"
-   if [ -n "$LINUX_USER" ]
-   then
-      if [ ! $(/usr/bin/getent group $LINUX_USER) ]
-      then
-         /usr/sbin/addgroup -S $LINUX_USER
-      fi
-      if [ ! $(/usr/bin/getent passwd $LINUX_USER) ]
-      then
-         /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $LINUX_USER $LINUX_USER
-      fi
-      /bin/chown -R root:$LINUX_USER "$BIN_DIR"
-   else
-      LINUX_USER="root"
-   fi
-   readonly LINUX_USER
-   echo "REV_LINUX_USER=\"$LINUX_USER\"" >> "$RESTART_ENVIRONMENT"
-   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"
-   makeallfromenvlist
+   makeAllFromEnvList
+else
+   readonly restart="true"
+   env_list="$(listfromfile "$restart_environment")"
+fi
+
+if [ isFirstRun ]
+then
+
+   
+   
+#   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"
+   makeAllFromEnvList
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    if [ -n "$CONFIG_FILE" ]
    then
@@ -54,8 +49,7 @@ then
       echo "REV_CONFIG_DIR=\"$CONFIG_DIR\"" >> "$RESTART_ENVIRONMENT"
    fi
 else
-   readonly restart="true"
-   env_list="$(listfromfile "$RESTART_ENVIRONMENT")"
+
    readonly LINUX_USER="$(var - LINUX_USER)"
    readonly CONFIG_FILE="$(var - CONFIG_FILE)"
    readonly CONFIG_DIR="$(var - CONFIG_DIR)"
