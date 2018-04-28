@@ -2,10 +2,9 @@
 set -e +a +m +s +i -f
 
 readonly bin_dir="$(/usr/bin/dirname $0)"
-cd "$bin_dir"
 
-. start.common.functions
-. start.stage1.functions
+. "$bin_dir/start.common.functions"
+. "$bin_dir/start.stage1.functions"
 
 if [ isSomethingToDo ]
 then
