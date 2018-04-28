@@ -21,9 +21,9 @@
 isSomethingToDo(){
    if [ -f "$bin_dir/start.stage3" ]
    then
-      return 1
+      echo "true"
    else
-      return 0
+      echo "false"
    fi
 }
 
