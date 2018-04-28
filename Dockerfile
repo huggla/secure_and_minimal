@@ -17,10 +17,12 @@ RUN addgroup -S sudoer \
  && apk add --no-cache sudo \
  && mkdir -p "$sbin_dir" "$CONST_ENVIRONMENT_DIR" \
  && chmod 7700 "$CONST_ENVIRONMENT_DIR" \
+ && touch "$CONST_ENVIRONMENT_DIR/runtime_environment" \
  && chown :sudoer /usr/bin/sudo "$sbin_dir" \
  && chmod o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo "$sbin_dir/sudo" \
- && chmod -R 7750 "$bin_dir" \
+ && chmod -R o-rx "$bin_dir" \
+ && chmod 7750 "$bin_dir" \
  && ln -s "$bin_dir/start.stage1" "$bin_dir/start" \
  && echo 'Defaults lecture="never"' > "$sudoers_dir/docker-const" \
  && echo 'Defaults secure_path="/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> "$sudoers_dir/docker-const" \
