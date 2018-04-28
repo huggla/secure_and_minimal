@@ -21,9 +21,9 @@
 isSomethingToDo(){
    if [ -f "$bin_dir/start.stage3" ]
    then
-      return 0
-   else
       return 1
+   else
+      return 0
    fi
 }
 
