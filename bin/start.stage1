@@ -6,9 +6,9 @@ readonly bin_dir="$(/usr/bin/dirname $0)"
 . "$bin_dir/start.common.functions"
 . "$bin_dir/start.stage1.functions"
 
-if [ isSomethingToDo ]
+if [ "$(isSomethingToDo)" == "true" ]
 then
-   if [ isFirstRun ]
+   if [ "$(isFirstRun)" == "true" ]
    then
       createLinuxUser
       updateSudoersConf
