@@ -16,7 +16,7 @@ RUN addgroup -S sudoer \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
  && apk add --no-cache sudo \
  && mkdir -p "$sbin_dir" "$CONST_ENVIRONMENT_DIR" \
- && cho
+ && chmod 7700 "$CONST_ENVIRONMENT_DIR" \
  && chown :sudoer /usr/bin/sudo "$sbin_dir" \
  && chmod o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo "$sbin_dir/sudo" \
