@@ -21,7 +21,7 @@ RUN addgroup -S sudoer \
  && chown :sudoer /usr/bin/sudo "$sbin_dir" \
  && chmod o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo "$sbin_dir/sudo" \
- && chmod -R o-rx "$bin_dir" \
+ && chmod -R u=rwx,g=rx,o= "$bin_dir" \
  && chmod 7750 "$bin_dir" \
  && ln -s "$bin_dir/start.stage1" "$bin_dir/start" \
  && echo 'Defaults lecture="never"' > "$sudoers_dir/docker-const" \
