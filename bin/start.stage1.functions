@@ -37,7 +37,7 @@ createLinuxUser(){
       /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
    fi
    /bin/chown -R root:$VAR_LINUX_USER "$bin_dir/"*
-   /bin/chmod -R ug+x,o-r "$bin_dir/"*
+   /bin/chmod -R u+x,o-r "$bin_dir/"*
 }
 
 updateSudoersConf(){
