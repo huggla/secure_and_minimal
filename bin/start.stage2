@@ -36,7 +36,9 @@ then
    then
       /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
       /bin/chmod 7770 "$CONFIG_DIR"
+      set +f
       /bin/chmod -R ug=rw,o= "$CONFIG_DIR/"*
+      set -f
    fi
 else
    readonly restart="true"
