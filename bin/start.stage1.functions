@@ -40,6 +40,10 @@ createLinuxUser(){
 }
 
 updateSudoersConf(){
+   if [ -z "$SUDO_USER" ]
+   then
+      SUDO_USER="sudoer"
+   fi
    local hostname="$(/bin/hostname)"
    local sudoers_file="/etc/sudoers.d/docker-var"
    local runas="root"
