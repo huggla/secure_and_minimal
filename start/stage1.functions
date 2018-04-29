@@ -1,7 +1,6 @@
 # Set in parent script:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-# bin_dir
 
 # Set by sudo command:
 # -------------------------------------------
@@ -19,7 +18,7 @@
 
 
 isSomethingToDo(){
-   if [ -f "$bin_dir/start.stage3" ]
+   if [ -f "/start/stage3" ]
    then
       echo "true"
    else
@@ -36,10 +35,6 @@ createLinuxUser(){
    then
       /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
    fi
-   set +f
-   /bin/chown -R root:$VAR_LINUX_USER "$bin_dir/"*
-   /bin/chmod -R u+x,o-r "$bin_dir/"*
-   set -f
 }
 
 updateSudoersConf(){
@@ -54,8 +49,7 @@ updateSudoersConf(){
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "root $hostname=($runas) NOPASSWD: $bin_dir/, /bin/, /sbin/, /usr/bin/, /usr/sbin/" > "$sudoers_file"
-   echo "$SUDO_USER $hostname=(root) NOPASSWD: $bin_dir/start.stage1" >> "$sudoers_file"
+   echo "$SUDO_USER $hostname=(root) NOPASSWD: /start/stage1" >> "$sudoers_file"
 }
 
 writeRuntimeEnvironment(){
@@ -71,5 +65,5 @@ startStage2(){
       local config_var_name="CONFIG_DIR"
       local config_var_value="$VAR_CONFIG_DIR"
    fi
-   exec /usr/bin/env -i ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value "$bin_dir/start.stage2"
+   exec /usr/bin/env -i ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value /start/stage2
 }
