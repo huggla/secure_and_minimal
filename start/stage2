@@ -22,7 +22,7 @@ then
 fi
 readonly CONFIG_FILE
 readonly CONFIG_DIR
-if [ "$(isFirstRun)" == "true" ]
+if [ "$(isFirstrun)" == "true" ]
 then
    readonly restart="false"
    env_list="$(listFromFile /environment/runtime)"
