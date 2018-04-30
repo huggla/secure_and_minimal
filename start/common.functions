@@ -10,9 +10,9 @@
 isFirstrun(){
    if [ -f "/environment/firstrun" ] && [ -z "$firstrun" ]
    then
-      firstrun="true"
+      readonly firstrun="true"
    else
-      firstrun="false"
+      readonly firstrun="false"
    fi
    echo "$firstrun"
 }
