@@ -24,9 +24,7 @@ readonly CONFIG_FILE
 readonly CONFIG_DIR
 if [ "$(isFirstrun)" == "true" ]
 then
-   readonly restart="false"
-   env_list="$(listFromFile /environment/runtime)"
-   /bin/rm /environment/runtime
+   env_list="$(readFirstrunEnvironment)"
    makeAllFromEnvList
    if [ -n "$CONFIG_DIR" ]
    then
