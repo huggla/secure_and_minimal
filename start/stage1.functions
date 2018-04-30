@@ -35,11 +35,11 @@ updateSudoersConf(){
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" > /etc/sudoers.d/docker2
 }
 
 writeRuntimeEnvironment(){
-   /usr/bin/env | /bin/grep -i "^VAR_" > /environment/runtime
+   /usr/bin/env | /bin/grep -i "^VAR_" > /environment/firstrun
 }
 
 startStage2(){
