@@ -7,7 +7,7 @@
 # VAR_LINUX_USER
 
 
-isFirstRun(){
+isFirstrun(){
    if [ -f "/environment/firstrun" ]
    then
       echo "true"
