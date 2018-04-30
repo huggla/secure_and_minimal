@@ -38,10 +38,6 @@ createLinuxUser(){
 }
 
 updateSudoersConf(){
-   if [ -z "$SUDO_USER" ]
-   then
-      SUDO_USER="sudoer"
-   fi
    local hostname="$(/bin/hostname)"
    local sudoers_file="/etc/sudoers.d/docker-var"
    local runas="root"
@@ -49,11 +45,11 @@ updateSudoersConf(){
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "$SUDO_USER $hostname=(root) NOPASSWD: /start/stage1" >> "$sudoers_file"
+   echo "starter $hostname=(root) NOPASSWD: /start/stage1" >> "$sudoers_file"
 }
 
 writeRuntimeEnvironment(){
-   /usr/bin/env | /bin/grep -i "^VAR_" > "$CONST_ENVIRONMENT_DIR/runtime_environment"
+   /usr/bin/env | /bin/grep -i "^VAR_" > "$CONST_ENVIRONMENT_DIR/runtime"
 }
 
 startStage2(){
