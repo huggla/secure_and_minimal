@@ -3,7 +3,6 @@ set -e +a +m +s +i -f
 
 # Passed from stage1:
 # -------------------------------------------
-# ENVIRONMENT_DIR
 # LINUX_USER
 # CONFIG_FILE/CONFIG_DIR
 
@@ -26,8 +25,8 @@ readonly CONFIG_DIR
 if [ "$(isFirstRun)" == "true" ]
 then
    readonly restart="false"
-   env_list="$(listFromFile "$runtime_environment")"
-   /bin/rm "$runtime_environment"
+   env_list="$(listFromFile /environment/runtime)"
+   /bin/rm /environment/runtime
    makeAllFromEnvList
    if [ -n "$CONFIG_DIR" ]
    then
