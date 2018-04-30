@@ -30,13 +30,12 @@ createLinuxUser(){
 }
 
 updateSudoersConf(){
-   local hostname="$(/bin/hostname)"
    local runas="root"
    if [ "$VAR_LINUX_USER" != "root" ]
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "starter $hostname=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2
 }
 
 writeRuntimeEnvironment(){
