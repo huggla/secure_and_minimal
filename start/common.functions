@@ -8,7 +8,7 @@
 
 
 isFirstRun(){
-   if [ -f "/environment/runtime" ]
+   if [ -f "/environment/firstrun" ]
    then
       echo "true"
    else
