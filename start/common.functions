@@ -2,17 +2,13 @@
 # -------------------------------------------
 # set -e +a +m +s +i -f
 
-# Set in Dockerfile:
-# -------------------------------------------
-# CONST_ENVIRONMENT_DIR
-
 # Set in Dockerfile or at runtime:
 # -------------------------------------------
 # VAR_LINUX_USER
 
 
 isFirstRun(){
-   if [ -f "$CONST_ENVIRONMENT_DIR/runtime" ]
+   if [ -f "/environment/runtime" ]
    then
       echo "true"
    else
