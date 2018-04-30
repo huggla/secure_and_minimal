@@ -111,3 +111,6 @@ readFirstrunEnvironment(){
    /bin/rm /environment/firstrun
    echo "$env_list"
 }
+readRestartEnvironment(){
+   echo "$(listFromFile "$restart_environment")"
+}
