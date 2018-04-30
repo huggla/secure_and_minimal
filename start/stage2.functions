@@ -106,3 +106,8 @@ makePwFileForUser(){
    fi
    echo "$pwfile"
 }      
+readFirstrunEnvironment(){
+   env_list="$(listFromFile /environment/firstrun)"
+   /bin/rm /environment/firstrun
+   echo "$env_list"
+}
