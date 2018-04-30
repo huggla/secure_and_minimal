@@ -25,7 +25,8 @@ RUN addgroup -S starter \
  && chmod u=rw,go= /etc/sudoers.d/docker*
 
 # Variables
-ENV VAR_LINUX_USER="root"
+ENV VAR_LINUX_USER="root" \
+    PATH="$PATH:/start"
 
 USER starter
 
