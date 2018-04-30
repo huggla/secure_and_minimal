@@ -8,10 +8,11 @@
 
 
 isFirstrun(){
-   if [ -f "/environment/firstrun" ]
+   if [ -f "/environment/firstrun" ] && [ -z "$firstrun" ]
    then
-      echo "true"
+      firstrun="true"
    else
-      echo "false"
+      firstrun="false"
    fi
+   echo "$firstrun"
 }
