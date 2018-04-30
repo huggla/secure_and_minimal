@@ -35,8 +35,6 @@ then
       set -f
    fi
 else
-   readonly restart="true"
-   env_list="$(listFromFile "$restart_environment")"
+   env_list="$(readRestartEnvironment)"
 fi
-#   /bin/chmod -R u=rx,g=rx,o= "$BIN_DIR"      
-. "$bin_dir/start.stage3"
+. /start/stage3
