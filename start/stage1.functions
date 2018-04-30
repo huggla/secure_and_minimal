@@ -38,7 +38,7 @@ updateSudoersConf(){
    echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" > /etc/sudoers.d/docker2
 }
 
-writeRuntimeEnvironment(){
+writeFirstrunEnvironment(){
    /usr/bin/env | /bin/grep -i "^VAR_" > /environment/firstrun
 }
 
