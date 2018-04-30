@@ -2,10 +2,6 @@
 # -------------------------------------------
 # set -e +a +m +s +i -f
 
-# Set in Dockerfile:
-# -------------------------------------------
-# CONST_ENVIRONMENT_DIR
-
 # Set in Dockerfile or at runtime:
 # -------------------------------------------
 # VAR_LINUX_USER
@@ -35,17 +31,16 @@ createLinuxUser(){
 
 updateSudoersConf(){
    local hostname="$(/bin/hostname)"
-   local sudoers_file="/etc/sudoers.d/docker-var"
    local runas="root"
    if [ "$VAR_LINUX_USER" != "root" ]
    then
       local runas="$runas, $VAR_LINUX_USER"
    fi
-   echo "starter $hostname=(root) NOPASSWD: /start/stage1" >> "$sudoers_file"
+   echo "starter $hostname=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2
 }
 
 writeRuntimeEnvironment(){
-   /usr/bin/env | /bin/grep -i "^VAR_" > "$CONST_ENVIRONMENT_DIR/runtime"
+   /usr/bin/env | /bin/grep -i "^VAR_" > /environment/runtime
 }
 
 startStage2(){
@@ -57,5 +52,5 @@ startStage2(){
       local config_var_name="CONFIG_DIR"
       local config_var_value="$VAR_CONFIG_DIR"
    fi
-   exec /usr/bin/env -i ENVIRONMENT_DIR=$CONST_ENVIRONMENT_DIR LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value /start/stage2
+   exec /usr/bin/env -i LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value /start/stage2
 }
