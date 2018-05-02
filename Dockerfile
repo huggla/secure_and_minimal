@@ -11,7 +11,7 @@ RUN addgroup -S starter \
  && apk add --no-cache sudo \
  && mkdir /environment \
  && chmod 7700 /environment /start \
- && chmod u+x /start/stage1 \
+ && chmod u+x /start/stage1 /start/stage2 \
  && touch /environment/firstrun /environment/restart \
  && chown :starter /usr/bin/sudo \
  && chmod o-rx /usr/bin/sudo \
