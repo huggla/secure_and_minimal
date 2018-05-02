@@ -68,12 +68,6 @@ echo ifs
 echo "$IFS"
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
-   echo file
-   echo $file
-   /bin/cat "$file"
-   echo
-   echo list
-   echo $list
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
 
@@ -134,6 +128,8 @@ echo firstrunenv
 echo "$IFS"
 /bin/cat /environment/firstrun
 echo firstrunenvslut
+"$(listFromFile /environment/firstrun)"
+echo "fel ovan"
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
    makeAllFromList $env_list
