@@ -26,7 +26,8 @@ RUN addgroup -S starter \
 
 # Variables
 ENV VAR_LINUX_USER="root" \
-    PATH="$PATH:/start"
+    PATH="$PATH:/start" \
+    HISTFILE="/dev/null"
 
 USER starter
 
