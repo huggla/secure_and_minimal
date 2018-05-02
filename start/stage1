@@ -14,5 +14,5 @@ then
    fi
    startStage2
 else
-   nothingToDo
+   doNothing
 fi
