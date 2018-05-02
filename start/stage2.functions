@@ -64,8 +64,6 @@ toLower(){
 }
 
 listFromFile(){
-echo ifs
-echo "$IFS"
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
