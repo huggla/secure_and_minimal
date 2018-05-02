@@ -9,7 +9,7 @@
 
 
 isSomethingToDo(){
-   if [ -f "/start/stage3" ]
+   if [ -f "/start/final.command" ]
    then
       echo "true"
    else
