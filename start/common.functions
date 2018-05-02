@@ -17,6 +17,6 @@ isFirstrun(){
    echo "$firstrun"
 }
 
-nothingToDo(){
-   exec /usr/bin/env -i /bin/echo "Nothing to do!"
+doNothing(){
+   exec /usr/bin/env -i /bin/sh
 }
