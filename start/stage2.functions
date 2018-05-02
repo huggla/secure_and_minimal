@@ -66,8 +66,10 @@ toLower(){
 listFromFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
-   bin/cat "$file"
-   echo banan
+   echo $file
+   /bin/cat "$file"
+   echo
+   echo list
    echo $list
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
@@ -128,7 +130,9 @@ readFirstrunEnvironment(){
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
    makeAllFromList $env_list
+   echo envlist
    echo $env_list
+   echo envlistslut
    for var in $env_list
    do
    echo hej
