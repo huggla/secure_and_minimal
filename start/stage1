@@ -12,9 +12,7 @@ then
       updateSudoersConf
       writeFirstrunEnvironment
    fi
-   clearEnvironment
    startStage2
 else
-   clearEnvironment
-   . /start/test
+   echo "Nothing to do!"
 fi
