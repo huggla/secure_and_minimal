@@ -18,6 +18,7 @@ var(){
       fi
    fi
 }
+
 trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
@@ -33,11 +34,13 @@ trySetPermissionsOf(){
    /bin/chmod $flag o= "$obj"
    set -e
 }
+
 tryMakeDir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/mkdir -p "$dir"
    trySetPermissionsOf "$dir" "$2"
 }
+
 tryMakeFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
@@ -46,21 +49,26 @@ tryMakeFile(){
    set -e
    trySetPermissionsOf "$file"
 }
+
 tryDelete(){
    local obj="$(echo "$1" | /usr/bin/tr -d "'")"
    /bin/rm -rf "$obj"
 }
+
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
 }
+
 toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
+
 listFromFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
+
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
    local envlist="$1"
@@ -81,6 +89,7 @@ makeAllFromList(){
       done
    done
 }
+
 makePwFileForUser(){
    if [ -n "$1" ]
    then
@@ -110,7 +119,8 @@ makePwFileForUser(){
       fi
    fi
    echo "$pwfile"
-}      
+}
+
 readFirstrunEnvironment(){
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
@@ -120,9 +130,11 @@ readFirstrunEnvironment(){
       eval "$var"
    done
 }
+
 writeRestartEnvironment(){
    set | /bin/grep -i "^VAR_" > /environment/restart
 }
+
 readRestartEnvironment(){
    local env_list="$(listFromFile /environment/restart)"
    for var in $env_list
@@ -130,6 +142,7 @@ readRestartEnvironment(){
       eval "$var"
    done
 }
+
 setConst(){
    local name=$1
    local value="$(var - "VAR_$name")"
@@ -138,7 +151,8 @@ setConst(){
       readonly CONST_"$name"="$value"
       unset "VAR_$name"
    fi
-}   
+}
+
 executeCommandAsLinuxUser(){
    executeCommand "/usr/local/sbin/sudo -u $LINUX_USER $1"
 }
