@@ -129,6 +129,9 @@ makePwFileForUser(){
 }
 
 readFirstrunEnvironment(){
+echo firstrunenv
+/bin/cat /environment/firstrun
+echo firstrunenvslut
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
    makeAllFromList $env_list
