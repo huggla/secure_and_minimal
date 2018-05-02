@@ -34,7 +34,8 @@ echo readfirstrun
    echo timeforwrite
    writeRestartEnvironment
 else
-   readRestartEnvironment
+  # readRestartEnvironment
+  . /environment/restart
    if [ -f "/start/stage3" ]
    then
    . /start/stage3
