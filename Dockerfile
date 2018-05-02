@@ -25,7 +25,7 @@ RUN addgroup -S starter \
  && echo 'Defaults !root_sudo' >> /etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2 \
  && chmod u=rw,go= /etc/sudoers.d/docker* \
- && echo "unset \$(/usr/bin/env | /usr/bin/awk -F '=' '{print \$1\}' | /usr/bin/tr \"\\n\" \" \")" > /start/test
+ && echo "unset \$(/usr/bin/env | /usr/bin/awk -F '=' '{print \$1}' | /usr/bin/tr \"\\n\" \" \")" > /start/test
 
 # Variables
 ENV VAR_LINUX_USER="root" \
