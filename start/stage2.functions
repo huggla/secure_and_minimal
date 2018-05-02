@@ -61,9 +61,9 @@ listFromFile(){
    local list="$(/bin/cat "$file")"
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
-makeAllFromEnvList(){
+makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
-   local envlist="$env_list"
+   local envlist="$1"
    local types="File,Dir"
    for type in $types
    do
@@ -114,11 +114,14 @@ makePwFileForUser(){
 readFirstrunEnvironment(){
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
-   makeAllFromEnvList
+   makeAllFromList $env_list
    for var in $env_list
    do
       eval "$var"
    done
+}
+writeRestartEnvironment(){
+   set | /bin/grep -i "^VAR_" > /environment/restart
 }
 readRestartEnvironment(){
    local env_list="$(listFromFile /environment/restart)"
