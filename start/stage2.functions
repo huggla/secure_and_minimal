@@ -139,4 +139,6 @@ setConst(){
       unset "VAR_$name"
    fi
 }   
-
+executeCommandAsLinuxUser(){
+   executeCommand "/usr/local/sbin/sudo -u $LINUX_USER $1"
+}
