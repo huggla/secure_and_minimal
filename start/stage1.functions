@@ -5,8 +5,7 @@
 # Set in Dockerfile or at runtime:
 # -------------------------------------------
 # VAR_LINUX_USER
-# VAR_CONFIG_FILE
-# VAR_CONFIG_DIR
+# VAR_CONFIG_FILE/VAR_CONFIG_DIR
 
 
 isSomethingToDo(){
