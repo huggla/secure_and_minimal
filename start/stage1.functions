@@ -51,5 +51,5 @@ startStage2(){
       local config_var_name="VAR_CONFIG_DIR"
       local config_var_value="$VAR_CONFIG_DIR"
    fi
-   exec /usr/bin/env -i LINUX_USER=$VAR_LINUX_USER $config_var_name=$config_var_value /start/stage2
+   exec /usr/bin/env -i $config_var_name=$config_var_value /start/stage2
 }
