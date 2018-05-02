@@ -17,7 +17,7 @@ RUN addgroup -S starter \
  && ln /usr/bin/sudo /usr/local/bin/sudo \
  && chmod o-rx /usr/local/bin/sudo \
  && chown root /usr/local/bin/sudo \
- && chmod u+t /usr/local/bin/sudo \
+ && chmod u+s /usr/local/bin/sudo \
  && ln -s /start/stage1 /start/start \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
