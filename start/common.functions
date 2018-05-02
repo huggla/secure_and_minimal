@@ -2,10 +2,6 @@
 # -------------------------------------------
 # set -e +a +m +s +i -f
 
-# Set in Dockerfile or at runtime:
-# -------------------------------------------
-# VAR_LINUX_USER
-
 
 isFirstrun(){
    if [ -f "/environment/firstrun" ] && [ -z "$firstrun" ]
