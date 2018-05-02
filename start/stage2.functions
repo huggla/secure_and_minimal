@@ -160,5 +160,6 @@ setConst(){
 }
 
 executeCommandAsLinuxUser(){
+   echo "/usr/local/bin/sudo -u $LINUX_USER $1"
    executeCommand "/usr/local/bin/sudo -u $LINUX_USER $1"
 }
