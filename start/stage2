@@ -30,6 +30,7 @@ echo readfirstrun
    then
    . /start/stage3
    fi
+   echo timeforwrite
    writeRestartEnvironment
 else
    readRestartEnvironment
