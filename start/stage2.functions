@@ -68,6 +68,7 @@ echo ifs
 echo "$IFS"
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
+   echo file
    echo $file
    /bin/cat "$file"
    echo
