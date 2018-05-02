@@ -65,7 +65,7 @@ toLower(){
 
 listFromFile(){
 echo ifs
-echo $IFS
+echo "$IFS"
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
    local list="$(/bin/cat "$file")"
    echo $file
@@ -130,6 +130,7 @@ makePwFileForUser(){
 
 readFirstrunEnvironment(){
 echo firstrunenv
+echo "$IFS"
 /bin/cat /environment/firstrun
 echo firstrunenvslut
    local env_list="$(listFromFile /environment/firstrun)"
