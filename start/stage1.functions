@@ -40,6 +40,7 @@ writeFirstrunEnvironment(){
       unset VAR_CONFIG_FILE
    fi
    /usr/bin/env | /bin/grep -i "^VAR_" > /environment/firstrun
+   unset $(/usr/bin/env | /usr/bin/awk -F '=' '{print $1}' | /usr/bin/tr "\n" " ")
 }
 
 startStage2(){
