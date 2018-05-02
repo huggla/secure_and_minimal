@@ -14,5 +14,5 @@ then
    fi
    startStage2
 else
-   echo "Nothing to do!"
+   nothingToDo
 fi
