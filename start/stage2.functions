@@ -112,8 +112,9 @@ makePwFileForUser(){
    echo "$pwfile"
 }      
 readFirstrunEnvironment(){
-   env_list="$(listFromFile /environment/firstrun)"
+   local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
+   makeAllFromEnvList
    for var in $env_list
    do
       eval "$var"
