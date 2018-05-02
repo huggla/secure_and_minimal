@@ -13,6 +13,7 @@ readonly ifs_bak=$IFS
 
 if [ "$(isFirstrun)" == "true" ]
 then
+echo readfirstrun
    readFirstrunEnvironment
    if [ -n "$VAR_CONFIG_DIR" ]
    then
