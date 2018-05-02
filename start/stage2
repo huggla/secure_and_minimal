@@ -14,14 +14,14 @@ readonly ifs_bak=$IFS
 if [ "$(isFirstrun)" == "true" ]
 then
    readFirstrunEnvironment
-   if [ -n "$CONFIG_DIR" ]
+   if [ -n "$VAR_CONFIG_DIR" ]
    then
-      /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
-      /bin/chmod 7770 "$CONFIG_DIR"
-      if [ "$(ls -A "$CONFIG_DIR")" ]
+      /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
+      /bin/chmod 7770 "$VAR_CONFIG_DIR"
+      if [ "$(ls -A "$VAR_CONFIG_DIR")" ]
       then
          set +f
-         /bin/chmod -R ug=rw,o= "$CONFIG_DIR/"*
+         /bin/chmod -R ug=rw,o= "$VAR_CONFIG_DIR/"*
          set -f
       fi
    fi
