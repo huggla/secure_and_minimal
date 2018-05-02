@@ -37,4 +37,4 @@ else
    . /start/stage3
    fi
 fi
-executeFinalCommand
+executeCommand $VAR_FINAL_COMMAND
