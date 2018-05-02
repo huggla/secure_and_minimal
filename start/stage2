@@ -41,4 +41,4 @@ else
    . /start/stage3
    fi
 fi
-executeCommandAsLinuxUser $VAR_FINAL_COMMAND
+executeCommandAsLinuxUser "$VAR_FINAL_COMMAND"
