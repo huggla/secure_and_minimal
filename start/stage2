@@ -14,7 +14,8 @@ echo "$IFS"
 if [ "$(isFirstrun)" == "true" ]
 then
 echo readfirstrun
-   readFirstrunEnvironment
+   #readFirstrunEnvironment
+   . /environment/firstrun
    if [ -n "$VAR_CONFIG_DIR" ]
    then
       /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
