@@ -6,11 +6,16 @@ var(){
    else
       local tmp="$(echo $env_list | /usr/bin/awk -v section=$1 -F '_' '$1==section{s=""; for (i=1; i < NF; i++) s = s $i "_"; print s $NF}')"
    fi
-   if [ -z "$2" ]
+   if [ -z "$tmp" ]
    then
-      echo $tmp | /usr/bin/awk -F '=' '{print $1}'
+      echo "notSet"
    else
-      echo $tmp | /usr/bin/awk -v param=$2 -F '=' '$1==param{s=""; for (i=1; i < NF; i++) s = s $i "="; print s $NF; exit;}'
+      if [ -z "$2" ]
+      then
+         echo $tmp | /usr/bin/awk -F '=' '{print $1}'
+      else
+         echo $tmp | /usr/bin/awk -v param=$2 -F '=' '$1==param{s=""; for (i=1; i < NF; i++) s = s $i "="; print s $NF; exit;}'
+      fi
    fi
 }
 trySetPermissionsOf(){
@@ -115,9 +120,10 @@ readRestartEnvironment(){
    echo "$(listFromFile "$restart_environment")"
 }
 setConst(){
-   local varName=$1
-   if [ "${"$varName"-notSet}" != "notSet" ]
+   local name=$1
+   local value="$(var - "VAR_$name")"
+   if [ "$value" != "notSet" ]
    then
-      readonly CONST_"$(echo "$varName" | /usr/bin/awk -F '_' '{s=""; for (i=2; i < NF; i++) s = s $i "_"; print s $NF; exit;}')"="$(var - "$varName")"
+      readonly CONST_"$name"="$value"
    fi
 }   
