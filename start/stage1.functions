@@ -43,6 +43,5 @@ writeFirstrunEnvironment(){
 }
 
 startStage2(){
-
    exec /usr/bin/env -i /bin/sh /start/stage2
 }
