@@ -22,7 +22,5 @@ doNothing(){
 }
 
 clearEnvironment(){
-   local path=$PATH
-   unset $(env | awk -F '=' '{print $1}' | tr "\n" " ")
-   export PATH=$path
+   unset $(/usr/bin/env | /usr/bin/awk -F '=' '{print $1}' | /usr/bin/tr "\n" " ")
 }
