@@ -42,6 +42,6 @@ writeFirstrunEnvironment(){
    set | /bin/grep -i "^VAR_" > /environment/firstrun
 }
 
-startStage2(){
+executeStage2(){
    exec /usr/bin/env -i /bin/sh /start/stage2
 }
