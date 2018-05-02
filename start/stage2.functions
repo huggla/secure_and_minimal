@@ -114,3 +114,10 @@ readFirstrunEnvironment(){
 readRestartEnvironment(){
    echo "$(listFromFile "$restart_environment")"
 }
+setConst(){
+   local varName=$1
+   if [ "${"$varName"-notSet}" != "notSet" ]
+   then
+      readonly CONST_"$(echo "$varName" | /usr/bin/awk -F '_' '{s=""; for (i=2; i < NF; i++) s = s $i "_"; print s $NF; exit;}')"="$(var - "$varName")"
+   fi
+}   
