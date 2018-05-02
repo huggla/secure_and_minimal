@@ -16,3 +16,7 @@ isFirstrun(){
    fi
    echo "$firstrun"
 }
+
+nothingToDo(){
+   exec /usr/bin/env -i /bin/echo "Nothing to do!"
+}
