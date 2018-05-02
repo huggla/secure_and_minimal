@@ -20,3 +20,9 @@ isFirstrun(){
 doNothing(){
    exec /usr/bin/env -i /bin/sh
 }
+
+clearEnvironment(){
+   local path=$PATH
+   unset $(env | awk -F '=' '{print $1}' | tr "\n" " ")
+   export PATH=$path
+}
