@@ -10,7 +10,7 @@ set -e +a +m +s +i -f
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
-
+echo "$IFS"
 if [ "$(isFirstrun)" == "true" ]
 then
 echo readfirstrun
