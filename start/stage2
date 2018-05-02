@@ -10,14 +10,10 @@ set -e +a +m +s +i -f
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
-setConst LINUX_USER
-setConst CONFIG_FILE
-setConst CONFIG_DIR
 
 if [ "$(isFirstrun)" == "true" ]
 then
-   env_list="$(readFirstrunEnvironment)"
-   makeAllFromEnvList
+   readFirstrunEnvironment
    if [ -n "$CONFIG_DIR" ]
    then
       /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
@@ -29,7 +25,9 @@ then
          set -f
       fi
    fi
+   . /start/stage3
+   writeRestartEnvironment
 else
-   env_list="$(readRestartEnvironment)"
+   readRestartEnvironment
+   . /start/stage3
 fi
-. /start/stage3
