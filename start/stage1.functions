@@ -9,7 +9,7 @@
 
 
 isSomethingToDo(){
-   if [ -f "/start/final.command" ]
+   if [ -n "$VAR_FINAL_COMMAND" ]
    then
       echo "true"
    else
