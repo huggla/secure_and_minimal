@@ -30,11 +30,6 @@ createLinuxUser(){
 }
 
 updateSudoersConf(){
-   local runas="root"
-   if [ "$VAR_LINUX_USER" != "root" ]
-   then
-      local runas="$runas, $VAR_LINUX_USER"
-   fi
    echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" > /etc/sudoers.d/docker2
 }
 
@@ -42,6 +37,8 @@ writeFirstrunEnvironment(){
    if [ -n "$VAR_CONFIG_FILE" ]
    then
       export VAR_CONFIG_DIR="$(/usr/bin/dirname "$VAR_CONFIG_FILE")"
+   else
+      unset VAR_CONFIG_FILE
    fi
    /usr/bin/env | /bin/grep -i "^VAR_" > /environment/firstrun
 }
