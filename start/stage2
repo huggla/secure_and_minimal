@@ -30,9 +30,12 @@ then
    then
       /bin/chown -R $LINUX_USER:root "$CONFIG_DIR"
       /bin/chmod 7770 "$CONFIG_DIR"
-      set +f
-      /bin/chmod -R ug=rw,o= "$CONFIG_DIR/"*
-      set -f
+      if [ "$(ls -A "$CONFIG_DIR")" ]
+      then
+         set +f
+         /bin/chmod -R ug=rw,o= "$CONFIG_DIR/"*
+         set -f
+      fi
    fi
 else
    env_list="$(readRestartEnvironment)"
