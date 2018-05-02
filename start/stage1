@@ -12,7 +12,8 @@ then
       updateSudoersConf
       writeFirstrunEnvironment
    fi
+   clearEnvironment
    startStage2
 else
-   doNothing
+   clearEnvironment
 fi
