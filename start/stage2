@@ -1,11 +1,6 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
-# Passed from stage1:
-# -------------------------------------------
-# LINUX_USER
-# CONFIG_FILE/CONFIG_DIR
-
 # Set by shell:
 # -------------------------------------------
 # IFS
@@ -15,13 +10,10 @@ set -e +a +m +s +i -f
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
+setConst LINUX_USER
+setConst CONFIG_FILE
+setConst CONFIG_DIR
 
-if [ -n "$CONFIG_FILE" ]
-then
-   CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
-fi
-readonly CONFIG_FILE
-readonly CONFIG_DIR
 if [ "$(isFirstrun)" == "true" ]
 then
    env_list="$(readFirstrunEnvironment)"
