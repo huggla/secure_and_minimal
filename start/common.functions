@@ -22,5 +22,5 @@ doNothing(){
 }
 
 clearEnvironment(){
-   unset $(/usr/bin/env | /usr/bin/awk -F '=' '{print $1}' | /usr/bin/tr "\n" " ")
+   exec /usr/bin/env -i /bin/sh -e
 }
