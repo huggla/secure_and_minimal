@@ -125,8 +125,11 @@ readFirstrunEnvironment(){
    local env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
    makeAllFromList $env_list
+   echo $env_list
    for var in $env_list
    do
+   echo hej
+   echo $var
       eval "$var"
    done
 }
@@ -154,5 +157,5 @@ setConst(){
 }
 
 executeCommandAsLinuxUser(){
-   executeCommand "/usr/local/sbin/sudo -u $LINUX_USER $1"
+   executeCommand "/usr/local/bin/sudo -u $LINUX_USER $1"
 }
