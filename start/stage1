@@ -16,4 +16,5 @@ then
    startStage2
 else
    clearEnvironment
+   . /start/test
 fi
