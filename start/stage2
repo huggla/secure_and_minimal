@@ -37,4 +37,4 @@ else
    . /start/stage3
    fi
 fi
-startFinalCmd
+. /start/final.command
