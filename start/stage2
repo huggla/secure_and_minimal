@@ -25,9 +25,16 @@ then
          set -f
       fi
    fi
+   if [ -f "/start/stage3" ]
+   then
    . /start/stage3
+   fi
    writeRestartEnvironment
 else
    readRestartEnvironment
+   if [ -f "/start/stage3" ]
+   then
    . /start/stage3
+   fi
 fi
+startFinalCmd
