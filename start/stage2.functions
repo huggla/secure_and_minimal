@@ -125,5 +125,6 @@ setConst(){
    if [ "$value" != "notSet" ]
    then
       readonly CONST_"$name"="$value"
+      unset "VAR_$name"
    fi
 }   
