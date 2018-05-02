@@ -114,7 +114,10 @@ makePwFileForUser(){
 readFirstrunEnvironment(){
    env_list="$(listFromFile /environment/firstrun)"
    /bin/rm /environment/firstrun
-   echo "$env_list"
+   for var in $env_list
+   do
+      eval "$var"
+   done
 }
 readRestartEnvironment(){
    echo "$(listFromFile "$restart_environment")"
