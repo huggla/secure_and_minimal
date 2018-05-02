@@ -121,7 +121,11 @@ readFirstrunEnvironment(){
    done
 }
 readRestartEnvironment(){
-   echo "$(listFromFile "$restart_environment")"
+   local env_list="$(listFromFile /environment/restart)"
+   for var in $env_list
+   do
+      eval "$var"
+   done
 }
 setConst(){
    local name=$1
