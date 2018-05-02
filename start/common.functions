@@ -16,11 +16,3 @@ isFirstrun(){
    fi
    echo "$firstrun"
 }
-
-doNothing(){
-   exec /usr/bin/env -i /bin/sh
-}
-
-clearEnvironment(){
-   exec /usr/bin/env -i /bin/sh -e
-}
