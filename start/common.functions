@@ -14,5 +14,6 @@ isFirstrun(){
 }
 
 executeCommand(){
+echo $1
    exec /usr/bin/env -i $1
 }
