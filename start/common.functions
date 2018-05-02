@@ -16,3 +16,7 @@ isFirstrun(){
    fi
    echo "$firstrun"
 }
+
+executeCommand(){
+   exec /usr/bin/env -i $1
+}
