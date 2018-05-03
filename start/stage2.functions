@@ -105,7 +105,7 @@ makePwFileForUser(){
       then
          local userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
       fi
-      if [ "$VAR_ENCRYPT" == "true" ]
+      if [ "$VAR_ENCRYPT_PW" == "yes" ]
       then
          if [ -s "$VAR_SALT_FILE" ]
          then
