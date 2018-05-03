@@ -6,7 +6,8 @@ set -e +a +m +s +i -f
 
 if [ "$(isSomethingToDo)" == "true" ]
 then
-   if [ "$(isFirstrun)" == "true" ]
+   firstrun="$(isFirstrun)"
+   if [ "$firstrun" == "true" ]
    then
       createLinuxUser
       updateSudoersConf
