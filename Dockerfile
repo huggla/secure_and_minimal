@@ -5,7 +5,8 @@ ENV LANG="en_US.UTF-8"
 
 COPY ./start /start
 
-RUN apk add --no-cache --virtual .build-deps build-base \
+RUN apk add --no-cache musl \
+ && apk add --no-cache --virtual .build-deps build-base \
  && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/master.zip" https://github.com/P-H-C/phc-winner-argon2/archive/master.zip \
  && buildDir="$(mktemp -d)" \
