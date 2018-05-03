@@ -155,7 +155,13 @@ tryRunStage(){
       echo hej
       . /start/stage$1
       echo hej2
-      echo $1++
-      tryRunStage $1++
+      test=$1+1
+      test2=expr "$1+1"
+      echo $1+1
+      echo "$1+1"
+      echo $test
+      echo "$test"
+      echo "$test2"
+      tryRunStage $1+1
    fi
 }
