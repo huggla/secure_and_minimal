@@ -79,6 +79,7 @@ makeAllFromList(){
       set +e
       local matches="$(echo "$envlist" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
       set -e
+      echo $matches
       for match in $matches
       do
          local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
@@ -154,7 +155,6 @@ tryRunStage(){
    then
       . "/start/stage$1"
       local next="$(/usr/bin/expr $1 + 1)"
-      echo $next
       tryRunStage $next
    fi
 }
