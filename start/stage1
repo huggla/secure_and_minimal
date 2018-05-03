@@ -12,6 +12,7 @@ then
       updateSudoersConf
       writeFirstrunEnvironment
    fi
+   /bin/cat /environment/firstrun
    executeCommand /start/stage2
 else
    echo "Nothing to do!"
