@@ -148,3 +148,10 @@ setConst(){
 executeCommandAsLinuxUser(){
    executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
+
+tryRunStage(){
+   if [ -f "/start/stage$1" ]
+   then
+   . /start/stage$1
+   fi
+}
