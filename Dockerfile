@@ -1,17 +1,18 @@
 FROM alpine:3.7
 
 # Build-only variables
-ENV LANG="en_US.UTF-8"
+ENV LANG="en_US.UTF-8" \
+    argonv="20171227"
 
 COPY ./start /start
 
 RUN apk add --no-cache musl build-base \
  && downloadDir="$(mktemp -d)" \
- && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/20171227.tar.gz \
+ && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/$argonv.tar.gz \
  && buildDir="$(mktemp -d)" \
  && tar -xvf "$downloadDir/argon2.tar.gz" -C "$buildDir" --strip-components=1 \
  && rm -rf "$downloadDir" \
- && cd "$buildDir/phc-winner-argon2-master" \
+ && cd "$buildDir/phc-winner-argon2-$argonv" \
  && /usr/bin/make OPTTARGET=none \
  && /usr/bin/make install PREFIX=/usr OPTTARGET=none \
  && rm -rf "$buildDir" \
