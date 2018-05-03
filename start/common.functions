@@ -3,17 +3,6 @@
 # set -e +a +m +s +i -f
 
 
-isFirstrun(){
-   if [ -f "/environment/firstrun" ]
-   then
-      local first="true"
-   elif [ "$firstrun" != "true" ]
-   then
-      local first="false"
-   fi
-   echo "$first"
-}
-
 executeCommand(){
    exec /usr/bin/env -i $1
 }
