@@ -3,7 +3,7 @@ set -e +a +m +s +i -f
 
 . /start/common.functions
 . /start/stage1.functions
-
+set
 if [ "$(isSomethingToDo)" == "true" ]
 then
    if [ "$(isFirstrun)" == "true" ]
