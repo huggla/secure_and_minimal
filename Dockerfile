@@ -5,7 +5,17 @@ ENV LANG="en_US.UTF-8"
 
 COPY ./start /start
 
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/main/ argon2 \
+RUN apk add --no-cache musl build-base \
+ && downloadDir="$(mktemp -d)" \
+ && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/20171227.tar.gz \
+ && buildDir="$(mktemp -d)" \
+ && tar -xvf "$downloadDir/argon2.tar.gz" -C "$buildDir" --strip-components=1 \
+ && rm -rf "$downloadDir" \
+ && cd "$buildDir/phc-winner-argon2-master" \
+ && /usr/bin/make OPTTARGET=none \
+ && /usr/bin/make install PREFIX=/usr OPTTARGET=none \
+ && rm -rf "$buildDir" \
+ && apk del build-base \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
