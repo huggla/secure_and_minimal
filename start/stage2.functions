@@ -111,6 +111,7 @@ makePwFileForUser(){
          then
             local salt="$(/bin/cat "$VAR_SALT_FILE")"
          fi
+         userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" -r)"
       fi
       echo -n "$userPw" > "$pwFile"
    fi
