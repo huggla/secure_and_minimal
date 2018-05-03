@@ -91,31 +91,27 @@ makeAllFromList(){
 }
 
 makePwFileForUser(){
-   if [ -n "$1" ]
+   local userName="$(toLower "$1")"
+   eval "local pwFile=\$VAR_password_file_$userName"
+   if [ -z "$pwFile" ]
    then
-      local currentuser="$1"
-   elif [ -n "$LINUX_USER" ]
-   then
-      local currentuser="$LINUX_USER"
-   else
-      exit 1
+      local pwFile="/environment/$userName.pw"
    fi
-   local user_lc="$(tolower "$currentuser")"
-   local pwfile="$(var - password_file_$user_lc)"
-   if [ -z "$pwfile" ]
+   tryMakeFile "$pwFile"
+   if [ ! -s "$pwFile" ]
    then
-      pwfile="/environment/$user_lc-pw"
-   fi
-   tryMakeFile "$pwfile"
-   if [ ! -s "$pwfile" ]
-   then
-      local user_pw="$(var - password_$user_lc)"
-      if [ -n "$user_pw" ]
+      eval "local userPw=\$VAR_password_$userName"
+      if [ -z "$userPw" ]
       then
+         local userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
+      fi
+      if [ -s "$VAR_ENCRYPTION_SALT_FILE" ]
+      then
+         local 
          echo -n "$user_pw" > "$pwfile"
          unset user_pw
       else
-         /usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1 > "$pwfile"
+         
       fi
    fi
    echo "$pwfile"
