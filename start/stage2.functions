@@ -72,6 +72,7 @@ listFromFile(){
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
    local envlist="$1"
+   echo $envlist
    local types="File,Dir"
    for type in $types
    do
