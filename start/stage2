@@ -24,6 +24,7 @@ then
          set -f
       fi
    fi
+   /bin/ls -la /usr/local/bin
    tryRunStage 3
    writeRestartEnvironment
 else
