@@ -151,7 +151,6 @@ tryRunStage(){
    if [ -f "/start/stage$1" ]
    then
       . "/start/stage$1"
-      local next="$(/usr/bin/expr $1 + 1)"
-      tryRunStage $next
+      tryRunStage "$(( $1 + 1 ))"
    fi
 }
