@@ -24,16 +24,10 @@ then
          set -f
       fi
    fi
-   if [ -f "/start/stage3" ]
-   then
-   . /start/stage3
-   fi
+   tryRunStage 3
    writeRestartEnvironment
 else
    readRestartEnvironment
-   if [ -f "/start/stage3" ]
-   then
-   . /start/stage3
-   fi
+   tryRunStage 3
 fi
 executeCommandAsLinuxUser "$VAR_FINAL_COMMAND"
