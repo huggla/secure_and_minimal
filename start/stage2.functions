@@ -37,17 +37,23 @@ trySetPermissionsOf(){
 
 tryMakeDir(){
    local dir="$(echo "$1" | /usr/bin/tr -d "'")"
-   /bin/mkdir -p "$dir"
-   trySetPermissionsOf "$dir" "$2"
+   if [ ! -d "$dir" ]
+   then
+      /bin/mkdir -p "$dir"
+      trySetPermissionsOf "$dir" "$2"
+   fi
 }
 
 tryMakeFile(){
    local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
-   set +e
-   /bin/touch "$file"
-   set -e
-   trySetPermissionsOf "$file"
+   if [ ! -f "$file" ]
+   then
+      tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
+      set +e
+      /bin/touch "$file"
+      set -e
+      trySetPermissionsOf "$file"
+   fi
 }
 
 tryDelete(){
