@@ -122,37 +122,16 @@ makePwFileForUser(){
 }
 
 readFirstrunEnvironment(){
-echo firstrunenv
-echo "$IFS"
-/bin/cat /environment/firstrun
-echo firstrunenvslut
-"$(listFromFile /environment/firstrun)"
-echo "fel ovan"
-   local env_list="$(listFromFile /environment/firstrun)"
-   /bin/rm /environment/firstrun
-   makeAllFromList $env_list
-   echo envlist
-   echo $env_list
-   echo envlistslut
-   for var in $env_list
-   do
-   echo hej
-   echo $var
-      eval "$var"
-   done
+   . /environment/firstrun
+   makeAllFromList "$(set | /bin/grep -i "^VAR_")"
 }
 
 writeRestartEnvironment(){
-set
    set | /bin/grep -i "^VAR_" > /environment/restart
 }
 
 readRestartEnvironment(){
-   local env_list="$(listFromFile /environment/restart)"
-   for var in $env_list
-   do
-      eval "$var"
-   done
+   . /environment/restart
 }
 
 setConst(){
@@ -166,6 +145,5 @@ setConst(){
 }
 
 executeCommandAsLinuxUser(){
-   echo "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
    executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
