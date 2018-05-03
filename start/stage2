@@ -10,7 +10,7 @@ set -e +a +m +s +i -f
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
-if [ "$(isFirstrun)" == "true" ]
+if [ "$firstrun" == "true" ]
 then
    readFirstrunEnvironment
    if [ -n "$VAR_CONFIG_DIR" ]
