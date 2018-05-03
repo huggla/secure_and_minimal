@@ -110,6 +110,8 @@ makePwFileForUser(){
          if [ -s "$VAR_SALT_FILE" ]
          then
             local salt="$(/bin/cat "$VAR_SALT_FILE")"
+         else
+            local salt="$(hostname)"
          fi
          userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" -r)"
       fi
