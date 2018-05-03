@@ -97,7 +97,8 @@ makePwFileForUser(){
    then
       local pwFile="/environment/$userName.pw"
    fi
-   tryMakeFile "$pwFile"
+   /bin/touch "$pwFile"
+   /bin/chmod go= "$pwFile"
    if [ ! -s "$pwFile" ]
    then
       eval "local userPw=\$VAR_password_$userName"
@@ -117,6 +118,8 @@ makePwFileForUser(){
       fi
       echo -n "$userPw" > "$pwFile"
    fi
+   /bin/chown $VAR_LINUX_USER "$pwFile"
+   /bin/chmod u=r,go= "$pwFile"
    echo "$pwFile"
 }
 
