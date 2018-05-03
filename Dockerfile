@@ -5,8 +5,7 @@ ENV LANG="en_US.UTF-8"
 
 COPY ./start /start
 
-RUN apk add --no-cache musl \
- && apk add --no-cache --virtual .build-deps build-base \
+RUN apk add --no-cache musl build-base \
  && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/master.zip" https://github.com/P-H-C/phc-winner-argon2/archive/master.zip \
  && buildDir="$(mktemp -d)" \
@@ -16,7 +15,7 @@ RUN apk add --no-cache musl \
  && /usr/bin/make \
  && /usr/bin/make install PREFIX=/usr \
  && rm -rf "$buildDir" \
- && apk del .build-deps \
+ && apk del build-base \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
