@@ -143,8 +143,8 @@ setConst(){
 }
 
 executeCommandAsLinuxUser(){
-   local finalCommand="$(echo $1)"
-   executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $finalCommand"
+   local command="$(eval "echo $1")"
+   executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
 }
 
 tryRunStage(){
