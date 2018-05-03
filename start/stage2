@@ -1,10 +1,13 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
-# Set by shell:
+# Variables set by shell:
 # -------------------------------------------
 # IFS
 
+# Variables passed from stage1:
+# -------------------------------------------
+# firstrun
 
 . /start/common.functions
 . /start/stage2.functions
