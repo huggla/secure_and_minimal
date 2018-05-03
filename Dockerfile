@@ -19,9 +19,9 @@ RUN addgroup -S starter \
  && ln -s /start/stage1 /start/start \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
- && echo 'Defaults env_keep = "CONST_ VAR_"' > /etc/sudoers.d/docker2 \
+ && echo 'Defaults env_keep = "VAR_"' > /etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /etc/sudoers.d/docker2 \
- && echo "starter ALL=(root) NOPASSWD: /start/stage1" >> /etc/sudoers.d/docker2 \
+ && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2 \
  && chmod u=rw,go= /etc/sudoers.d/docker*
 
 # Variables
