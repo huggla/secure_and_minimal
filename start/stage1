@@ -6,12 +6,14 @@ set -e +a +m +s +i -f
 
 if [ "$(isSomethingToDo)" == "true" ]
 then
-   firstrun="$(isFirstrun)"
-   if [ "$firstrun" == "true" ]
+   if [ -f "/environment/firstrun" ]
    then
+      firstrun="true"
       createLinuxUser
       updateSudoersConf
       writeFirstrunEnvironment
+   else
+      firstrun="false"
    fi
    executeCommand "firstrun=$firstrun /start/stage2"
 else
