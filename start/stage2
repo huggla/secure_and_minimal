@@ -10,12 +10,9 @@ set -e +a +m +s +i -f
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
-echo "$IFS"
 if [ "$(isFirstrun)" == "true" ]
 then
-echo readfirstrun
-   #readFirstrunEnvironment
-   . /environment/firstrun
+   readFirstrunEnvironment
    if [ -n "$VAR_CONFIG_DIR" ]
    then
       /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
@@ -31,11 +28,9 @@ echo readfirstrun
    then
    . /start/stage3
    fi
-   echo timeforwrite
    writeRestartEnvironment
 else
-  # readRestartEnvironment
-  . /environment/restart
+   readRestartEnvironment
    if [ -f "/start/stage3" ]
    then
    . /start/stage3
