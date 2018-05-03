@@ -105,16 +105,16 @@ makePwFileForUser(){
       then
          local userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
       fi
-      if [ -s "$VAR_ENCRYPTION_SALT_FILE" ]
+      if [ "$VAR_ENCRYPT" == "true" ]
       then
-         local 
-         echo -n "$user_pw" > "$pwfile"
-         unset user_pw
-      else
-         
+         if [ -s "$VAR_SALT_FILE" ]
+         then
+            local salt="$(/bin/cat "$VAR_SALT_FILE")"
+         fi
       fi
+      echo -n "$userPw" > "$pwFile"
    fi
-   echo "$pwfile"
+   echo "$pwFile"
 }
 
 readFirstrunEnvironment(){
