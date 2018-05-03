@@ -4,11 +4,12 @@
 
 
 isFirstrun(){
-   if [ -f "/environment/firstrun" ] && [ -z "$firstrun" ]
+   if [ -f "/environment/firstrun" ]
    then
-      readonly firstrun="true"
-   else
-      readonly firstrun="false"
+      firstrun="true"
+   elif [ "$firstrun" != "true" ]
+   then
+      firstrun="false"
    fi
    echo "$firstrun"
 }
