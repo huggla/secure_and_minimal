@@ -6,7 +6,7 @@ ENV LANG="en_US.UTF-8" \
 
 COPY ./start /start
 
-RUN apk add --no-cache musl build-base \
+RUN apk add --no-cache build-base \
  && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/$argonv.tar.gz \
  && buildDir="$(mktemp -d)" \
