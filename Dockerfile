@@ -11,7 +11,7 @@ RUN apk add --no-cache --virtual .build-deps build-base \
  && buildDir="$(mktemp -d)" \
  && unzip "$downloadDir/master.zip" -d "$buildDir" \
  && rm -rf "$downloadDir" \
- && cd "$buildDir" \
+ && cd "$buildDir/phc-winner-argon2-master" \
  && ./make \
  && ./make install PREFIX=/usr \
  && rm -rf "$buildDir" \
