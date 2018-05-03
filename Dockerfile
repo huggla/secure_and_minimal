@@ -7,9 +7,9 @@ COPY ./start /start
 
 RUN apk add --no-cache musl build-base \
  && downloadDir="$(mktemp -d)" \
- && wget -O "$downloadDir/master.zip" https://github.com/P-H-C/phc-winner-argon2/archive/master.zip \
+ && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/20171227.tar.gz \
  && buildDir="$(mktemp -d)" \
- && unzip "$downloadDir/master.zip" -d "$buildDir" \
+ && tar -xvf "$downloadDir/argon2.tar.gz" -C "$buildDir" --strip-components=1 \
  && rm -rf "$downloadDir" \
  && cd "$buildDir/phc-winner-argon2-master" \
  && /usr/bin/make OPTTARGET=none \
