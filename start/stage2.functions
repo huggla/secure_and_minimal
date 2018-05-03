@@ -152,7 +152,10 @@ executeCommandAsLinuxUser(){
 tryRunStage(){
    if [ -f "/start/stage$1" ]
    then
+      echo hej
       . /start/stage$1
+      echo hej2
+      echo $1++
       tryRunStage $1++
    fi
 }
