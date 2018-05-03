@@ -40,6 +40,5 @@ writeFirstrunEnvironment(){
       unset VAR_CONFIG_FILE
    fi
    set | /bin/grep -i "^VAR_" > /environment/firstrun
-   /bin/cat /environment/firstrun
 }
 
