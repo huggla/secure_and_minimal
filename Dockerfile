@@ -12,8 +12,8 @@ RUN apk add --no-cache musl build-base \
  && unzip "$downloadDir/master.zip" -d "$buildDir" \
  && rm -rf "$downloadDir" \
  && cd "$buildDir/phc-winner-argon2-master" \
- && /usr/bin/make -j1 OPTTARGET=i686 \
- && /usr/bin/make install PREFIX=/usr \
+ && /usr/bin/make OPTTARGET=none \
+ && /usr/bin/make install PREFIX=/usr OPTTARGET=none \
  && rm -rf "$buildDir" \
  && apk del build-base \
  && addgroup -S starter \
