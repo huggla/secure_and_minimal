@@ -14,7 +14,7 @@ RUN addgroup -S starter \
  && chmod u+x /start/stage1 /start/stage2 \
  && touch /environment/firstrun /environment/restart \
  && chown :starter /usr/bin/sudo \
- && chmod o-rx /usr/bin/sudo \
+ && chmod u+s,o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo /usr/local/bin/sudo \
  && ln -s /start/stage1 /start/start \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
