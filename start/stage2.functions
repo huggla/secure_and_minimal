@@ -123,6 +123,7 @@ makePwFileForUser(){
 
 readFirstrunEnvironment(){
    . /environment/firstrun
+   rm -f /environment/firstrun
    makeAllFromList "$(set | /bin/grep -i "^VAR_")"
 }
 
