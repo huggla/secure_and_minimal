@@ -72,7 +72,6 @@ listFromFile(){
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
    local envlist="$1"
-   echo $envlist
    local types="File,Dir"
    for type in $types
    do
@@ -80,7 +79,6 @@ makeAllFromList(){
       set +e
       local matches="$(echo "$envlist" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
       set -e
-      echo $matches
       for match in $matches
       do
          local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
