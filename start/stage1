@@ -12,7 +12,7 @@ then
       updateSudoersConf
       writeFirstrunEnvironment
    fi
-   executeCommand /start/stage2
+   executeCommand "firstrun=$firstrun /start/stage2"
 else
    echo "Nothing to do!"
 fi
