@@ -6,12 +6,12 @@
 isFirstrun(){
    if [ -f "/environment/firstrun" ]
    then
-      firstrun="true"
+      local first="true"
    elif [ "$firstrun" != "true" ]
    then
-      firstrun="false"
+      local first="false"
    fi
-   echo "$firstrun"
+   echo "$first"
 }
 
 executeCommand(){
