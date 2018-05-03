@@ -12,9 +12,10 @@ RUN apk add --no-cache musl build-base \
  && buildDir="$(mktemp -d)" \
  && tar -xvf "$downloadDir/argon2.tar.gz" -C "$buildDir" --strip-components=1 \
  && rm -rf "$downloadDir" \
- && cd "$buildDir/phc-winner-argon2-$argonv" \
+ && cd "$buildDir" \
  && /usr/bin/make OPTTARGET=none \
  && /usr/bin/make install PREFIX=/usr OPTTARGET=none \
+ && cd / \
  && rm -rf "$buildDir" \
  && apk del build-base \
  && addgroup -S starter \
