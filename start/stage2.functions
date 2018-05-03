@@ -23,13 +23,10 @@ trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
    set +e
-   if [ -n "$LINUX_USER" ]
+   if [ "$(/bin/stat -c "%U" "$obj")" != "$LINUX_USER" ]
    then
-      if [ "$(/bin/stat -c "%U" "$obj")" != "$LINUX_USER" ]
-      then
-         /bin/chown $flag :$LINUX_USER "$obj"
-         /bin/chmod $flag g+rX "$obj"
-      fi
+      /bin/chown $flag :$LINUX_USER "$obj"
+      /bin/chmod $flag g+rX "$obj"
    fi
    /bin/chmod $flag o= "$obj"
    set -e
