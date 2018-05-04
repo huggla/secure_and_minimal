@@ -34,7 +34,7 @@ writeFirstrunEnvironment(){
    else
       unset VAR_CONFIG_FILE
    fi
-   /usr/bin/env | /bin/grep -i "^VAR_" > /environment/firstrun
+   set | /bin/grep -i "^VAR_" > /environment/firstrun
 }
 
 fixHosts(){
