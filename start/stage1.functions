@@ -37,3 +37,9 @@ writeFirstrunEnvironment(){
    set | /bin/grep -i "^VAR_" > /environment/firstrun
 }
 
+fixHosts(){
+   if [ ! -s "/etc/hosts" ]
+   then
+      echo "127.0.0.1 localhost $(hostname)" > /etc/hosts
+   fi
+}
