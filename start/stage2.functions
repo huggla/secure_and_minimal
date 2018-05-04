@@ -1,3 +1,8 @@
+# Passed from stage2:
+# -------------------------------------------
+# set -e +a +m +s +i -f
+# VAR_*
+
 var(){
    local IFS=$(echo -en "?")
    if [ "$1" == "-" ]
