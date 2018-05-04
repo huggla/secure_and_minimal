@@ -37,7 +37,6 @@ RUN apk add --no-cache build-base \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2 \
  && chmod u=rw,go= /etc/sudoers.d/docker*
 
-# Variables
 ENV VAR_LINUX_USER="root" \
     PATH="$PATH:/start" \
     HISTFILE="/dev/null"
