@@ -124,7 +124,7 @@ readFirstrunEnvironment(){
 }
 
 writeRestartEnvironment(){
-   set | /bin/grep -i "^VAR_" > /environment/restart
+   allVARs > /environment/restart
 }
 
 readRestartEnvironment(){
