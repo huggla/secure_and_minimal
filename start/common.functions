@@ -1,7 +1,7 @@
-# Set in parent script:
+# Passed from stage1:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-
+# VAR_*
 
 executeCommand(){
    exec /usr/bin/env -i $1
