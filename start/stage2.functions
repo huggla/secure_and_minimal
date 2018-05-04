@@ -3,27 +3,6 @@
 # set -e +a +m +s +i -f
 # VAR_*
 
-var(){
-   local IFS=$(echo -en "?")
-   if [ "$1" == "-" ]
-   then
-      local tmp="$env_list"
-   else
-      local tmp="$(echo $env_list | /usr/bin/awk -v section=$1 -F '_' '$1==section{s=""; for (i=1; i < NF; i++) s = s $i "_"; print s $NF}')"
-   fi
-   if [ -z "$tmp" ]
-   then
-      echo "notSet"
-   else
-      if [ -z "$2" ]
-      then
-         echo $tmp | /usr/bin/awk -F '=' '{print $1}'
-      else
-         echo $tmp | /usr/bin/awk -v param=$2 -F '=' '$1==param{s=""; for (i=1; i < NF; i++) s = s $i "="; print s $NF; exit;}'
-      fi
-   fi
-}
-
 trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
@@ -69,12 +48,6 @@ trim(){
 
 toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
-}
-
-listFromFile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   local list="$(/bin/cat "$file")"
-   echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047\043\134'
 }
 
 makeAllFromList(){
@@ -143,16 +116,6 @@ writeRestartEnvironment(){
 
 readRestartEnvironment(){
    . /environment/restart
-}
-
-setConst(){
-   local name=$1
-   local value="$(var - "VAR_$name")"
-   if [ "$value" != "notSet" ]
-   then
-      readonly CONST_"$name"="$value"
-      unset "VAR_$name"
-   fi
 }
 
 executeCommandAsLinuxUser(){
