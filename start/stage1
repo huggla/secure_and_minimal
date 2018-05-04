@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
+# Set in Dockerfile or at runtime:
+# -------------------------------------------
+# VAR_*
+
 . /start/common.functions
 . /start/stage1.functions
 
