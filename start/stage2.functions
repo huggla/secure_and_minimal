@@ -3,18 +3,6 @@
 # set -e +a +m +s +i -f
 # VAR_*
 
-allVARs(){
-   local tmp="$(set | grep "VAR_param")"
-   local vars=""
-   for var in $tmp
-   do
-      local varName="$(echo "$var" | /usr/bin/awk -F '=' '{print $1}')"
-      eval "local varValue=$var"
-      local vars="$vars$(echo "$varName=$varValue")"
-   done
-   echo $vars
-}
-
 trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
