@@ -65,7 +65,6 @@ makeAllFromList(){
          local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
          for obj in $objects
          do
-            eval "obj=$obj"
             tryMake$type "$obj"
          done
       done
@@ -108,7 +107,7 @@ makePwFileForUser(){
 readFirstrunEnvironment(){
    . /environment/firstrun
    rm -f /environment/firstrun
-   makeAllFromList "$(set | /bin/grep -i "^VAR_")"
+   makeAllFromList "$(allVARs)"
 }
 
 writeRestartEnvironment(){
