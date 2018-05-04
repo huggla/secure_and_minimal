@@ -6,6 +6,7 @@
 allVARs(){
    local tmp="$(set | grep "VAR_param")"
    local vars=""
+   local IFS=$(echo -en '#')
    for var in $tmp
    do
       local varName="$(echo "$var" | /usr/bin/awk -F '=' '{print $1}')"
