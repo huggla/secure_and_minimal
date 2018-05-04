@@ -10,7 +10,7 @@ allVARs(){
    do
       local varName="$(echo "$var" | /usr/bin/awk -F '=' '{print $1}')"
       eval "local varValue=$var"
-      local vars="$vars$(echo "$varName=$varValue")"
+      local vars="$vars"$'\n'"$(echo "$varName=$varValue")"
    done
    echo $vars
 }
