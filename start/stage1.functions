@@ -1,12 +1,7 @@
-# Set in parent script:
+# Passed from stage1:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-
-# Set in Dockerfile or at runtime:
-# -------------------------------------------
-# VAR_LINUX_USER
-# VAR_CONFIG_FILE/VAR_CONFIG_DIR
-
+# VAR_*
 
 isSomethingToDo(){
    if [ -n "$VAR_FINAL_COMMAND" ]
