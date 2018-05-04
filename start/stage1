@@ -16,6 +16,7 @@ then
       createLinuxUser
       updateSudoersConf
       writeFirstrunEnvironment
+      fixHosts
    else
       firstrun="false"
    fi
