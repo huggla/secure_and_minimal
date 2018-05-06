@@ -5,7 +5,6 @@ set -e +a +m +s +i -f
 # -------------------------------------------
 # VAR_*
 
-. /start/common.functions
 . /start/stage1.functions
 
 if [ "$(isSomethingToDo)" == "true" ]
