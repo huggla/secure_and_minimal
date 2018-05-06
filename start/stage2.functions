@@ -42,14 +42,6 @@ tryDelete(){
    /bin/rm -rf "$obj"
 }
 
-trim(){
-   echo "$1" | /usr/bin/awk '{$1=$1;print}'
-}
-
-toLower(){
-   echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
-}
-
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
    local envlist="$1"
