@@ -9,7 +9,6 @@ set -e +a +m +s +i -f
 # -------------------------------------------
 # firstrun
 
-. /start/common.functions
 . /start/stage2.functions
 
 readonly ifs_bak=$IFS
