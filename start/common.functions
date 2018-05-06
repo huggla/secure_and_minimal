@@ -12,7 +12,7 @@ toLower(){
 }
 
 allVARs(){
-   local tmp="$(set | grep "VAR_")"
+   local tmp="$(set | grep -E "^VAR_")"
    local vars=""
    local delimiter=""
    local IFS=$(echo -en "\n\b")
