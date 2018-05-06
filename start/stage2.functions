@@ -3,6 +3,8 @@
 # set -e +a +m +s +i -f
 # VAR_*
 
+. /start/common.functions
+
 trySetPermissionsOf(){
    local obj="$1"
    local flag="$2"
