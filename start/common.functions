@@ -6,13 +6,16 @@
 allVARs(){
    local tmp="$(set | grep "VAR_")"
    local vars=""
+   local delimiter=""
    local IFS=$(echo -en "\n\b")
    for var in $tmp
    do
       local varName="$(echo "$var" | /usr/bin/awk -F '=' '{print $1}')"
       local varValue="$(echo "$var" | /usr/bin/awk -F '=' '{print $2}')"
-      vars="$vars"$'\n'"$(echo "$varName=$varValue")"
+      vars="$vars$delimiter$(echo "$varName=$varValue")"
+      local delimiter=$'\n'
    done
+   local IFS=$(echo -en "")
    echo $vars
 }
 
