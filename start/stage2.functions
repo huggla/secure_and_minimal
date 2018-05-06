@@ -46,7 +46,7 @@ tryDelete(){
 
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
-   local envlist="$1"
+   local envlist="$(echo "$1" | /usr/bin/tr -d "VAR_" | /usr/bin/tr -d "param_")"
    local types="File,Dir"
    for type in $types
    do
