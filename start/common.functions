@@ -3,6 +3,14 @@
 # set -e +a +m +s +i -f
 # VAR_*
 
+trim(){
+   echo "$1" | /usr/bin/awk '{$1=$1;print}'
+}
+
+toLower(){
+   echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
+}
+
 allVARs(){
    local tmp="$(set | grep "VAR_")"
    local vars=""
