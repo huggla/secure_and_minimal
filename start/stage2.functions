@@ -60,7 +60,7 @@ makeAllFromList(){
          local values=${match#*=}
          for value in $values
          do
-            tryMake$type "$value"
+            tryMake$type $value
          done
       done
    done
