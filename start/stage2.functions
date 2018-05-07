@@ -133,7 +133,7 @@ configFromVarGroup(){
    local IFS=$(echo -en "\n\b")
    for var in $groupVars
    do
-      config=$config$'\n'"$(removePrefixFromVar VAR_param_ $var)"
+      config=$config$'\n'"$(removePrefixFromVar VAR_$1_ $var)"
    done
    local IFS=$(echo -en "")
    echo "$config"
