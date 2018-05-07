@@ -15,6 +15,12 @@ removeSingleQuotes(){
    echo "$1" | /usr/bin/tr -d "'"
 }
 
+removePrefixFromString(){
+   local prefix=$1
+   local string=$2
+   echo ${string#$prefix}
+}
+
 allVARs(){
    local tmp="$(set | grep -E "^VAR_")"
    local vars=""
