@@ -30,7 +30,7 @@ allVARs(){
    do
       local varName=${var%%=*}
       eval "local varValue=${var#*=}"
-      vars="$vars$delimiter$varName=$varValue"
+      vars="$vars$delimiter$varName=\"$varValue\""
       local delimiter=$'\n'
    done
    local IFS=$(echo -en "")
