@@ -11,6 +11,10 @@ toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
 
+removeSingleQuotes(){
+   echo "$1" | /usr/bin/tr -d "'"
+}
+
 allVARs(){
    local tmp="$(set | grep -E "^VAR_")"
    local vars=""
