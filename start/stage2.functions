@@ -46,9 +46,8 @@ tryDelete(){
 
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
-   local list="$(removePrefixFromVar VAR_ 1)"
-   local list="$(removePrefixFromVar param_ list)"
-   echo $list
+   local list="$(removePrefixFromVar VAR_ $1)"
+   local list="$(removePrefixFromVar param_ $list)"
    local types="File,Dir"
    for type in $types
    do
