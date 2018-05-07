@@ -36,6 +36,11 @@ removePrefixFromVar(){
 
 allVARs(){
    local tmp="$(set | grep -E "^VAR_")"
+   local quote=''
+   if [ "$1" == "quote" ]
+   then
+      local quote='"'
+   fi
    local vars=""
    local delimiter=""
    local IFS=$(echo -en "\n\b")
@@ -43,7 +48,7 @@ allVARs(){
    do
       local varName=${var%%=*}
       eval "local varValue=${var#*=}"
-      vars="$vars$delimiter$varName=\"$varValue\""
+      vars="$vars$delimiter$varName=$quote$varValue$quote"
       local delimiter=$'\n'
    done
    local IFS=$(echo -en "")
