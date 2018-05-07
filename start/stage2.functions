@@ -57,10 +57,10 @@ makeAllFromList(){
       set -e
       for match in $matches
       do
-         local objects=${match#*=}
-         for obj in $objects
+         local values=${match#*=}
+         for value in $values
          do
-            tryMake$type "$obj"
+            tryMake$type "$value"
          done
       done
    done
