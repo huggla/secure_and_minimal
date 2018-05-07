@@ -128,7 +128,7 @@ tryRunStage(){
 }
 
 configFromVarGroup(){
-   local groupVars="$(allVARs | /bin/grep -E "^VAR_$1_")"
+   local groupVars="$(allVARs noquote | /bin/grep -E "^VAR_$1_")"
    config=""
    for var in $groupVars
    do
