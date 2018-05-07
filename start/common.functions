@@ -56,5 +56,6 @@ allVARs(){
 }
 
 executeCommand(){
-   exec /usr/bin/env -i $1
+   local command="$(eval "echo $1")"
+   exec /usr/bin/env -i $command
 }
