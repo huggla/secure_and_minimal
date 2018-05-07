@@ -31,7 +31,7 @@ removePrefixFromVar(){
 }
 
 allVARs(){
-   local tmp="$(set | grep -E "^VAR_")"
+   local tmp="$(set | grep -E "^VAR$2_")"
    local quote=''
    if [ "$1" == "quote" ]
    then
