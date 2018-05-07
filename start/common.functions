@@ -11,21 +11,12 @@ toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
 
-removeExtraQuotes(){
-   eval "echo $1"
-}
-
 removeSingleQuotes(){
    echo "$1" | /usr/bin/tr -d "'"
 }
 
 removeDoubleQuotes(){
    echo "$1" | /usr/bin/tr -d '"'
-}
-
-removeQuotes(){
-   local tmp="$(removeSingleQuotes $1)"
-   removeDoubleQuotes $tmp
 }
 
 removePrefixFromVar(){
