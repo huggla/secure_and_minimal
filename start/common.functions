@@ -37,12 +37,17 @@ allVARs(){
    then
       local quote='"'
    fi
+   if [ -n "$2" ]
+   then
+      removePrefixStr='local varName="$(removePrefixFromVar $2 $varName)"'
+   fi
    local vars=""
    local delimiter=""
    local IFS=$(echo -en "\n\b")
    for var in $tmp
    do
       local varName=${var%%=*}
+      eval $removePrefixStr
       eval "local varValue=${var#*=}"
       vars="$vars$delimiter$varName=$quote$varValue$quote"
       local delimiter=$'\n'
