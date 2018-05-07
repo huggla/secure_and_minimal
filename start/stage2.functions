@@ -19,7 +19,7 @@ trySetPermissionsOf(){
 }
 
 tryMakeDir(){
-   local dir="$(removeSingleQuotes $1)"
+   local dir="$(removeQuotes $1)"
    if [ ! -d "$dir" ]
    then
       /bin/mkdir -p "$dir"
@@ -28,7 +28,7 @@ tryMakeDir(){
 }
 
 tryMakeFile(){
-   local file="$(removeSingleQuotes $1)"
+   local file="$(removeQuotes $1)"
    if [ ! -f "$file" ]
    then
       tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
