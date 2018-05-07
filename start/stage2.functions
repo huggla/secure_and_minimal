@@ -19,7 +19,7 @@ trySetPermissionsOf(){
 }
 
 tryMakeDir(){
-   local dir="$(echo "$1" | /usr/bin/tr -d "'")"
+   local dir="$(removeSingleQuotes $1)"
    if [ ! -d "$dir" ]
    then
       /bin/mkdir -p "$dir"
@@ -28,7 +28,7 @@ tryMakeDir(){
 }
 
 tryMakeFile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
+   local file="$(removeSingleQuotes $1)"
    if [ ! -f "$file" ]
    then
       tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
@@ -40,7 +40,7 @@ tryMakeFile(){
 }
 
 tryDelete(){
-   local obj="$(echo "$1" | /usr/bin/tr -d "'")"
+   local obj="$(removeSingleQuotes $1)"
    /bin/rm -rf "$obj"
 }
 
