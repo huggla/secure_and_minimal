@@ -19,6 +19,11 @@ removeDoubleQuotes(){
    echo "$1" | /usr/bin/tr -d '"'
 }
 
+removeQuotes(){
+   local tmp="$(removeSingleQuotes $1)"
+   removeDoubleQuotes $tmp
+}
+
 removePrefixFromVar(){
    local prefix=$1
    local string=$2
