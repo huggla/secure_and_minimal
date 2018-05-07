@@ -6,7 +6,7 @@
 . /start/common.functions
 
 trySetPermissionsOf(){
-   local obj="$1"
+   local obj="$(removeQuotes $1)"
    local flag="$2"
    set +e
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
@@ -19,28 +19,28 @@ trySetPermissionsOf(){
 }
 
 tryMakeDir(){
-   local dir="$(removeSingleQuotes $1)"
-   if [ ! -d "$(removeDoubleQuotes $dir)" ]
+   local dir="$(removeQuotes $1)"
+   if [ ! -d "$dir" ]
    then
-      /bin/mkdir -p $dir
-      trySetPermissionsOf $dir "$2"
+      /bin/mkdir -p "$dir"
+      trySetPermissionsOf "$dir" "$2"
    fi
 }
 
 tryMakeFile(){
-   local file="$(removeSingleQuotes $1)"
-   if [ ! -f "$(removeDoubleQuotes $file)" ]
+   local file="$(removeQuotes $1)"
+   if [ ! -f "$file" ]
    then
-      tryMakeDir "$(/usr/bin/dirname $file)" "$2"
+      tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
       set +e
-      /bin/touch $file
+      /bin/touch "$file"
       set -e
-      trySetPermissionsOf $file
+      trySetPermissionsOf "$file"
    fi
 }
 
 tryDelete(){
-   local obj="$(removeSingleQuotes $1)"
+   local obj="$(removeQuotes $1)"
    /bin/rm -rf "$obj"
 }
 
@@ -58,7 +58,7 @@ makeAllFromList(){
          local values=${match#*=}
          for value in $values
          do
-            tryMake$type $value
+            tryMake$type "$(removeQuotes $value)"
          done
       done
    done
