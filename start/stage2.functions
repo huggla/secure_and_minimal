@@ -6,7 +6,7 @@
 . /start/common.functions
 
 trySetPermissionsOf(){
-   local obj=$1
+   local obj="$(removeQuotes $1)"
    local flag=$2
    set +e
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
@@ -19,7 +19,7 @@ trySetPermissionsOf(){
 }
 
 tryMakeDir(){
-   local dir=$1
+   local dir="$(removeQuotes $1)"
    if [ ! -d "$dir" ]
    then
       /bin/mkdir -p "$dir"
@@ -28,7 +28,7 @@ tryMakeDir(){
 }
 
 tryMakeFile(){
-   local file=$1
+   local file="$(removeQuotes $1)"
    if [ ! -f "$file" ]
    then
       tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
@@ -40,7 +40,7 @@ tryMakeFile(){
 }
 
 tryDelete(){
-   /bin/rm -rf "$1"
+   /bin/rm -rf "$(removeQuotes $1)"
 }
 
 makeAllFromList(){
