@@ -19,23 +19,23 @@ trySetPermissionsOf(){
 }
 
 tryMakeDir(){
-   local dir="$(removeQuotes $1)"
-   if [ ! -d "$dir" ]
+   local dir="$(removeSingleQuotes $1)"
+   if [ ! -d "$(removeDoubleQuotes $dir)" ]
    then
-      /bin/mkdir -p "$dir"
-      trySetPermissionsOf "$dir" "$2"
+      /bin/mkdir -p $dir
+      trySetPermissionsOf $dir "$2"
    fi
 }
 
 tryMakeFile(){
-   local file="$(removeQuotes $1)"
-   if [ ! -f "$file" ]
+   local file="$(removeSingleQuotes $1)"
+   if [ ! -f "$(removeDoubleQuotes $file)" ]
    then
-      tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
+      tryMakeDir "$(/usr/bin/dirname $file)" "$2"
       set +e
-      /bin/touch "$file"
+      /bin/touch $file
       set -e
-      trySetPermissionsOf "$file"
+      trySetPermissionsOf $file
    fi
 }
 
