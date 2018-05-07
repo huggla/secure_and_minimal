@@ -90,12 +90,11 @@ makePwFileForUser(){
          else
             local salt="$(hostname)"
          fi
-         local hl=""
-         if [ -n "$VAR_HASH_LENGTH" ]
+         if [ -z "$VAR_ARGON2_PARAMS" ]
          then
-            local hl="-m $VAR_HASH_LENGTH"
+            VAR_ARGON2_PARAMS="-r"
          fi
-         userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" -r $hl)"
+         userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
       fi
       echo -n "$userPw" > "$pwFile"
    fi
