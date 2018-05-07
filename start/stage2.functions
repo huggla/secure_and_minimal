@@ -128,15 +128,5 @@ tryRunStage(){
 }
 
 configFromVarGroup(){
-   local groupVars="$(allVARs noquote | /bin/grep -E "^VAR_$1_")"
-   config=""
-   delimiter=""
-   local IFS=$(echo -en "\n\b")
-   for var in $groupVars
-   do
-      config="$config$delimiter$(removePrefixFromVar VAR_$1_ $var)"
-      delimiter=$'/n'
-   done
-   local IFS=$(echo -en "")
-   echo "$config"
+   allVARs noquote _$1
 }
