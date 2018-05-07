@@ -58,7 +58,7 @@ makeAllFromList(){
          local values=${match#*=}
          for value in $values
          do
-            tryMake$type "$(removeQuotes $value)"
+            tryMake$type "$(eval "echo $value")"
          done
       done
    done
