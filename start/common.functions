@@ -18,9 +18,9 @@ allVARs(){
    local IFS=$(echo -en "\n\b")
    for var in $tmp
    do
-      local varName="$(echo "$var" | /usr/bin/awk -F '=' '{print $1}')"
-      local varValue="$(echo "$var" | /usr/bin/awk -F '=' '{print $2}')"
-      vars="$vars$delimiter$(echo "$varName=$varValue")"
+      local varName=${var%%=*}
+      eval "local varValue=${var#*=}"
+      vars="$vars$delimiter$varName=$varValue"
       local delimiter=$'\n'
    done
    local IFS=$(echo -en "")
