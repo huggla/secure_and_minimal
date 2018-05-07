@@ -58,7 +58,7 @@ makeAllFromList(){
       set -e
       for match in $matches
       do
-         local objects="$(echo "$match" | /usr/bin/awk -F '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
+         local objects=${match#*=}
          for obj in $objects
          do
             tryMake$type "$obj"
