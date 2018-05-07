@@ -45,16 +45,16 @@ tryDelete(){
 }
 
 makeAllFromList(){
-   local list=$1
    local IFS=$(echo -en "\n\b,")
-   local envlist=${${list#VAR_}#param_}
-   echo $envlist
+   local list="$(removePrefixFromVar VAR_ 1)"
+   local list="$(removePrefixFromVar param_ list)"
+   echo $list
    local types="File,Dir"
    for type in $types
    do
       local type_lc="$(toLower $type)"
       set +e
-      local matches="$(echo "$envlist" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
+      local matches="$(echo "$list" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
       set -e
       for match in $matches
       do
