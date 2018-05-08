@@ -35,6 +35,7 @@ fixPermissionsForUsrLocalBin(){
    for file in $files
    do
       trySetPermissionsOf "$file"
+      /bin/chmod ug+x "$file"
    done
 }
 
