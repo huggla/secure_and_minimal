@@ -11,12 +11,20 @@ toLower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
 
+removeCharacterFromString(){
+   echo "$2" | /usr/bin/tr -d "$1"
+}
+
+removeUnderscores(){
+   removeCharactersFromString _ $1
+}
+
 removeSingleQuotes(){
-   echo "$1" | /usr/bin/tr -d "'"
+   removeCharactersFromString "'" $1
 }
 
 removeDoubleQuotes(){
-   echo "$1" | /usr/bin/tr -d '"'
+   removeCharactersFromString '"' $1
 }
 
 removeQuotes(){
