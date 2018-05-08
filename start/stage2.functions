@@ -128,5 +128,5 @@ tryRunStage(){
 }
 
 configFromVarGroup(){
-   allVARs noquote _$1
+   allVARs noquote _$1 $2
 }
