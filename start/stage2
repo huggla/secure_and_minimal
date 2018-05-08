@@ -22,7 +22,7 @@ then
       if [ "$(ls -A "$VAR_CONFIG_DIR")" ]
       then
          set +f
-         /bin/chmod -R ug=rw,o= "$VAR_CONFIG_DIR/"*
+         /bin/chmod -R ug=rwX,o= "$VAR_CONFIG_DIR/"*
          set -f
       fi
    fi
