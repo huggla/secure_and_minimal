@@ -18,6 +18,14 @@ trySetPermissionsOf(){
    set -e
 }
 
+fixPermissionsForUsrLocalBin(){
+   files="$(find /usr/local/bin -type f -not -name 'sudo')
+   for file in $files
+   do
+      trySetPermissionsOf "$file"
+   done
+}
+
 tryMakeDir(){
    local dir="$(removeQuotes $1)"
    if [ ! -d "$dir" ]
