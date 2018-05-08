@@ -18,6 +18,17 @@ trySetPermissionsOf(){
    set -e
 }
 
+fixPermissionsForConfigDir(){
+   /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
+   /bin/chmod 7770 "$VAR_CONFIG_DIR"
+   if [ "$(ls -A "$VAR_CONFIG_DIR")" ]
+   then
+      set +f
+      /bin/chmod -R ug=rwX,o= "$VAR_CONFIG_DIR/"*
+      set -f
+   fi
+}
+
 fixPermissionsForUsrLocalBin(){
    files="$(find /usr/local/bin -type f -not -name 'sudo')
    for file in $files
