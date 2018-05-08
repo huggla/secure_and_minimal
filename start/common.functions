@@ -54,7 +54,7 @@ allVARs(){
          local varName=${var%%=*}
          if [ "$1" == "noUnderscore" ]
          then
-            local varName="$(removeUnderscores "$varName")"
+            local varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
          fi
          eval "local varValue=${var#*=}"
          var="$varName=$varValue"
