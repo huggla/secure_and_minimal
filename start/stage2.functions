@@ -30,7 +30,7 @@ fixPermissionsForConfigDir(){
 }
 
 fixPermissionsForUsrLocalBin(){
-   files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')
+   files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')"
    for file in $files
    do
       trySetPermissionsOf "$file"
