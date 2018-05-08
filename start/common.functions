@@ -16,15 +16,15 @@ removeCharacterFromString(){
 }
 
 removeUnderscores(){
-   removeCharactersFromString _ $1
+   removeCharacterFromString _ $1
 }
 
 removeSingleQuotes(){
-   removeCharactersFromString "'" $1
+   removeCharacterFromString "'" $1
 }
 
 removeDoubleQuotes(){
-   removeCharactersFromString '"' $1
+   removeCharacterFromString '"' $1
 }
 
 removeQuotes(){
@@ -52,6 +52,10 @@ allVARs(){
       if [ "$1" != "quote" ]
       then
          local varName=${var%%=*}
+         if [ "$1" == "noUnderscore" ]
+         then
+            local varName="$(removeUnderscores "$varName")"
+         fi
          eval "local varValue=${var#*=}"
          var="$varName=$varValue"
       fi
