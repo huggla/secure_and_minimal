@@ -31,11 +31,11 @@ removePrefixFromVar(){
 }
 
 allVARs(){
-   local tmp="$(set | grep -E "^VAR$2_")"
-   local firstVars="$(echo "$tmp" | grep -v '$')"
-   local lastVars="$(echo "$tmp" | grep '$')"
    local IFS=$(echo -en "\n\b")
-   local tmp="$firstVars$'\n'$lastVars"
+   local tmp="$(set | grep -E "^VAR$2_")"
+   local firstVars="$(echo "$tmp" | grep -vE '[$]')"
+   local lastVars="$(echo "$tmp" | grep -E '[$]')"
+   local tmp=$firstVars$'\n'$lastVars
    local quote=''
    if [ "$1" == "quote" ]
    then
