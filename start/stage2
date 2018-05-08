@@ -26,4 +26,5 @@ else
    readRestartEnvironment
    tryRunStage 3
 fi
+IFS=$IFS_bak
 executeCommandAsLinuxUser "$VAR_FINAL_COMMAND"
