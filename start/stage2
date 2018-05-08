@@ -11,7 +11,7 @@ set -e +a +m +s +i -f
 
 . /start/stage2.functions
 
-readonly ifs_bak=$IFS
+readonly IFS_bak=$IFS
 if [ "$firstrun" == "true" ]
 then
    readFirstrunEnvironment
