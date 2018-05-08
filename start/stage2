@@ -17,15 +17,9 @@ then
    readFirstrunEnvironment
    if [ -n "$VAR_CONFIG_DIR" ]
    then
-      /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
-      /bin/chmod 7770 "$VAR_CONFIG_DIR"
-      if [ "$(ls -A "$VAR_CONFIG_DIR")" ]
-      then
-         set +f
-         /bin/chmod -R ug=rwX,o= "$VAR_CONFIG_DIR/"*
-         set -f
-      fi
+      fixPermissionsForConfigDir
    fi
+   fixPermissionsForUsrLocalBin
    tryRunStage 3
    writeRestartEnvironment
 else
