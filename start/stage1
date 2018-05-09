@@ -7,7 +7,6 @@ set -e +a +m +s +i -f
 
 . /start/stage1.functions
 
-readonly IFS_bak=$IFS
 if [ "$(isSomethingToDo)" == "true" ]
 then
    if [ -f "/environment/firstrun" ]
