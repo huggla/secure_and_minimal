@@ -1,7 +1,12 @@
-# Passed from stage1:
+# Set by shell:
+# -------------------------------------------
+# IFS
+
+# Set in stage1/stage2:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-# VAR_*
+
+readonly IFS_bak=$IFS
 
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
