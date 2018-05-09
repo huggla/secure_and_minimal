@@ -7,7 +7,11 @@
 
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
-   local flag=$2
+   local flag=""
+   if [ "$3" == "recursive" ]
+   then
+      local flag="-R"
+   fi
    set +e
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
@@ -15,18 +19,21 @@ trySetPermissionsOf(){
       /bin/chmod $flag g+rX "$obj"
    fi
    /bin/chmod $flag o= "$obj"
+   if [ "$2" == "exec" ]
+   then
+      /bin/chmod $flag ug+x "$obj"
+   elif [ "$2" == "secret" ]
+   then
+      /bin/chmod $flag g= "$obj"
+   elif [ "$2" == "write" ]
+   then
+      /bin/chmod $flag ug+w "$obj"
+   fi
    set -e
 }
 
 fixPermissionsForConfigDir(){
-   /bin/chown -R $VAR_LINUX_USER:root "$VAR_CONFIG_DIR"
-   /bin/chmod 7770 "$VAR_CONFIG_DIR"
-   if [ "$(ls -A "$VAR_CONFIG_DIR")" ]
-   then
-      set +f
-      /bin/chmod -R ug=rwX,o= "$VAR_CONFIG_DIR/"*
-      set -f
-   fi
+   trySetPermissionsOf "$VAR_CONFIG_DIR" write recursive
 }
 
 fixPermissionsForUsrLocalBin(){
@@ -34,8 +41,7 @@ fixPermissionsForUsrLocalBin(){
    files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')"
    for file in $files
    do
-      trySetPermissionsOf "$file"
-      /bin/chmod ug+x "$file"
+      trySetPermissionsOf "$file" exec
    done
 }
 
@@ -44,7 +50,7 @@ tryMakeDir(){
    if [ ! -d "$dir" ]
    then
       /bin/mkdir -p "$dir"
-      trySetPermissionsOf "$dir" "$2"
+      trySetPermissionsOf "$dir" $2 $3
    fi
 }
 
@@ -52,11 +58,11 @@ tryMakeFile(){
    local file="$(removeQuotes $1)"
    if [ ! -f "$file" ]
    then
-      tryMakeDir "$(/usr/bin/dirname "$file")" "$2"
+      tryMakeDir "$(/usr/bin/dirname "$file")" $2 $3
       set +e
       /bin/touch "$file"
       set -e
-      trySetPermissionsOf "$file"
+      trySetPermissionsOf "$file" $2
    fi
 }
 
