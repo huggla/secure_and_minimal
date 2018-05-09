@@ -50,7 +50,7 @@ tryMakeDir(){
    if [ ! -d "$dir" ]
    then
       /bin/mkdir -p "$dir"
-      trySetPermissionsOf "$dir" $2 $3
+      trySetPermissionsOf "$dir" $2
    fi
 }
 
@@ -58,7 +58,7 @@ tryMakeFile(){
    local file="$(removeQuotes $1)"
    if [ ! -f "$file" ]
    then
-      tryMakeDir "$(/usr/bin/dirname "$file")" $2 $3
+      tryMakeDir "$(/usr/bin/dirname "$file")" $2
       set +e
       /bin/touch "$file"
       set -e
@@ -81,10 +81,18 @@ makeAllFromList(){
       set -e
       for match in $matches
       do
+         local p2=""
+         if [ $(echo $match | /bin/grep -iE "(pass|pw|sec|salt|key)[^=]*=") ]
+         then
+            local p2="secret"
+         elif [ $(echo $match | /bin/grep -iE "conf[^=]*=") ]
+         then
+            local p2="write"
+         fi
          local values=${match#*=}
          for value in $values
          do
-            tryMake$type $value
+            tryMake$type $value $p2
          done
       done
    done
