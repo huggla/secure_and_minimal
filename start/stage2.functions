@@ -45,25 +45,30 @@ fixPermissionsForUsrLocalBin(){
    done
 }
 
-tryMakeDir(){
-   local dir="$(removeQuotes $1)"
-   if [ ! -d "$dir" ]
+tryMakeTypeObject(){
+   local obj="$(removeQuotes $2)"
+   if [ ! -e "$obj" ]
    then
-      /bin/mkdir -p "$dir"
-      trySetPermissionsOf "$dir" $2
+      tryMakeDir "$(/usr/bin/dirname "$obj")" $3
+      set +e
+      if [ "$1" == "dir" ]
+      then
+         /bin/mkdir "$obj"
+      elif [ "$1" == "file" ]
+      then
+         /bin/touch "$obj"
+      fi
+      set -e
+      trySetPermissionsOf "$obj" $3
    fi
 }
 
+tryMakeDir(){
+   tryMakeTypeObject dir $1 $2
+}
+
 tryMakeFile(){
-   local file="$(removeQuotes $1)"
-   if [ ! -f "$file" ]
-   then
-      tryMakeDir "$(/usr/bin/dirname "$file")" $2
-      set +e
-      /bin/touch "$file"
-      set -e
-      trySetPermissionsOf "$file" $2
-   fi
+   tryMakeTypeObject file $1 $2
 }
 
 tryDelete(){
