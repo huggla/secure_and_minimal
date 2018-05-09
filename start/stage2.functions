@@ -160,6 +160,12 @@ executeCommandAsLinuxUser(){
    executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
 }
 
+runCommandAsLinuxUser(){
+   local IFS=$IFS_bak
+   local command="$(eval "echo $1")"
+   /usr/local/bin/sudo -u $VAR_LINUX_USER $command
+}
+
 tryRunStage(){
    if [ -f "/start/stage$1" ]
    then
