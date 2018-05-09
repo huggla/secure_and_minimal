@@ -90,7 +90,7 @@ makeAllFromList(){
          if [ $(echo $match | /bin/grep -iE "(pass|pw|sec|salt|key)[^=]*=") ]
          then
             local p2="secret"
-         elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
+         elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data|_log_)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
          then
             local p2="write"
          fi
