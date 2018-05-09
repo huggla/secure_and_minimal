@@ -1,7 +1,10 @@
-# Passed from stage1:
+# Set in Dockerfile or at runtime:
+# -------------------------------------------
+# VAR_*
+
+# Set in stage1:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-# VAR_*
 
 . /start/common.functions
 
