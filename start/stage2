@@ -15,10 +15,6 @@ readonly IFS_bak=$IFS
 if [ "$firstrun" == "true" ]
 then
    readFirstrunEnvironment
-   if [ -n "$VAR_CONFIG_DIR" ]
-   then
-      fixPermissionsForConfigDir
-   fi
    fixPermissionsForUsrLocalBin
    tryRunStage 3
    writeRestartEnvironment
@@ -26,5 +22,4 @@ else
    readRestartEnvironment
    tryRunStage 3
 fi
-IFS=$IFS_bak
 executeCommandAsLinuxUser "$VAR_FINAL_COMMAND"
