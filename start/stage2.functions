@@ -108,7 +108,7 @@ makePwFileForUser(){
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
-      local pwFile="/init/$userName.pw"
+      local pwFile="$VAR_INIT_DIR/$userName.pw"
    fi
    /bin/touch "$pwFile"
    /bin/chown $VAR_LINUX_USER "$pwFile"
