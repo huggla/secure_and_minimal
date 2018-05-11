@@ -27,6 +27,7 @@ trySetPermissionsOf(){
       /bin/chmod $flag g= "$obj"
    elif [ "$2" == "write" ]
    then
+      /bin/chown $VAR_LINUX_USER "$obj"
       /bin/chmod $flag ug+w "$obj"
    fi
    set -e
