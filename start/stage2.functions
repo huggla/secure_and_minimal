@@ -108,7 +108,7 @@ makePwFileForUser(){
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
-      local pwFile="/environment/$userName.pw"
+      local pwFile="/secrets/$userName.pw"
    fi
    /bin/touch "$pwFile"
    /bin/chmod go= "$pwFile"
