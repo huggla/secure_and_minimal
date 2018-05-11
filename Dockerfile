@@ -22,8 +22,8 @@ RUN apk add --no-cache build-base \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
  && apk add --no-cache sudo \
- && mkdir /environment /secrets \
- && chmod 7700 /environment /start /secrets \
+ && mkdir /environment \
+ && chmod 7700 /environment /start \
  && chmod u+x /start/stage1 /start/stage2 \
  && touch /environment/firstrun /environment/restart \
  && chown :starter /usr/bin/sudo \
@@ -38,6 +38,7 @@ RUN apk add --no-cache build-base \
  && chmod u=rw,go= /etc/sudoers.d/docker*
 
 ENV VAR_LINUX_USER="root" \
+    VAR_SECRETS_DIR="/secrets" \
     PATH="$PATH:/start" \
     HISTFILE="/dev/null"
 
