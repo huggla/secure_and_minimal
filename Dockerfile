@@ -38,7 +38,7 @@ RUN apk add --no-cache build-base \
  && chmod u=rw,go= /etc/sudoers.d/docker*
 
 ENV VAR_LINUX_USER="root" \
-    VAR_SECRETS_DIR="/secrets" \
+    VAR_INIT_DIR="/init" \
     PATH="$PATH:/start" \
     HISTFILE="/dev/null"
 
