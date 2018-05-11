@@ -26,6 +26,7 @@ createLinuxUser(){
    then
       /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
    fi
+   /bin/chown $VAR_LINUX_USER /init
 }
 
 updateSudoersConf(){
