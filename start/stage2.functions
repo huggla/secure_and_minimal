@@ -164,13 +164,7 @@ executeCommandAsLinuxUser(){
 
 runCommandAsLinuxUser(){
    local IFS=$IFS_bak
-   if [ "$2" == "keepQuotes" ]
-   then
-      local command=$1
-   else
-      local command="$(eval "echo $1")"
-   fi
-   /usr/bin/env -i /usr/local/bin/sudo -u $VAR_LINUX_USER $command
+   eval "/usr/bin/env -i /usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
 
 tryRunStage(){
