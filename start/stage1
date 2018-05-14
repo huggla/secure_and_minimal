@@ -3,19 +3,4 @@ set -e +a +m +s +i -f
 
 . /start/stage1.functions
 
-if [ "$(isSomethingToDo)" == "true" ]
-then
-   if [ -f "/environment/firstrun" ]
-   then
-      firstrun="true"
-      createLinuxUser
-      updateSudoersConf
-      writeFirstrunEnvironment
-      fixHosts
-   else
-      firstrun="false"
-   fi
-   executeCommand "firstrun=$firstrun /start/stage2"
-else
-   echo "Nothing to do!"
-fi
+runStage1
