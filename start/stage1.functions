@@ -8,6 +8,25 @@
 
 . /start/common.functions
 
+runStage1(){
+   if [ "$(isSomethingToDo)" == "true" ]
+   then
+      if [ -f "/environment/firstrun" ]
+      then
+         firstrun="true"
+         createLinuxUser
+         updateSudoersConf
+         writeFirstrunEnvironment
+         fixHosts
+      else
+         firstrun="false"
+      fi
+      executeCommand "/start/stage2 $firstrun"
+   else
+      echo "Nothing to do!"
+   fi
+}
+
 isSomethingToDo(){
    if [ -n "$VAR_FINAL_COMMAND" ]
    then
