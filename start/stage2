@@ -2,7 +2,6 @@
 
 startStage2(){
    set -e +a +m +s +i -f
-   local -r IFS_bak=$IFS
    local VAR_FINAL_COMMAND
    . /start/stage2.functions
    . /environment/vars
@@ -19,4 +18,5 @@ startStage2(){
    execCmdAsLinuxUser $VAR_FINAL_COMMAND
 }
 
+readonly IFS_bak=$IFS
 startStage2 $1
