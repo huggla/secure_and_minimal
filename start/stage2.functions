@@ -283,3 +283,11 @@ configFromVarGroup(){
    fi
    allVars $p1 _$1
 }
+
+tryRunStage(){
+   if [ -f "/start/stage$1" ]
+   then
+      . "/start/stage$1"
+      tryRunStage "$(( $1 + 1 ))"
+   fi
+}
