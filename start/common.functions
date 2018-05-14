@@ -71,7 +71,7 @@ allVARs(){
    echo "$vars"
 }
 
-executeCommand(){
+execCmd(){
    local IFS=$IFS_bak
    local command="$(eval "echo $1")"
    exec /usr/bin/env -i $command
