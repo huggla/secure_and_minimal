@@ -54,12 +54,6 @@ removeQuotes(){
    removeDoubleQuotes $tmp
 }
 
-removePrefixFromVar(){
-   local prefix=$1
-   local string=$2
-   echo ${string#$prefix}
-}
-
 allVars(){
    local IFS=$(echo -en "\n\b")
    local tmp="$(set | grep -E "^VAR$2_")"
