@@ -30,6 +30,7 @@ trySetPermissionsOf(){
    elif [ "$2" == "secret" ]
    then
       /bin/chmod $flag g= "$obj"
+   fi
    set -e
 }
 
