@@ -2,22 +2,108 @@
 # -------------------------------------------
 # set -e +a +m +s +i -f
 
-. /start/common.functions
-
-runStage2(){
-   local firstrun=$1
-   if [ "$firstrun" == "true" ]
+createLinuxUser(){
+   if [ ! $(/usr/bin/getent group $VAR_LINUX_USER) ]
    then
-      readFirstrunEnvironment
-      fixPermissionsForUsrLocalBin
-      tryRunStage 3
-      writeRestartEnvironment
-   else
-      readRestartEnvironment
-      tryRunStage 3
+      /usr/sbin/addgroup -S $VAR_LINUX_USER
    fi
-   execCmdAsLinuxUser $VAR_FINAL_COMMAND
+   if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
+   then
+      /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
+   fi
 }
+
+updateSudoersConf(){
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" > /etc/sudoers.d/docker2
+}
+
+writeFirstrunEnvironment(){
+   if [ -n "$VAR_CONFIG_FILE" ]
+   then
+      export VAR_CONFIG_DIR="$(/usr/bin/dirname "$VAR_CONFIG_FILE")"
+   else
+      unset VAR_CONFIG_FILE
+   fi
+   allVars quote > /environment/firstrun
+}
+
+fixHosts(){
+   if [ ! -s "/etc/hosts" ]
+   then
+      echo "127.0.0.1 localhost $(hostname)" > /etc/hosts
+   fi
+}
+
+
+trim(){
+   echo "$1" | /usr/bin/awk '{$1=$1;print}'
+}
+
+toLower(){
+   echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
+}
+
+removeCharacterFromString(){
+   echo "$2" | /usr/bin/tr -d "$1"
+}
+
+removeUnderscores(){
+   removeCharacterFromString _ $1
+}
+
+removeSingleQuotes(){
+   removeCharacterFromString "'" $1
+}
+
+removeDoubleQuotes(){
+   removeCharacterFromString '"' $1
+}
+
+removeQuotes(){
+   local tmp="$(removeSingleQuotes $1)"
+   removeDoubleQuotes $tmp
+}
+
+removePrefixFromVar(){
+   local prefix=$1
+   local string=$2
+   echo ${string#$prefix}
+}
+
+allVars(){
+   local IFS=$(echo -en "\n\b")
+   local tmp="$(set | grep -E "^VAR$2_")"
+   local vars=""
+   local delimiter=""
+   for var in $tmp
+   do
+      if [ -n "$2" ]
+      then
+         var="$(removePrefixFromVar VAR$2_ $var)"
+      fi
+      if [ "$1" != "quote" ]
+      then
+         local varName=${var%%=*}
+         if [ "$1" == "noUnderscore" ]
+         then
+            local varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
+         fi
+         eval "local varValue=${var#*=}"
+         var="$varName=$varValue"
+      fi
+      vars="$vars$delimiter$var"
+      local delimiter=$'\n'
+   done
+   local IFS=$(echo -en "")
+   echo "$vars"
+}
+
+execCmd(){
+   local IFS=$IFS_bak
+   local command="$(eval "echo $1")"
+   exec /usr/bin/env -i $command
+}
+
 
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
@@ -157,14 +243,16 @@ makePwFileForUser(){
    echo "$pwFile"
 }
 
-readFirstrunEnvironment(){
-   . /environment/firstrun
-   rm -f /environment/firstrun
-   makeAllFromList "$(allVARs noquote)"
+readEnvironmentVars(){
+   . /environment/vars
+   if [ "$1" == "firstrun" ]
+   then
+      makeAllFromList "$(allVars noquote)"
+   fi
 }
 
 writeRestartEnvironment(){
-   allVARs quote > /environment/restart
+   allVars quote > /environment/restart
 }
 
 readRestartEnvironment(){
@@ -186,15 +274,6 @@ runCmdAsLinuxUser(){
    eval "/usr/bin/env -i /usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
 
-tryRunStage(){
-   local stateN=$1
-   if [ -f "/start/stage$stateN" ]
-   then
-      . "/start/stage$stateN"
-      tryRunStage "$(( $stateN + 1 ))"
-   fi
-}
-
 configFromVarGroup(){
    if [ -z "$2" ]
    then
@@ -202,5 +281,5 @@ configFromVarGroup(){
    else
       local p1=$2
    fi
-   allVARs $p1 _$1
+   allVars $p1 _$1
 }
