@@ -210,7 +210,7 @@ makePwFileForUser(){
          if [ -s "$VAR_SALT_FILE" ]
          then
             local salt
-            read salt < "$VAR_SALT_FILE"
+            echo $VAR_SALT_FILE | read salt
          else
             local salt="$(hostname)"
          fi
