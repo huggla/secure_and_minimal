@@ -18,7 +18,7 @@ startStage2(){
    fi
    tryRunStage 3
    allVars quote > /environment/vars
-   execCmdAsLinuxUser $VAR_FINAL_COMMAND
+   execCmdAsLinuxUser "$VAR_FINAL_COMMAND"
 }
 
 readonly IFS_bak=$IFS
