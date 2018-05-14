@@ -220,8 +220,6 @@ makePwFileForUser(){
       fi
       echo -n "$userPw" > "$pwFile"
    fi
-   /bin/chown $VAR_LINUX_USER "$pwFile"
-   /bin/chmod g+rw "$pwFile"
    echo "$pwFile"
 }
 
