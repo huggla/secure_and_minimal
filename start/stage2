@@ -1,6 +1,21 @@
 #!/bin/sh
-set -e +a +m +s +i -f
 
-. /start/stage2.functions
+startStage2(){
+   set -e +a +m +s +i -f
+   . /start/stage2.functions
+   . /environment/vars
+   if [ "$1" == "firstrun" ]
+   then
+      createLinuxUser
+      updateSudoersConf
+      fixHosts
+      makeAllFromList "$(allVars noquote)"
+      fixPermissionsForUsrLocalBin
+   fi
+   tryRunStage 3
+   allVars quote > /environment/Vars
+   execCmdAsLinuxUser $VAR_FINAL_COMMAND
+}
 
-runStage2 $1
+readonly IFS_bak=$IFS
+startStage2 $1
