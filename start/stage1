@@ -3,4 +3,14 @@ set -e +a +m +s +i -f
 
 . /start/stage1.functions
 
-runStage1
+if [ -f "/environment/firstrun" ]
+then
+   firstrun="true"
+   createLinuxUser
+   updateSudoersConf
+   writeFirstrunEnvironment
+   fixHosts
+else
+   firstrun="false"
+fi
+executeCommand "/start/stage2 $firstrun"
