@@ -235,9 +235,11 @@ execCmdAsLinuxUser(){
    execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
 }
 
+runCmd(){
+   eval "/usr/bin/env -i $1"
+
 runCmdAsLinuxUser(){
-   local IFS=$IFS_bak
-   eval "/usr/bin/env -i /usr/local/bin/sudo -u $VAR_LINUX_USER $1"
+   runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
 
 configFromVarGroup(){
