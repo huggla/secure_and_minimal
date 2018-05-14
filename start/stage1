@@ -1,16 +1,23 @@
 #!/bin/sh
 set -e +a +m +s +i -f
 
-. /start/stage1.functions
+writeEnvironmentVars(){
+   local IFS=$(echo -en "\n\b")
+   local tmp="$(set | grep -E "^VAR$2_")"
+   local vars=""
+   local delimiter=""
+   for var in $tmp
+   do
+      vars="$vars$delimiter$var"
+      local delimiter=$'\n'
+   done
+   local IFS=$(echo -en "")
+   echo "$vars" > /environment/vars
+}
 
-if [ -f "/environment/firstrun" ]
+if [ ! -e "/environment/vars" ]
 then
-   firstrun="true"
-   createLinuxUser
-   updateSudoersConf
-   writeFirstrunEnvironment
-   fixHosts
-else
-   firstrun="false"
+   writeEnvironmentVars
+   p="firstrun"
 fi
-executeCommand "/start/stage2 $firstrun"
+exec /usr/bin/env -i "/start/stage2 $p"
