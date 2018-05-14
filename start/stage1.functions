@@ -9,31 +9,17 @@
 . /start/common.functions
 
 runStage1(){
-   if [ "$(isSomethingToDo)" == "true" ]
+   if [ -f "/environment/firstrun" ]
    then
-      if [ -f "/environment/firstrun" ]
-      then
-         firstrun="true"
-         createLinuxUser
-         updateSudoersConf
-         writeFirstrunEnvironment
-         fixHosts
-      else
-         firstrun="false"
-      fi
-      executeCommand "/start/stage2 $firstrun"
+      local firstrun="true"
+      createLinuxUser
+      updateSudoersConf
+      writeFirstrunEnvironment
+      fixHosts
    else
-      echo "Nothing to do!"
+      local firstrun="false"
    fi
-}
-
-isSomethingToDo(){
-   if [ -n "$VAR_FINAL_COMMAND" ]
-   then
-      echo "true"
-   else
-      echo "false"
-   fi
+   executeCommand "/start/stage2 $firstrun"
 }
 
 createLinuxUser(){
