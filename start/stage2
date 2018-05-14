@@ -3,4 +3,4 @@ set -e +a +m +s +i -f
 
 . /start/stage2.functions
 
-executeCommandAsLinuxUser "$(runStage2 $1)"
+runStage2 $1
