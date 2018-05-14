@@ -69,7 +69,7 @@ allVars(){
    do
       if [ -n "$2" ]
       then
-         var="$(removePrefixFromVar VAR$2_ $var)"
+         var=${var#VAR$2_}
       fi
       if [ "$1" != "quote" ]
       then
