@@ -209,7 +209,8 @@ makePwFileForUser(){
       then
          if [ -s "$VAR_SALT_FILE" ]
          then
-            local salt="$(/bin/cat "$VAR_SALT_FILE")"
+            local salt
+            read salt < "$VAR_SALT_FILE"
          else
             local salt="$(hostname)"
          fi
