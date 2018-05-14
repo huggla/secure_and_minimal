@@ -197,7 +197,6 @@ makePwFileForUser(){
       local pwFile="/init/$userName.pw"
    fi
    /bin/touch "$pwFile"
-   /bin/chown $VAR_LINUX_USER "$pwFile"
    /bin/chmod go= "$pwFile"
    if [ ! -s "$pwFile" ]
    then
@@ -222,7 +221,7 @@ makePwFileForUser(){
       fi
       echo -n "$userPw" > "$pwFile"
    fi
-   /bin/chown $VAR_LINUX_USER:root "$pwFile"
+   /bin/chown $VAR_LINUX_USER "$pwFile"
    /bin/chmod ug=r,o= "$pwFile"
    echo "$pwFile"
 }
