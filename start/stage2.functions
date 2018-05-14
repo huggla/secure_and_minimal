@@ -16,7 +16,7 @@ runStage2(){
       readRestartEnvironment
       tryRunStage 3
    fi
-   echo $VAR_FINAL_COMMAND
+   execCmdAsLinuxUser $VAR_FINAL_COMMAND
 }
 
 trySetPermissionsOf(){
@@ -171,13 +171,17 @@ readRestartEnvironment(){
    . /environment/restart
 }
 
-executeCommandAsLinuxUser(){
-   local IFS=$IFS_bak
-   local command="$(eval "echo $1")"
-   executeCommand "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
+execCmdAsLinuxUser(){
+   if [ -n "$1" ]
+   then
+      local command="$(eval "echo $1")"
+   else
+      local command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
+   fi
+   execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
 }
 
-runCommandAsLinuxUser(){
+runCmdAsLinuxUser(){
    local IFS=$IFS_bak
    eval "/usr/bin/env -i /usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
