@@ -5,7 +5,7 @@ startStage2(){
    local -r IFS_bak=$IFS
    local VAR_FINAL_COMMAND
    . /start/stage2.functions
-   . /environment/vars
+   . /environment/Vars
    if [ "$1" == "firstrun" ]
    then
       createLinuxUser
