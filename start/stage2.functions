@@ -13,6 +13,11 @@ trySetPermissionsOf(){
       local flag="-R"
    fi
    set +e
+   if [ "$2" == "write" ]
+   then
+      /bin/chown $VAR_LINUX_USER "$obj"
+      /bin/chmod $flag ug+w "$obj"
+   fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
       /bin/chown $flag :$VAR_LINUX_USER "$obj"
@@ -25,11 +30,6 @@ trySetPermissionsOf(){
    elif [ "$2" == "secret" ]
    then
       /bin/chmod $flag g= "$obj"
-   elif [ "$2" == "write" ]
-   then
-      /bin/chown $VAR_LINUX_USER "$obj"
-      /bin/chmod $flag ug+w "$obj"
-   fi
    set -e
 }
 
