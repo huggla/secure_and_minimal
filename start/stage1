@@ -9,9 +9,9 @@ writeEnvironmentVars(){
    for var in $tmp
    do
       vars="$vars$delimiter$var"
-      local delimiter=$'\n'
+      delimiter=$'\n'
    done
-   local IFS=$(echo -en "")
+   IFS=$(echo -en "")
    echo "$vars" > /environment/vars
 }
 
