@@ -20,4 +20,4 @@ then
    writeEnvironmentVars
    p="firstrun"
 fi
-exec /usr/bin/env -i "/start/stage2 $p"
+exec /usr/bin/env -i /start/stage2 $p
