@@ -17,16 +17,6 @@ updateSudoersConf(){
    echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/stage1" > /etc/sudoers.d/docker2
 }
 
-writeFirstrunEnvironment(){
-   if [ -n "$VAR_CONFIG_FILE" ]
-   then
-      export VAR_CONFIG_DIR="$(/usr/bin/dirname "$VAR_CONFIG_FILE")"
-   else
-      unset VAR_CONFIG_FILE
-   fi
-   allVars quote > /environment/firstrun
-}
-
 fixHosts(){
    if [ ! -s "/etc/hosts" ]
    then
@@ -249,14 +239,6 @@ readEnvironmentVars(){
    then
       makeAllFromList "$(allVars noquote)"
    fi
-}
-
-writeRestartEnvironment(){
-   allVars quote > /environment/restart
-}
-
-readRestartEnvironment(){
-   . /environment/restart
 }
 
 execCmdAsLinuxUser(){
