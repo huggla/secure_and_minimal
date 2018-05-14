@@ -5,7 +5,7 @@ startStage2(){
    local -r IFS_bak=$IFS
    local VAR_FINAL_COMMAND
    . /start/stage2.functions
-   . /environment/Vars
+   . /environment/vars
    if [ "$1" == "firstrun" ]
    then
       createLinuxUser
@@ -15,7 +15,7 @@ startStage2(){
       fixPermissionsForUsrLocalBin
    fi
    tryRunStage 3
-   allVars quote > /environment/Vars
+   allVars quote > /environment/vars
    execCmdAsLinuxUser $VAR_FINAL_COMMAND
 }
 
