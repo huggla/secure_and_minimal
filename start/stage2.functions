@@ -169,10 +169,11 @@ runCommandAsLinuxUser(){
 }
 
 tryRunStage(){
-   if [ -f "/start/stage$1" ]
+   local stateN=$1
+   if [ -f "/start/stage$stateN" ]
    then
-      . "/start/stage$1"
-      tryRunStage "$(( $1 + 1 ))"
+      . "/start/stage$stateN"
+      tryRunStage "$(( $stateN + 1 ))"
    fi
 }
 
