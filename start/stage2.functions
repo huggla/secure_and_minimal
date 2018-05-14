@@ -1,9 +1,23 @@
 # Set in stage2:
 # -------------------------------------------
 # set -e +a +m +s +i -f
-# VAR_*
 
 . /start/common.functions
+
+runStage2(){
+   local firstrun=$1
+   if [ "$firstrun" == "true" ]
+   then
+      readFirstrunEnvironment
+      fixPermissionsForUsrLocalBin
+      tryRunStage 3
+      writeRestartEnvironment
+   else
+      readRestartEnvironment
+      tryRunStage 3
+   fi
+   echo $VAR_FINAL_COMMAND
+}
 
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
