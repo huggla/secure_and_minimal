@@ -3,11 +3,12 @@
 startStage2(){
    set -e +a +m +s +i -f
    . /start/stage2.functions
+   local isFirstRun=$1
    while read var
    do 
       eval "local $var"
    done < /environment/vars
-   if [ "$1" == "firstrun" ]
+   if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser
       updateSudoersConf
