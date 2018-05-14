@@ -227,14 +227,6 @@ makePwFileForUser(){
    echo "$pwFile"
 }
 
-readEnvironmentVars(){
-   . /environment/vars
-   if [ "$1" == "firstrun" ]
-   then
-      makeAllFromList "$(allVars noquote)"
-   fi
-}
-
 execCmdAsLinuxUser(){
    if [ -n "$1" ]
    then
