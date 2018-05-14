@@ -7,14 +7,4 @@ set -e +a +m +s +i -f
 
 . /start/stage2.functions
 
-if [ "$firstrun" == "true" ]
-then
-   readFirstrunEnvironment
-   fixPermissionsForUsrLocalBin
-   tryRunStage 3
-   writeRestartEnvironment
-else
-   readRestartEnvironment
-   tryRunStage 3
-fi
-executeCommandAsLinuxUser "$VAR_FINAL_COMMAND"
+executeCommandAsLinuxUser "$(runStage2 $firstrun)"
