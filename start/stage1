@@ -18,6 +18,6 @@ writeEnvironmentVars(){
 if [ ! -e "/environment/vars" ]
 then
    writeEnvironmentVars
-   p="firstrun"
+   isFirstRun="true"
 fi
-exec /usr/bin/env -i /start/stage2 $p
+exec /usr/bin/env -i /start/stage2 $isFirstRun
