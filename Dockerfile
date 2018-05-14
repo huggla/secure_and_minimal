@@ -25,7 +25,6 @@ RUN apk add --no-cache build-base \
  && mkdir /environment /init \
  && chmod 7700 /environment /start /init \
  && chmod u+x /start/stage1 /start/stage2 \
- && touch /environment/firstrun /environment/restart \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo /usr/local/bin/sudo \
