@@ -20,4 +20,5 @@ then
    writeEnvironmentVars
    isFirstRun="true"
 fi
+export VAR_FINAL_COMMAND=""
 exec /usr/bin/env -i /start/stage2 $isFirstRun
