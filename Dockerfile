@@ -22,8 +22,8 @@ RUN apk add --no-cache build-base \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && chmod go= /bin /sbin /usr/bin /usr/sbin \
  && apk add --no-cache sudo \
- && mkdir /environment /init \
- && chmod 7700 /environment /start /init \
+ && mkdir /environment \
+ && chmod 7700 /environment /start \
  && chmod u+x /start/stage1 /start/stage2 \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
