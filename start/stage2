@@ -1,6 +1,7 @@
 #!/bin/sh
 
 startStage2(){
+   local -
    set -e +a +m +s +i -f
    . /start/stage2.functions
    local isFirstRun=$1
