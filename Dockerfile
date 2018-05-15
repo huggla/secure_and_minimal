@@ -42,4 +42,4 @@ ENV VAR_LINUX_USER="root" \
 
 USER starter
 
-CMD [".","sudo","start"]
+CMD ["sudo","start"]
