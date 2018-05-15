@@ -59,6 +59,8 @@ allVars(){
    local tmp="$(set | grep -E "^VAR$2_")"
    local vars=""
    local delimiter=""
+   local varName=""
+   local varValue=""
    for var in $tmp
    do
       if [ -n "$2" ]
@@ -67,18 +69,18 @@ allVars(){
       fi
       if [ "$1" != "quote" ]
       then
-         local varName=${var%%=*}
+         varName=${var%%=*}
          if [ "$1" == "noUnderscore" ]
          then
-            local varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
+            varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
          fi
-         eval "local varValue=${var#*=}"
-         var="$varName=$varValue"
+         eval "varValue=${var#*=}"
+         var="$varName""=""$varValue"
       fi
       vars="$vars$delimiter$var"
-      local delimiter=$'\n'
+      delimiter=$'\n'
    done
-   local IFS=$(echo -en "")
+   IFS=$(echo -en "")
    echo "$vars"
 }
 
@@ -94,8 +96,9 @@ trySetPermissionsOf(){
    local flag=""
    if [ "$3" == "recursive" ]
    then
-      local flag="-R"
+      flag="-R"
    fi
+   local -
    set +e
    if [ "$2" == "write" ]
    then
@@ -124,7 +127,7 @@ fixPermissionsForConfigDir(){
 
 fixPermissionsForUsrLocalBin(){
    local IFS=$(echo -en "\n\b")
-   files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')"
+   local files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')"
    for file in $files
    do
       trySetPermissionsOf "$file" exec
@@ -133,6 +136,7 @@ fixPermissionsForUsrLocalBin(){
 
 tryMakeTypeObject(){
    local obj="$(removeQuotes $2)"
+   local -
    if [ ! -e "$obj" ]
    then
       tryMakeDir "$(/usr/bin/dirname "$obj")" $3
@@ -164,23 +168,28 @@ tryDelete(){
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
    local types="File,Dir"
+   local type_lc=""
+   local matches=""
+   local p2=""
+   local values=""
+   local -
    for type in $types
    do
-      local type_lc="$(toLower $type)"
+      type_lc="$(toLower $type)"
       set +e
-      local matches="$(echo "$1" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
+      matches="$(echo "$1" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
       set -e
       for match in $matches
       do
-         local p2=""
+         p2=""
          if [ $(echo $match | /bin/grep -iE "(pass|pw|sec|salt|key)[^=]*=") ]
          then
-            local p2="secret"
+            p2="secret"
          elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data|_log_)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
          then
-            local p2="write"
+            p2="write"
          fi
-         local values=${match#*=}
+         values=${match#*=}
          for value in $values
          do
             tryMake$type $value $p2
@@ -194,23 +203,23 @@ makePwFileForUser(){
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
-      local pwFile="$(mktemp)"
+      pwFile="$(mktemp)"
    fi
    if [ ! -s "$pwFile" ]
    then
       eval "local userPw=\$VAR_password_$userName"
       if [ -z "$userPw" ]
       then
-         local userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
+         userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
       fi
       if [ "$VAR_ENCRYPT_PW" == "yes" ]
       then
+         local salt=""
          if [ -s "$VAR_SALT_FILE" ]
          then
-            local salt
             echo $VAR_SALT_FILE | read salt
          else
-            local salt="$(hostname)"
+            salt="$(hostname)"
          fi
          if [ -z "$VAR_ARGON2_PARAMS" ]
          then
@@ -224,11 +233,12 @@ makePwFileForUser(){
 }
 
 execCmdAsLinuxUser(){
+   local command=""
    if [ -n "$1" ]
    then
-      local command="$(eval "echo $1")"
+      command="$(eval "echo $1")"
    else
-      local command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
+      command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
    fi
    execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
 }
@@ -242,11 +252,12 @@ runCmdAsLinuxUser(){
 }
 
 configFromVarGroup(){
+   local p1=""
    if [ -z "$2" ]
    then
-      local p1="noquote"
+      p1="noquote"
    else
-      local p1=$2
+      p1=$2
    fi
    allVars $p1 _$1
 }
