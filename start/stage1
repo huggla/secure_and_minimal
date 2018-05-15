@@ -3,7 +3,7 @@ set -e +a +m +s +i -f
 
 writeEnvironmentVars(){
    local IFS=$(echo -en "\n\b")
-   local tmp="$(set | grep -E "^VAR$2_")"
+   local tmp="$(set | grep -E "^VAR_")"
    local vars=""
    local delimiter=""
    for var in $tmp
