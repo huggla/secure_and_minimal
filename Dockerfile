@@ -20,7 +20,7 @@ RUN apk add --no-cache build-base \
  && apk del build-base \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && chmod go= /bin /sbin /usr/bin /usr/sbin \
+ && chmod o= /bin /sbin /usr/bin /usr/sbin \
  && apk add --no-cache sudo \
  && mkdir /environment \
  && chmod 7700 /environment /start \
