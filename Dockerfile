@@ -38,6 +38,7 @@ RUN apk add --no-cache build-base \
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
+    VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     PATH="$PATH:/start" \
     HISTFILE="/dev/null"
 
