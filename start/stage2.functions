@@ -202,6 +202,7 @@ returnFileWithNlEnding(){
    then
       file="$(/bin/mktemp -d)/$(/usr/bin/basename "$file")"
       /bin/cp -p "$1" "$file"
+      echo >> "$file"
    fi
    echo "$file"
 }
