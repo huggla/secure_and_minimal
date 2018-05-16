@@ -24,7 +24,6 @@ fixHosts(){
    fi
 }
 
-
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
 }
@@ -89,7 +88,6 @@ execCmd(){
    local command="$(eval "echo $1")"
    exec /usr/bin/env -i $command
 }
-
 
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
