@@ -198,6 +198,16 @@ makeAllFromList(){
    done
 }
 
+returnFileWithNlEnding(){
+   local file=$1
+   if [ $(tail -c 1 "$file" | wc -l) -eq 0 ]
+   then
+      file="$(mktemp -d)/$(/usr/bin/basename "$file")"
+      cp --preserve=all "$1" "$file"
+   fi
+   echo "$file"
+}
+
 makePwFileForUser(){
    local userName="$(toLower "$1")"
    eval "local pwFile=\$VAR_password_file_$userName"
@@ -215,7 +225,12 @@ makePwFileForUser(){
       if [ "$VAR_ENCRYPT_PW" == "yes" ]
       then
          local salt=""
-         read salt < "$VAR_SALT_FILE"
+         local saltFile="$(returnFileWithNlEnding "$VAR_SALT_FILE")"
+         read salt < "$saltFile"
+         if [ "$saltFile" != "$VAR_SALT_FILE" ]
+         then
+            rm -rf "$(/usr/bin/dirname "$saltFile")"
+         fi
          userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
       fi
       echo -n "$userPw" > "$pwFile"
