@@ -198,10 +198,10 @@ makeAllFromList(){
 
 returnFileWithNlEnding(){
    local file=$1
-   if [ $(tail -c 1 "$file" | wc -l) -eq 0 ]
+   if [ $(/usr/bin/tail -c 1 "$file" | /usr/bin/wc -l) -eq 0 ]
    then
-      file="$(mktemp -d)/$(/usr/bin/basename "$file")"
-      cp --preserve=all "$1" "$file"
+      file="$(/bin/mktemp -d)/$(/usr/bin/basename "$file")"
+      /bin/cp -p "$1" "$file"
    fi
    echo "$file"
 }
@@ -232,10 +232,6 @@ makePwFileForUser(){
          userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
       fi
       echo -n "$userPw" > "$pwFile"
-   fi
-   if [ $(tail -c 1 "$pwFile" | wc -l) -eq 0 ]
-   then
-      echo >> "$pwFile"
    fi
    echo "$pwFile"
 }
