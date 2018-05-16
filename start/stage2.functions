@@ -220,6 +220,10 @@ makePwFileForUser(){
       fi
       echo -n "$userPw" > "$pwFile"
    fi
+   if [ $(test "$(tail -c 1 "$pwFile" | wc -l)" -eq 0) ]
+   then
+      echo >> "$pwFile"
+   fi
    echo "$pwFile"
 }
 
