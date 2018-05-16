@@ -215,16 +215,7 @@ makePwFileForUser(){
       if [ "$VAR_ENCRYPT_PW" == "yes" ]
       then
          local salt=""
-         if [ -s "$VAR_SALT_FILE" ]
-         then
-            read salt < $VAR_SALT_FILE
-         else
-            salt="$(hostname)"
-         fi
-         if [ -z "$VAR_ARGON2_PARAMS" ]
-         then
-            VAR_ARGON2_PARAMS="-r"
-         fi
+         read salt < "$VAR_SALT_FILE"
          userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
       fi
       echo -n "$userPw" > "$pwFile"
