@@ -144,7 +144,7 @@ tryMakeTypeObject(){
          /bin/mkdir "$obj"
       elif [ "$1" == "file" ]
       then
-         /bin/touch "$obj"
+         >"$obj"
       fi
       set -e
       trySetPermissionsOf "$obj" $3
