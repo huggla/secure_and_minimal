@@ -305,18 +305,22 @@ isInsecure(){
    fi
 }
 
-printInitPwFromFile(){
+pwFromFile(){
    local pw=""
-   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-   echo "! A new data storage has been initialized with $VAR_LINUX_USER as owner.      !"
-   echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
    local NlPwFile="$(returnFileWithNlEnding "$1")"
    read pw < "$NlPwFile"
-   if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$pwFile" ]
+   if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$1" ]
    then
       tryDelete "$NlPwFile"
    fi
-   echo "! $pw"
+   echo "$pw"
+}
+
+printInitPassword(){
+   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+   echo "! A new data storage has been initialized with $VAR_LINUX_USER as owner.      !"
+   echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
+   echo "! $1"
    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
    echo
 }
