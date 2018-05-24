@@ -305,7 +305,7 @@ isInsecure(){
    fi
 }
 
-pwFromFile(){
+passwordFromFile(){
    local pw=""
    local NlPwFile="$(returnFileWithNlEnding "$1")"
    read pw < "$NlPwFile"
