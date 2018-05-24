@@ -305,6 +305,21 @@ isInsecure(){
    fi
 }
 
+printInitNote(){
+   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+   echo "! A new data storage has been initialized with $VAR_LINUX_USER as owner.      !"
+   echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
+   local NlPwFile="$(returnFileWithNlEnding "$1")"
+   read pw < "$NlPwFile"
+   if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$pwFile" ]
+   then
+      tryDelete "$NlPwFile"
+   fi
+   echo "! $pw"
+   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+   echo
+}
+
 printSecurityWarning(){
    echo "*******************************************************************************"
    echo "* Container was started with either environment variable VAR_password set, or *"
