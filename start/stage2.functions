@@ -306,6 +306,7 @@ isInsecure(){
 }
 
 printInitPwFromFile(){
+   local pw=""
    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
    echo "! A new data storage has been initialized with $VAR_LINUX_USER as owner.      !"
    echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
