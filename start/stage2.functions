@@ -298,6 +298,13 @@ runBinCmdAsLinuxUser(){
    return $exitCode
 }
 
+isInsecure(){
+   if [ -n "$(/usr/bin/env | grep "VAR_password_")" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
+   then
+      echo "true"
+   fi
+}
+
 printSecurityWarning(){
    echo "*******************************************************************************"
    echo "* Container was started with either environment variable VAR_password set, or *"
