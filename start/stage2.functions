@@ -222,7 +222,7 @@ makePwFileForUser(){
    if [ ! -s "$pwFile" ]
    then
       eval "userPw=\$VAR_password_$userName"
-      userPW="$(securePw $userPw)"
+      userPw="$(securePw $userPw)"
       echo -n "$userPw" > "$pwFile"
    fi
    echo "$pwFile"
@@ -250,7 +250,7 @@ getSalt(){
    local salt=""
    if [ -s "$VAR_SALT_FILE" ]
    then
-      salt="$(encryptionSaltFromFile "$VAR_SALT_FILE")"
+      salt="$(saltFromFile "$VAR_SALT_FILE")"
    elif [ -n "$VAR_SALT" ]
    then
       salt=$VAR_SALT
@@ -322,13 +322,13 @@ isInsecure(){
 
 secretFromFileOfType(){
    local secret=""
-   local NlSecretFile="$(returnFileWithNlEnding "$1")"
-   if [ ! -s "$NlSecretFile" ]
+   local nlSecretFile="$(fileWithNlEnding "$1")"
+   if [ ! -s "$nlSecretFile" ]
    then
-      read secret < "$NlSecretFile"
-      if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$NlSecretFile" != "$1" ]
+      read secret < "$nlSecretFile"
+      if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$nlSecretFile" != "$1" ]
       then
-         tryDelete "$NlSecretFile"
+         tryDelete "$nlSecretFile"
       fi
    fi
    echo "$secret"
@@ -338,7 +338,7 @@ passwordFromFile(){
    secretFromFileOfType "$1" password
 }
 
-encryptionSaltFromFile(){
+saltFromFile(){
    secretFromFileOfType "$1" salt
 }
 
