@@ -236,8 +236,7 @@ securePw(){
    fi
    if [ "$VAR_ENCRYPT_PW" == "yes" ]
    then
-      getSalt
-      userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
+      userPw="$(encryptPw "$userPw")"
    fi
    echo "$userPW"
 }
@@ -260,8 +259,8 @@ getSalt(){
    echo "$salt"
 }
 
-encryptPwWithSalt(){
-   echo -n "$1" | /usr/bin/argon2 "$2" $VAR_ARGON2_PARAMS
+encryptPw(){
+   echo -n "$1" | /usr/bin/argon2 "$(getSalt)" $VAR_ARGON2_PARAMS
 }
 
 execCmdAsLinuxUser(){
