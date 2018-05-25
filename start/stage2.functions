@@ -197,15 +197,7 @@ makeAllFromList(){
 }
 
 makePwForUser(){
-   local pwFile="$(makePwFileForUser $1)"
-   local NlPwFile="$(returnFileWithNlEnding "$pwFile")"
-   local pw=""
-   read pw < "$NlPwFile"
-   if [ -z "$(eval "echo \$VAR_password_file_$1")" ] || [ "$NlPwFile" != "$pwFile" ]
-   then
-      tryDelete "$NlPwFile"
-   fi
-   echo "$pw"
+   passwordFromFile "$(makePwFileForUser $1)"
 }
 
 returnFileWithNlEnding(){
