@@ -106,6 +106,10 @@ removeQuotes(){
 #  Permissions
 # ******************************************************
 
+updateSudoersConf(){
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/start" > /etc/sudoers.d/docker2
+}
+
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
    local flag=""
@@ -232,12 +236,8 @@ makeAllFromList(){
 #  Secrets/Security
 # ******************************************************
 
-updateSudoersConf(){
-   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/start" > /etc/sudoers.d/docker2
-}
-
 makePwForUser(){
-   passwordFromFile "$(makePwFileForUser $1)"
+   pwFromFile "$(makePwFileForUser $1)"
 }
 
 makePwFileForUser(){
@@ -306,7 +306,7 @@ secretFromFileOfType(){
    echo "$secret"
 }
 
-passwordFromFile(){
+pwFromFile(){
    secretFromFileOfType "$1" password
 }
 
