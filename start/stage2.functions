@@ -295,7 +295,7 @@ encryptPw(){
 secretFromFileOfType(){
    local secret=""
    local nlSecretFile="$(fileWithNlEnding "$1")"
-   if [ ! -s "$nlSecretFile" ]
+   if [ -s "$nlSecretFile" ]
    then
       read secret < "$nlSecretFile"
       if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$nlSecretFile" != "$1" ]
