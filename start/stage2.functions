@@ -200,7 +200,7 @@ makePwForUser(){
    passwordFromFile "$(makePwFileForUser $1)"
 }
 
-returnFileWithNlEnding(){
+fileWithNlEnding(){
    local file=$1
    if [ $(/usr/bin/tail -c 1 "$file" | /usr/bin/wc -l) -eq 0 ]
    then
@@ -213,6 +213,7 @@ returnFileWithNlEnding(){
 
 makePwFileForUser(){
    local userName="$(toLower "$1")"
+   local userPw=""
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
@@ -220,19 +221,47 @@ makePwFileForUser(){
    fi
    if [ ! -s "$pwFile" ]
    then
-      eval "local userPw=\$VAR_password_$userName"
-      if [ -z "$userPw" ]
-      then
-         userPw="$(/usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1)"
-      fi
-      if [ "$VAR_ENCRYPT_PW" == "yes" ]
-      then
-         local salt="$(encryptionSaltFromFile "$VAR_SALT_FILE")"
-         userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
-      fi
+      eval "userPw=\$VAR_password_$userName"
+      userPW="$(securePw $userPw)"
       echo -n "$userPw" > "$pwFile"
    fi
    echo "$pwFile"
+}
+
+securePw(){
+   local userPw=$1
+   if [ -z "$userPw" ]
+   then
+      userPw="$(makeSecret)"
+   fi
+   if [ "$VAR_ENCRYPT_PW" == "yes" ]
+   then
+      getSalt
+      userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
+   fi
+   echo "$userPW"
+}
+
+makeSecret(){
+   /usr/bin/tr -cd '[:alnum:]' < /dev/urandom | /usr/bin/fold -w30 | /usr/bin/head -n1
+}
+
+getSalt(){
+   local salt=""
+   if [ -s "$VAR_SALT_FILE" ]
+   then
+      salt="$(encryptionSaltFromFile "$VAR_SALT_FILE")"
+   elif [ -n "$VAR_SALT" ]
+   then
+      salt=$VAR_SALT
+   else
+      salt="$(makeSecret)"
+   fi
+   echo "$salt"
+}
+
+encryptPwWithSalt(){
+   echo -n "$1" | /usr/bin/argon2 "$2" $VAR_ARGON2_PARAMS
 }
 
 execCmdAsLinuxUser(){
@@ -294,10 +323,13 @@ isInsecure(){
 secretFromFileOfType(){
    local secret=""
    local NlSecretFile="$(returnFileWithNlEnding "$1")"
-   read secret < "$NlSecretFile"
-   if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$NlSecretFile" != "$1" ]
+   if [ ! -s "$NlSecretFile" ]
    then
-      tryDelete "$NlSecretFile"
+      read secret < "$NlSecretFile"
+      if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$NlSecretFile" != "$1" ]
+      then
+         tryDelete "$NlSecretFile"
+      fi
    fi
    echo "$secret"
 }
