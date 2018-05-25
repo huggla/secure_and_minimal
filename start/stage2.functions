@@ -251,7 +251,7 @@ makePwFileForUser(){
    if [ ! -s "$pwFile" ]
    then
       eval "userPw=\$VAR_password_$userName"
-      userPw="$(securePw $userPw)"
+      userPw="$(securePw "$userPw")"
       echo -n "$userPw" > "$pwFile"
    fi
    echo "$pwFile"
