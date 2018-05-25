@@ -2,6 +2,10 @@
 # -------------------------------------------
 # set -e +a +m +s +i -f
 
+# ******************************************************
+#  Server adjustments
+# ******************************************************
+
 createLinuxUser(){
    if [ ! $(/usr/bin/getent group $VAR_LINUX_USER) ]
    then
@@ -13,10 +17,6 @@ createLinuxUser(){
    fi
 }
 
-updateSudoersConf(){
-   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/start" > /etc/sudoers.d/docker2
-}
-
 fixHosts(){
    if [ ! -s "/etc/hosts" ]
    then
@@ -24,34 +24,9 @@ fixHosts(){
    fi
 }
 
-trim(){
-   echo "$1" | /usr/bin/awk '{$1=$1;print}'
-}
-
-toLower(){
-   echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
-}
-
-removeCharacterFromString(){
-   echo "$2" | /usr/bin/tr -d "$1"
-}
-
-removeUnderscores(){
-   removeCharacterFromString _ $1
-}
-
-removeSingleQuotes(){
-   removeCharacterFromString "'" $1
-}
-
-removeDoubleQuotes(){
-   removeCharacterFromString '"' $1
-}
-
-removeQuotes(){
-   local tmp="$(removeSingleQuotes $1)"
-   removeDoubleQuotes $tmp
-}
+# ******************************************************
+#  Environment and configuration
+# ******************************************************
 
 allVars(){
    local IFS=$(echo -en "\n\b")
@@ -83,11 +58,53 @@ allVars(){
    echo "$vars"
 }
 
-execCmd(){
-   local IFS=$IFS_bak
-   local command="$(eval "echo $1")"
-   exec /usr/bin/env -i $command
+configFromVarGroup(){
+   local p1=""
+   if [ -z "$2" ]
+   then
+      p1="noquote"
+   else
+      p1=$2
+   fi
+   allVars $p1 _$1
 }
+
+# ******************************************************
+#  String adjustments
+# ******************************************************
+
+trim(){
+   echo "$1" | /usr/bin/awk '{$1=$1;print}'
+}
+
+toLower(){
+   echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
+}
+
+removeCharacterFromString(){
+   echo "$2" | /usr/bin/tr -d "$1"
+}
+
+removeUnderscores(){
+   removeCharacterFromString _ $1
+}
+
+removeSingleQuotes(){
+   removeCharacterFromString "'" $1
+}
+
+removeDoubleQuotes(){
+   removeCharacterFromString '"' $1
+}
+
+removeQuotes(){
+   local tmp="$(removeSingleQuotes $1)"
+   removeDoubleQuotes $tmp
+}
+
+# ******************************************************
+#  Permissions
+# ******************************************************
 
 trySetPermissionsOf(){
    local obj="$(removeQuotes $1)"
@@ -130,6 +147,21 @@ fixPermissionsForUsrLocalBin(){
    do
       trySetPermissionsOf "$file" exec
    done
+}
+
+# ******************************************************
+#  File system
+# ******************************************************
+
+fileWithNlEnding(){
+   local file=$1
+   if [ $(/usr/bin/tail -c 1 "$file" | /usr/bin/wc -l) -eq 0 ]
+   then
+      file="$(/bin/mktemp -d)/$(/usr/bin/basename "$file")"
+      /bin/cp -p "$1" "$file"
+      echo >> "$file"
+   fi
+   echo "$file"
 }
 
 tryMakeTypeObject(){
@@ -196,19 +228,16 @@ makeAllFromList(){
    done
 }
 
-makePwForUser(){
-   passwordFromFile "$(makePwFileForUser $1)"
+# ******************************************************
+#  Secrets/Security
+# ******************************************************
+
+updateSudoersConf(){
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/start" > /etc/sudoers.d/docker2
 }
 
-fileWithNlEnding(){
-   local file=$1
-   if [ $(/usr/bin/tail -c 1 "$file" | /usr/bin/wc -l) -eq 0 ]
-   then
-      file="$(/bin/mktemp -d)/$(/usr/bin/basename "$file")"
-      /bin/cp -p "$1" "$file"
-      echo >> "$file"
-   fi
-   echo "$file"
+makePwForUser(){
+   passwordFromFile "$(makePwFileForUser $1)"
 }
 
 makePwFileForUser(){
@@ -263,62 +292,6 @@ encryptPw(){
    echo -n "$1" | /usr/bin/argon2 "$(getSalt)" $VAR_ARGON2_PARAMS
 }
 
-execCmdAsLinuxUser(){
-   local command=""
-   if [ -n "$1" ]
-   then
-      command="$(eval "echo $1")"
-   else
-      command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
-   fi
-   execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
-}
-
-runCmd(){
-   eval "/usr/bin/env -i $1"
-}
-
-runCmdAsLinuxUser(){
-   runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
-}
-
-configFromVarGroup(){
-   local p1=""
-   if [ -z "$2" ]
-   then
-      p1="noquote"
-   else
-      p1=$2
-   fi
-   allVars $p1 _$1
-}
-
-tryRunStage(){
-   if [ -f "/start/stage$1" ]
-   then
-      . "/start/stage$1"
-      tryRunStage "$(( $1 + 1 ))"
-   fi
-}
-
-runBinCmdAsLinuxUser(){
-   /bin/chown $VAR_LINUX_USER /bin
-   local -
-   set +e
-   runCmdAsLinuxUser "$1"
-   local exitCode=$?
-   set -e
-   /bin/chown root /bin
-   return $exitCode
-}
-
-isInsecure(){
-   if [ -n "$(/usr/bin/env | grep "VAR_password_")" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
-   then
-      echo "true"
-   fi
-}
-
 secretFromFileOfType(){
    local secret=""
    local nlSecretFile="$(fileWithNlEnding "$1")"
@@ -341,6 +314,13 @@ saltFromFile(){
    secretFromFileOfType "$1" salt
 }
 
+isInsecure(){
+   if [ -n "$(/usr/bin/env | grep "VAR_password_")" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
+   then
+      echo "true"
+   fi
+}
+
 printInitPassword(){
    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
    echo "  A new data storage has been initialized with $VAR_LINUX_USER as owner."
@@ -351,11 +331,59 @@ printInitPassword(){
 }
 
 printSecurityWarning(){
-   echo "*******************************************************************************"
-   echo "* Container was started with either environment variable VAR_password set, or *"
-   echo "* with mounted password and/or encryption salt file. These are only needed    *"
-   echo "* during storage initialization. To improve security, restart the container   *"
-   echo "* without them.                                                               *"
-   echo "*******************************************************************************"
+   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+   echo "  Container was started with either environment variable VAR_password set, or"
+   echo "  with mounted password and/or encryption salt file. These are only needed"
+   echo "  during storage initialization. To improve security, restart the container"
+   echo "  without them."
+   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
    echo
+}
+
+# ******************************************************
+#  Run/Execute
+# ******************************************************
+
+execCmdAsLinuxUser(){
+   local command=""
+   if [ -n "$1" ]
+   then
+      command="$(eval "echo $1")"
+   else
+      command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
+   fi
+   execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
+}
+
+runCmd(){
+   eval "/usr/bin/env -i $1"
+}
+
+runCmdAsLinuxUser(){
+   runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
+}
+
+execCmd(){
+   local IFS=$IFS_bak
+   local command="$(eval "echo $1")"
+   exec /usr/bin/env -i $command
+}
+
+tryRunStage(){
+   if [ -f "/start/stage$1" ]
+   then
+      . "/start/stage$1"
+      tryRunStage "$(( $1 + 1 ))"
+   fi
+}
+
+runBinCmdAsLinuxUser(){
+   /bin/chown $VAR_LINUX_USER /bin
+   local -
+   set +e
+   runCmdAsLinuxUser "$1"
+   local exitCode=$?
+   set -e
+   /bin/chown root /bin
+   return $exitCode
 }
