@@ -227,13 +227,7 @@ makePwFileForUser(){
       fi
       if [ "$VAR_ENCRYPT_PW" == "yes" ]
       then
-         local salt=""
-         local saltFile="$(returnFileWithNlEnding "$VAR_SALT_FILE")"
-         read salt < "$saltFile"
-         if [ "$saltFile" != "$VAR_SALT_FILE" ]
-         then
-            rm -rf "$(/usr/bin/dirname "$saltFile")"
-         fi
+         local salt="$(encryptionSaltFromFile "$VAR_SALT_FILE")"
          userPw="$(echo -n "$userPw" | /usr/bin/argon2 "$salt" $VAR_ARGON2_PARAMS)"
       fi
       echo -n "$userPw" > "$pwFile"
@@ -312,7 +306,7 @@ passwordFromFile(){
    secretFromFileOfType "$1" password
 }
 
-EncryptionSaltFromFile(){
+encryptionSaltFromFile(){
    secretFromFileOfType "$1" salt
 }
 
