@@ -297,15 +297,23 @@ isInsecure(){
    fi
 }
 
-passwordFromFile(){
-   local pw=""
-   local NlPwFile="$(returnFileWithNlEnding "$1")"
-   read pw < "$NlPwFile"
-   if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$1" ]
+secretFromFileOfType(){
+   local secret=""
+   local NlSecretFile="$(returnFileWithNlEnding "$1")"
+   read secret < "$NlSecretFile"
+   if [ -z "$(eval "echo \$VAR_$2_file_$VAR_LINUX_USER")" ] || [ "$NlSecretFile" != "$1" ]
    then
-      tryDelete "$NlPwFile"
+      tryDelete "$NlSecretFile"
    fi
-   echo "$pw"
+   echo "$secret"
+}
+
+passwordFromFile(){
+   secretFromFileOfType "$1" password
+}
+
+EncryptionSaltFromFile(){
+   secretFromFileOfType "$1" salt
 }
 
 printInitPassword(){
