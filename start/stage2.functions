@@ -267,7 +267,7 @@ securePw(){
    then
       userPw="$(encryptPw "$userPw")"
    fi
-   echo "$userPW"
+   echo "$userPw"
 }
 
 makeSecret(){
