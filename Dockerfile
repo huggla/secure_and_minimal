@@ -2,6 +2,7 @@ FROM alpine:3.7
 
 # Build-only variables
 ENV LANG="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
     argonv="20171227"
 
 COPY ./start /start
