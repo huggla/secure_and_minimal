@@ -345,14 +345,7 @@ printSecurityWarning(){
 # ******************************************************
 
 . /start/functions/execCmd
-
-runCmd(){
-   eval "/usr/bin/env -i $1"
-}
-
-runCmdAsLinuxUser(){
-   runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
-}
+. /start/functions/runCmd
 
 tryRunStage(){
    if [ -f "/start/stage$1" ]
