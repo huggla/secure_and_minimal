@@ -344,16 +344,7 @@ printSecurityWarning(){
 #  Run/Execute
 # ******************************************************
 
-execCmdAsLinuxUser(){
-   local command=""
-   if [ -n "$1" ]
-   then
-      command="$(eval "echo $1")"
-   else
-      command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
-   fi
-   execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
-}
+. /start/functions/execCmd
 
 runCmd(){
    eval "/usr/bin/env -i $1"
@@ -361,12 +352,6 @@ runCmd(){
 
 runCmdAsLinuxUser(){
    runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
-}
-
-execCmd(){
-   local IFS=$IFS_bak
-   local command="$(eval "echo $1")"
-   exec /usr/bin/env -i $command
 }
 
 tryRunStage(){
