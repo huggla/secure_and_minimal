@@ -1,0 +1,7 @@
+runCmd(){
+   eval "/usr/bin/env -i $1"
+}
+
+runCmdAsLinuxUser(){
+   runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
+}
