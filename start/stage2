@@ -3,7 +3,7 @@
 startStage2(){
    local -
    set -e +a +m +s +i -f
-   . /start/stage2.functions
+   . /start/functions/stage2
    local isFirstRun=$1
    while read var
    do 
