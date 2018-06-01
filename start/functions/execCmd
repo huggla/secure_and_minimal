@@ -1,0 +1,15 @@
+execCmd(){
+   local command="$(eval "echo $1")"
+   exec /usr/bin/env -i $command
+}
+
+execCmdAsLinuxUser(){
+   local command=""
+   if [ -n "$1" ]
+   then
+      command="$(eval "echo $1")"
+   else
+      command='/bin/echo "execCmdAsLinuxUser: Nothing to do!"'
+   fi
+   execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
+}
