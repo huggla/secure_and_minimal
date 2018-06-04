@@ -1,0 +1,3 @@
+tryMakeFile(){
+   tryMakeTypeObject file $1 $2
+}
