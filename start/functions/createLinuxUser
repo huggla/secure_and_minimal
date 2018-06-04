@@ -1,0 +1,10 @@
+createLinuxUser(){
+   if [ ! $(/usr/bin/getent group $VAR_LINUX_USER) ]
+   then
+      /usr/sbin/addgroup -S $VAR_LINUX_USER
+   fi
+   if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
+   then
+      /usr/sbin/adduser -D -S -H -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
+   fi
+}
