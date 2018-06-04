@@ -1,6 +1,6 @@
 #!/bin/sh
-set -e +a +m +s +i -f
 
+set -e +a +m +s +i
 for function in /start/functions/*
 do
    if [ -f "$function" ]
@@ -8,5 +8,6 @@ do
       . "$function"
    fi
 done
+set -f
 readonly IFS_bak=$IFS
 startStage2 $1
