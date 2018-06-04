@@ -1,0 +1,12 @@
+securePw(){
+   local userPw=$1
+   if [ -z "$userPw" ]
+   then
+      userPw="$(makeSecret)"
+   fi
+   if [ "$VAR_ENCRYPT_PW" == "yes" ]
+   then
+      userPw="$(encryptPw "$userPw")"
+   fi
+   echo "$userPw"
+}
