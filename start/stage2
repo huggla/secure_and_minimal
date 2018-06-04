@@ -1,26 +1,12 @@
 #!/bin/sh
+set -e +a +m +s +i -f
 
-startStage2(){
-   local -
-   set -e +a +m +s +i -f
-   . /start/functions/stage2
-   local isFirstRun=$1
-   while read var
-   do 
-      eval "local $var"
-   done < /environment/vars
-   if [ "$isFirstRun" == "true" ]
+for function in /start/functions/*
+do
+   if [ -f "$function" ]
    then
-      createLinuxUser
-      updateSudoersConf
-      fixHosts
-      makeAllFromList "$(allVars noquote)"
-      fixPermissionsForUsrLocalBin
+      . "$function"
    fi
-   tryRunStage 3
-   allVars quote > /environment/vars
-   execCmdAsLinuxUser "$VAR_FINAL_COMMAND"
-}
-
+done
 readonly IFS_bak=$IFS
 startStage2 $1
