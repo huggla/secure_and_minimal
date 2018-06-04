@@ -1,0 +1,3 @@
+makePwForUser(){
+   pwFromFile "$(makePwFileForUser $1)"
+}
