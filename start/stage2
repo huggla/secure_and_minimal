@@ -3,7 +3,7 @@
 set -e +a +m +s +i
 for function in /start/functions/*
 do
-   if [ -f "$function" ]
+   if [ -f "$function" ] && [ ! $(type -t $(/usr/bin/basename "$function")) ]
    then
       . "$function"
    fi
