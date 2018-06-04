@@ -9,5 +9,4 @@ do
    fi
 done
 set -f
-readonly IFS_bak=$IFS
 startStage2 $1
