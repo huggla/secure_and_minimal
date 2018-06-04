@@ -1,0 +1,29 @@
+allVars(){
+   local IFS=$(echo -en "\n\b")
+   local tmp="$(set | grep -E "^VAR$2_")"
+   local vars=""
+   local delimiter=""
+   local varName=""
+   local varValue=""
+   for var in $tmp
+   do
+      if [ -n "$2" ]
+      then
+         var=${var#VAR$2_}
+      fi
+      if [ "$1" != "quote" ]
+      then
+         varName=${var%%=*}
+         if [ "$1" == "noUnderscore" ]
+         then
+            varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
+         fi
+         eval "varValue=${var#*=}"
+         var="$varName""=""$varValue"
+      fi
+      vars="$vars$delimiter$var"
+      delimiter=$'\n'
+   done
+   IFS=$(echo -en "")
+   echo "$vars"
+}
