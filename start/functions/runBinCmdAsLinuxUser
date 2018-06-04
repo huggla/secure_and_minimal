@@ -1,0 +1,10 @@
+runBinCmdAsLinuxUser(){
+   /bin/chown $VAR_LINUX_USER /bin
+   local -
+   set +e
+   runCmdAsLinuxUser "$1"
+   local exitCode=$?
+   set -e
+   /bin/chown root /bin
+   return $exitCode
+}
