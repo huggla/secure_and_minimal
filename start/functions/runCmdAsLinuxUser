@@ -1,4 +1,5 @@
+[ $(type -t runCmd) ] || . /start/functions/runCmd
+
 runCmdAsLinuxUser(){
-   [ $(type -t runCmd) ] || . /start/functions/runCmd
    runCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $1"
 }
