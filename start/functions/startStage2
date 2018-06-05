@@ -1,9 +1,6 @@
 startStage2(){
    local isFirstRun=$1
-   while read var
-   do 
-      eval "local $var"
-   done < /environment/vars
+   readEnvironmentVars
    if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser
