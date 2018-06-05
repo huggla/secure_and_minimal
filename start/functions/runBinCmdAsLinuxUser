@@ -1,5 +1,6 @@
+[ $(type -t runCmdAsLinuxUser) ] || . /start/functions/runCmdAsLinuxUser
+
 runBinCmdAsLinuxUser(){
-   [ $(type -t runCmdAsLinuxUser) ] || . /start/functions/runCmdAsLinuxUser
    /bin/chown $VAR_LINUX_USER /bin
    local -
    set +e
