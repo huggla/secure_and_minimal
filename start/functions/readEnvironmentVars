@@ -1,6 +1,6 @@
 readEnvironmentVars(){
    while read var
    do 
-      eval "local $var"
+      eval "$var"
    done < /environment/vars
 }
