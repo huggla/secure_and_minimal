@@ -1,4 +1,5 @@
 execCmdAsLinuxUser(){
+   [ $(type -t execCmd) ] || . /start/functions/execCmd
    if [ -n "$1" ]
    then
       local command="$(eval "echo $1")"
