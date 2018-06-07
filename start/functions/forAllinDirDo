@@ -1,8 +1,8 @@
-forAllInDirDo(){
-   local i=""
+forAllNInDirDo(){
+   local N=""
    local -
    set -e +f
-   for i in "$1/"*
+   for N in "$1/"*
    do
       eval "$2"
    done
