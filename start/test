@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e +a +m +s +i
+for function in /start/functions/*
+do
+   if [ -f "$function" ] && [ ! $(type -t $(/usr/bin/basename "$function")) ]
+   then
+      . "$function"
+   fi
+done
+set -f
+
+forAllInDirDo "/start" <<-done
+	echo "hej"
+	echo "apa"
+done
