@@ -1,4 +1,5 @@
 readEnvironmentVars(){
+   local var=""
    while read var
    do 
       eval "$var"
