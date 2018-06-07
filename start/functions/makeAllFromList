@@ -1,9 +1,12 @@
 makeAllFromList(){
    local IFS=$(echo -en "\n\b,")
+   local type=""
    local types="File,Dir"
    local type_lc=""
+   local match=""
    local matches=""
    local p2=""
+   local value=""
    local values=""
    local -
    for type in $types
