@@ -6,6 +6,7 @@ writeEnvironmentVars(){
       unset VAR_CONFIG_FILE
    fi
    local IFS=$(echo -en "\n\b")
+   local var=""
    local tmp="$(set | grep -E "^VAR_")"
    local vars=""
    local delimiter=""
