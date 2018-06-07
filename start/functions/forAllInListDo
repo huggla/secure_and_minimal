@@ -1,4 +1,4 @@
-localForAllInListDo(){
+forAllInListDo(){
    local list=$1
    local i=""
    local -
