@@ -1,5 +1,6 @@
 allVars(){
    local IFS=$(echo -en "\n\b")
+   local var=""
    local tmp="$(set | grep -E "^VAR$2_")"
    local vars=""
    local delimiter=""
