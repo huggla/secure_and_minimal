@@ -1,7 +1,7 @@
 forAllInDirDo(){
    local i=""
    local -
-   set -e
+   set -e +f
    for i in "$1/"*
    do
       eval "$2"
