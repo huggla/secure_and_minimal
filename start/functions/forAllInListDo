@@ -1,9 +1,8 @@
 forAllInListDo(){
-   local list=$1
    local i=""
    local -
    set -e
-   for i in $list
+   for i in $1
    do
       eval "$2"
    done
