@@ -1,0 +1,10 @@
+localForAllInListDo(){
+   local list=$1
+   local i=""
+   local -
+   set -e
+   for i in $list
+   do
+      eval "$2"
+   done
+}
