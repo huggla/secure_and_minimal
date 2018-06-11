@@ -1,12 +1,18 @@
 [ $(type -t runCmdAsLinuxUser) ] || . /start/functions/runCmdAsLinuxUser
 
 runBinCmdAsLinuxUser(){
+   id="$(date +%s%N)"
+   /bin/touch "/run/runBinCmdAsLinuxUser.$id"
    /bin/chown $VAR_LINUX_USER /bin
    local -
    set +e
    runCmdAsLinuxUser "$1"
    local exitCode=$?
    set -e
-   /bin/chown root /bin
+   /bin/rm "/run/runBinCmdAsLinuxUser.$id"
+   if ! /bin/ls /run/runBinCmdAsLinuxUser.* &> /dev/null
+   then
+      /bin/chown root /bin
+   fi
    return $exitCode
 }
