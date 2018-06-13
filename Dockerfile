@@ -39,7 +39,7 @@ RUN apk add --no-cache build-base \
 
 FROM scratch
 
-COPY --from=server / /
+COPY --from=stage1 / /
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
