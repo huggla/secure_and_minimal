@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.7 as stage1
 
 # Build-only variables
 ENV LANG="en_US.UTF-8" \
@@ -36,6 +36,10 @@ RUN apk add --no-cache build-base \
  && echo 'Defaults !root_sudo' >> /etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2 \
  && chmod u=rw,go= /etc/sudoers.d/docker*
+
+FROM scratch
+
+COPY --from=server / /
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
