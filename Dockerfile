@@ -23,7 +23,6 @@ RUN apk add --no-cache build-base \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && apk add --no-cache sudo \
  && mkdir /environment \
- && ln /usr/bin/sudo /usr/local/bin/sudo \
  && ln -s /start/stage1 /start/start \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
@@ -40,7 +39,8 @@ RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
  && chmod u+x /start/stage1 /start/stage2 \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
- && chmod u=rw,go= /etc/sudoers.d/docker*
+ && chmod u=rw,go= /etc/sudoers.d/docker* \
+ && ln /usr/bin/sudo /usr/local/bin/sudo
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
