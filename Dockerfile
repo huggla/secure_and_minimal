@@ -24,6 +24,7 @@ RUN apk add --no-cache build-base \
  && apk add --no-cache sudo \
  && mkdir /environment \
  && ln -s /start/stage1 /start/start \
+ && mv /usr/bin/sudo /usr/local/bin/sudo \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
  && echo 'Defaults env_keep = "VAR_*"' > /etc/sudoers.d/docker2 \
@@ -37,10 +38,9 @@ COPY --from=stage1 / /
 RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
  && chmod 7700 /environment /start \
  && chmod u+x /start/stage1 /start/stage2 \
- && chown :starter /usr/bin/sudo \
- && chmod u+s,o-rx /usr/bin/sudo \
- && chmod u=rw,go= /etc/sudoers.d/docker* \
- && ln /usr/bin/sudo /usr/local/bin/sudo
+ && chown :starter /usr/local/bin/sudo \
+ && chmod u+s,o-rx /usr/local/bin/sudo \
+ && chmod u=rw,go= /etc/sudoers.d/docker*
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
