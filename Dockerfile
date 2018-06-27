@@ -21,25 +21,26 @@ RUN apk add --no-cache build-base \
  && apk del build-base \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && chmod o= /bin /sbin /usr/bin /usr/sbin \
  && apk add --no-cache sudo \
  && mkdir /environment \
- && chmod 7700 /environment /start \
- && chmod u+x /start/stage1 /start/stage2 \
- && chown :starter /usr/bin/sudo \
- && chmod u+s,o-rx /usr/bin/sudo \
  && ln /usr/bin/sudo /usr/local/bin/sudo \
  && ln -s /start/stage1 /start/start \
  && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
  && echo 'Defaults env_keep = "VAR_*"' > /etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /etc/sudoers.d/docker2 \
- && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2 \
- && chmod u=rw,go= /etc/sudoers.d/docker*
+ && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2
 
 FROM scratch
 
 COPY --from=stage1 / /
+
+RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
+ && chmod 7700 /environment /start \
+ && chmod u+x /start/stage1 /start/stage2 \
+ && chown :starter /usr/bin/sudo \
+ && chmod u+s,o-rx /usr/bin/sudo \
+ && chmod u=rw,go= /etc/sudoers.d/docker*
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
