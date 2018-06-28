@@ -10,3 +10,5 @@ includeFunctions(){
       fi
    done
 }
+
+includeFunctions
