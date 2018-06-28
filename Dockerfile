@@ -1,4 +1,4 @@
-FROM alpine:edge as stage1
+FROM alpine:3.7 as stage1
 
 # Build-only variables
 ENV LANG="en_US.UTF-8" \
