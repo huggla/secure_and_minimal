@@ -1,9 +1,8 @@
 includeFunctions(){
-   workdir="$(/usr/bin/dirname $0)"
    local function=""
    local -
    set +f
-   for function in $workdir/functions/*
+   for function in "$(/usr/bin/dirname $0)"/functions/*
    do
       if [ -f "$function" ] && [ ! $(type -t $(/usr/bin/basename "$function")) ]
       then
