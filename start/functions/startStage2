@@ -11,5 +11,5 @@ startStage2(){
    fi
    tryRunStage 3
    allVars quote > /environment/vars
-   execCmdAsLinuxUser "$VAR_FINAL_COMMAND"
+   eval "$VAR_FINAL_COMMAND"
 }
