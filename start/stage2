@@ -1,12 +1,5 @@
 #!/bin/sh
+set -e +a +m +s +i -f
+. /start/includeFunctions
 
-set -e +a +m +s +i
-for function in /start/functions/*
-do
-   if [ -f "$function" ] && [ ! $(type -t $(/usr/bin/basename "$function")) ]
-   then
-      . "$function"
-   fi
-done
-set -f
 startStage2 $1
