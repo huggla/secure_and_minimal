@@ -20,7 +20,7 @@ RUN apk add --no-cache sudo argon2 wget \
  && ln -s ../local/bin/sudo sudo \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && cp --preserve=all /etc/group /etc/passwd /etc/shadow /rootfs/etc/
+ && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
  
 FROM scratch
 
