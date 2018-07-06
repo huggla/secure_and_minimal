@@ -20,7 +20,8 @@ RUN apk add --no-cache sudo argon2 \
  && ln -s ../local/bin/sudo sudo \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
+ && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
+ && tar -Jcpf /rootfs.tar.xz /rootfs/*
  
 FROM scratch
 
