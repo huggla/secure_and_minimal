@@ -1,46 +1,38 @@
-FROM alpine:3.7 as stage1
+FROM alpine:3.8 as stage1
 
-# Build-only variables
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    argonv="20171227"
+COPY ./start /rootfs/start
 
-COPY ./start /start
-
-RUN apk add --no-cache build-base \
- && downloadDir="$(mktemp -d)" \
- && wget -O "$downloadDir/argon2.tar.gz" https://github.com/P-H-C/phc-winner-argon2/archive/$argonv.tar.gz \
- && buildDir="$(mktemp -d)" \
- && tar -xvf "$downloadDir/argon2.tar.gz" -C "$buildDir" --strip-components=1 \
- && rm -rf "$downloadDir" \
- && cd "$buildDir" \
- && /usr/bin/make OPTTARGET=none \
- && /usr/bin/make install PREFIX=/usr OPTTARGET=none \
- && cd / \
- && rm -rf "$buildDir" \
- && apk del build-base \
+RUN apk add --no-cache sudo argon2 wget \
+ && tar -cpf /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
+ && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-3.8/x86_64/versions/library-3.8/x86_64/rootfs.tar.xz \
+ && tar -Jxpf /rootfs.tar.xz -C /rootfs/ \
+ && tar -xpf /installed_files.tar -C /rootfs/ \
+ && mkdir /rootfs/environment \
+ && cd /rootfs/start \
+ && ln -s stage1 start \
+ && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
+ && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /rootfs/etc/sudoers.d/docker1 \
+ && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
+ && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
+ && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
+ && mkdir -p /rootfs/usr/local/bin \
+ && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
+ && cd /rootfs/usr/bin \
+ && ln -s ../local/bin/sudo sudo \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && apk add --no-cache sudo \
- && mkdir /environment \
- && ln -s /start/stage1 /start/start \
- && echo 'Defaults lecture="never"' > /etc/sudoers.d/docker1 \
- && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /etc/sudoers.d/docker1 \
- && echo 'Defaults env_keep = "VAR_*"' > /etc/sudoers.d/docker2 \
- && echo 'Defaults !root_sudo' >> /etc/sudoers.d/docker2 \
- && echo "starter ALL=(root) NOPASSWD: /start/start" >> /etc/sudoers.d/docker2
-
+ && cp --preserve=all /etc/group /etc/passwd /etc/shadow /rootfs/etc/
+ 
 FROM scratch
 
-COPY --from=stage1 / /
+COPY --from=stage1 /rootfs /
 
 RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
  && chmod 7700 /environment /start \
  && chmod u+x /start/stage1 /start/stage2 \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
- && chmod u=rw,go= /etc/sudoers.d/docker* \
- && ln /usr/bin/sudo /usr/local/bin/sudo
+ && chmod u=rw,go= /etc/sudoers.d/docker*
 
 ENV VAR_LINUX_USER="root" \
     VAR_ARGON2_PARAMS="-r" \
