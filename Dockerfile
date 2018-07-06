@@ -26,18 +26,18 @@ FROM scratch
 
 COPY --from=stage1 /rootfs /
 
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
+    VAR_LINUX_USER="root" \
+    VAR_ARGON2_PARAMS="-r" \
+    VAR_SALT_FILE="/proc/sys/kernel/hostname" \
+    HISTFILE="/dev/null"
+
 RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
  && chmod 7700 /environment /start \
  && chmod u+x /start/stage1 /start/stage2 \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
  && chmod u=rw,go= /etc/sudoers.d/docker*
-
-ENV VAR_LINUX_USER="root" \
-    VAR_ARGON2_PARAMS="-r" \
-    VAR_SALT_FILE="/proc/sys/kernel/hostname" \
-    PATH="$PATH:/start" \
-    HISTFILE="/dev/null"
 
 USER starter
 
