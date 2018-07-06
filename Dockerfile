@@ -1,10 +1,10 @@
-FROM alpine:3.7 as stage1
+FROM alpine:edge as stage1
 
 COPY ./start /rootfs/start
 
 RUN apk add --no-cache sudo argon2 wget \
  && tar -cpf /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
- && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-3.7/x86_64/versions/library-3.7/x86_64/rootfs.tar.xz \
+ && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
  && tar -Jxpf /rootfs.tar.xz -C /rootfs/ \
  && tar -xpf /installed_files.tar -C /rootfs/ \
  && mkdir /rootfs/environment \
