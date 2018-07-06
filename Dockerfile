@@ -7,7 +7,7 @@ RUN apk add --no-cache sudo argon2 wget \
  && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
  && tar -Jxpf /rootfs.tar.xz -C /rootfs/ \
  && tar -xpf /installed_files.tar -C /rootfs/ \
- && mkdir /rootfs/environment \
+ && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -15,7 +15,6 @@ RUN apk add --no-cache sudo argon2 wget \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
- && mkdir -p /rootfs/usr/local/bin \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
