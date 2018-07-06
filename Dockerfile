@@ -1,4 +1,4 @@
-FROM alpine:3.8 as stage1
+FROM alpine as stage1
 
 COPY ./start /rootfs/start
 
