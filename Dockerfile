@@ -3,7 +3,7 @@ FROM alpine:edge as stage1
 COPY ./start /rootfs/start
 
 RUN apk add --no-cache sudo argon2 \
- && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
+ && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin /rootfs/usr/bin \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
