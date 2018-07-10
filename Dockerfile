@@ -3,12 +3,6 @@ FROM alpine:edge as stage1
 COPY ./start /rootfs/start
 
 RUN apk add --no-cache sudo argon2 \
- && tar -cpf /installed_files.tar $(apk manifest $(apk info) | awk -F "  " '{print $2;}') \
- && tar -cpf /installed_files2.tar $(find /bin/* /sbin/* /usr/bin/* /usr/sbin/* -type l) \
-# && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
-# && tar -Jxpf /rootfs.tar.xz -C /rootfs/ \
- && tar -xpf /installed_files.tar -C /rootfs/ \
- && tar -xpf /installed_files2.tar -C /rootfs/ \
  && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
  && cd /rootfs/start \
  && ln -s stage1 start \
@@ -23,6 +17,18 @@ RUN apk add --no-cache sudo argon2 \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
+ 
+ RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
+ && chmod 7700 /environment /start \
+ && chmod u+x /start/stage1 /start/stage2 \
+ && chown :starter /usr/bin/sudo \
+ && chmod u+s,o-rx /usr/bin/sudo \
+ && chmod u=rw,go= /etc/sudoers.d/docker*
+ 
+ RUN tar -cpf /installed_files.tar $(apk manifest $(apk info) | awk -F "  " '{print $2;}') \
+  && tar -cpf /installed_files2.tar $(find /bin/* /sbin/* /usr/bin/* /usr/sbin/* -type l) \
+  && tar -xpf /installed_files.tar -C /rootfs/ \
+  && tar -xpf /installed_files2.tar -C /rootfs/
  
 FROM scratch
 
@@ -41,6 +47,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 # && chmod u+s,o-rx /usr/bin/sudo \
 # && chmod u=rw,go= /etc/sudoers.d/docker*
 
-#USER starter
+USER starter
 
-#CMD ["sudo","start"]
+CMD ["sudo","start"]
