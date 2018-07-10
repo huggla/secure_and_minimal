@@ -3,7 +3,7 @@ FROM alpine:edge as stage1
 COPY ./start /rootfs/start
 
 RUN apk add --no-cache sudo argon2 \
- && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin /rootfs/usr/bin \
+ && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -11,9 +11,6 @@ RUN apk add --no-cache sudo argon2 \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
- && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
- && cd /rootfs/usr/bin \
- && ln -s ../local/bin/sudo sudo \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
@@ -28,7 +25,10 @@ RUN apk add --no-cache sudo argon2 \
  RUN tar -cpf /installed_files.tar $(apk manifest $(apk info) | awk -F "  " '{print $2;}') \
   && tar -cpf /installed_files2.tar $(find /bin/* /sbin/* /usr/bin/* /usr/sbin/* -type l) \
   && tar -xpf /installed_files.tar -C /rootfs/ \
-  && tar -xpf /installed_files2.tar -C /rootfs/
+  && tar -xpf /installed_files2.tar -C /rootfs/ \
+  && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
+  && cd /rootfs/usr/bin \
+  && ln -s ../local/bin/sudo sudo
  
 FROM scratch
 
