@@ -16,7 +16,7 @@ RUN apk add --no-cache sudo argon2 \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
  
  RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
- && chmod 7700 /rootfs/environment /start \
+ && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
  && chown :starter /usr/bin/sudo \
  && chmod u+s,o-rx /usr/bin/sudo \
