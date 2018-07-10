@@ -18,6 +18,9 @@ allVars(){
          if [ "$1" == "noUnderscore" ]
          then
             varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
+         elif [ "$1" == "noUnderscore2" ]
+         then
+            varName="$(echo "$varName" | /usr/bin/tr '_' '-')"
          fi
          eval "varValue=${var#*=}"
          var="$varName""=""$varValue"
