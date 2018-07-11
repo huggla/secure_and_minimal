@@ -17,10 +17,12 @@ RUN apk add --no-cache sudo argon2 \
  
  RUN tar -cpf /installed_files.tar $(apk manifest $(apk info) | awk -F "  " '{print $2;}') \
   && tar -cpf /installed_files2.tar $(find /bin/* /sbin/* /usr/bin/* /usr/sbin/* -type l) \
-  && tar -cpf /installed_files3.tar $(find /etc/* /var/* -type d) \
+  && tar -cpf /installed_files3.tar $(find /etc/* /var/* /lib/* -type d) \
+  && tar -cpf /installed_files4.tar $(find */apk/* -type f) \
   && tar -xpf /installed_files.tar -C /rootfs/ \
   && tar -xpf /installed_files2.tar -C /rootfs/ \
   && tar -xpf /installed_files3.tar -C /rootfs/ \
+  && tar -xpf /installed_files4.tar -C /rootfs/ \
   && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
   && cd /rootfs/usr/bin \
   && ln -s ../local/bin/sudo sudo
