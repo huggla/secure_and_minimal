@@ -15,13 +15,6 @@ RUN apk add --no-cache sudo argon2 \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
  
- RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
- && chmod 7700 /rootfs/environment /rootfs/start \
- && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
- && chown :starter /usr/bin/sudo \
- && chmod u+s,o-rx /usr/bin/sudo \
- && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
- 
  RUN tar -cpf /installed_files.tar $(apk manifest $(apk info) | awk -F "  " '{print $2;}') \
   && tar -cpf /installed_files2.tar $(find /bin/* /sbin/* /usr/bin/* /usr/sbin/* -type l) \
   && tar -xpf /installed_files.tar -C /rootfs/ \
@@ -40,12 +33,12 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
 
-#RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
-# && chmod 7700 /environment /start \
-# && chmod u+x /start/stage1 /start/stage2 \
-# && chown :starter /usr/bin/sudo \
-# && chmod u+s,o-rx /usr/bin/sudo \
-# && chmod u=rw,go= /etc/sudoers.d/docker*
+RUN chmod o= /bin /sbin /usr/bin /usr/sbin \
+ && chmod 7700 /environment /start \
+ && chmod u+x /start/stage1 /start/stage2 \
+ && chown :starter /usr/bin/sudo \
+ && chmod u+s,o-rx /usr/bin/sudo \
+ && chmod u=rw,go= /etc/sudoers.d/docker*
 
 USER starter
 
