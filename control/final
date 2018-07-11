@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -e /control/functions/stopContainer ]
+then
+   . /control/functions/stopContainer
+   trap 'stopContainer' SIGTERM
+fi
+eval "$1"
