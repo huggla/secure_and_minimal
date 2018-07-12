@@ -1,3 +1,0 @@
-tryDelete(){
-   /bin/rm -rf "$(removeQuotes $1)"
-}
