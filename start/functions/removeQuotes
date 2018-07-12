@@ -1,4 +1,0 @@
-removeQuotes(){
-   local tmp="$(removeSingleQuotes $1)"
-   removeDoubleQuotes $tmp
-}
