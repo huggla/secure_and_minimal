@@ -1,7 +1,0 @@
-readEnvironmentVars(){
-   local var=""
-   while read var
-   do 
-      eval "$var"
-   done < /environment/vars
-}
