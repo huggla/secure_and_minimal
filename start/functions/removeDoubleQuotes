@@ -1,3 +1,0 @@
-removeDoubleQuotes(){
-   removeCharacterFromString '"' $1
-}
