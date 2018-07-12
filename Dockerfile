@@ -4,7 +4,7 @@ USER root
 
 COPY ./start /rootfs/start
 
-RUN apk add --no-cache tar sudo argon2 \
+RUN apk add --no-cache sudo argon2 \
  && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
  && cd /rootfs/start \
  && ln -s stage1 start \
@@ -15,9 +15,8 @@ RUN apk add --no-cache tar sudo argon2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
- && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/
- 
- RUN cd / \
+ && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
+ && cd / \
  && tar -cvp -f /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
  && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
  && tar -Jxvp --same-owner -f /rootfs.tar.xz -C /rootfs/ \
@@ -33,8 +32,6 @@ RUN apk add --no-cache tar sudo argon2 \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
- && chown :starter /rootfs/usr/bin/sudo \
- && chmod u+s,o-rx /rootfs/usr/bin/sudo \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
  
 FROM scratch
