@@ -35,7 +35,7 @@ RUN chmod ugo+s /rootfs/usr/local/bin/sudo
  
 FROM alpine:edge
 
-COPY --from=stage1 /rootfs /
+ADD --from=stage1 /rootfs /
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
