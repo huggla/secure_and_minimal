@@ -18,10 +18,10 @@ RUN apk add --no-cache sudo argon2 \
  && tar -cvp -f /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && rm /rootfs/usr/bin/sudo \
- && mv /usr/bin/sudo /rootfs/usr/local/bin/sudo \
+ && ln /usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
- && chmod ugo+s /rootfs/usr/local/bin/sudo \
+# && chmod ugo+s /rootfs/usr/local/bin/sudo \
  && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start \
