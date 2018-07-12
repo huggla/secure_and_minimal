@@ -3,7 +3,7 @@ FROM alpine:edge as stage1
 COPY ./rootfs /rootfs
 
 RUN apk add --no-cache sudo argon2 \
- && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
+ && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin /rootfs/etc/profile.d \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -30,10 +30,9 @@ RUN apk add --no-cache sudo argon2 \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
- && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
+ && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
+ && echo '[ $(/bin/true) ] && exec /start/stage1 || exec /usr/local/bin/sudo /start/stage1' > /rootfs/etc/profile.d/start.sh
  
 FROM scratch
 
 COPY --from=stage1 /rootfs /
-
-CMD ["sudo","start"]
