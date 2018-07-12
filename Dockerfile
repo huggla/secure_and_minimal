@@ -21,7 +21,8 @@ RUN apk add --no-cache sudo argon2 \
  && ln /usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
-# && chmod ugo+s /rootfs/usr/local/bin/sudo \
+ && chown root:root /rootfs/usr/local/bin/sudo \
+ && chmod ugo+s /rootfs/usr/local/bin/sudo \
  && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start \
