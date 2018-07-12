@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e +a +m +s +i -f
-. /start/includeFunctions
-
-startStage2 $1
