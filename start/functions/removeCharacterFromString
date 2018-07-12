@@ -1,3 +1,0 @@
-removeCharacterFromString(){
-   echo "$2" | /usr/bin/tr -d "$1"
-}
