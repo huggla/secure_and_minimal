@@ -1,3 +1,0 @@
-runCmd(){
-   eval "/usr/bin/env -i $1"
-}
