@@ -1,3 +1,0 @@
-tryMakeDir(){
-   tryMakeTypeObject dir $1 $2
-}
