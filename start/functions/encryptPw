@@ -1,3 +1,0 @@
-encryptPw(){
-   echo -n "$1" | /usr/bin/argon2 "$(getSalt)" $VAR_ARGON2_PARAMS
-}
