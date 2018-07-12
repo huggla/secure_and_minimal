@@ -1,3 +1,0 @@
-pwFromFile(){
-   secretFromFileOfType "$1" password
-}
