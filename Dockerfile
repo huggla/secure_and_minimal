@@ -22,7 +22,7 @@ RUN apk add --no-cache sudo argon2 \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
- && sed -i -e 's/export PATH.*/export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start/g' /rootfs/etc/profile \
+ && sed -i -e 's/export PATH.*/export PATH=\/usr\/local\/sbin:\/usr\/local\/bin:\/usr\/sbin:\/usr\/bin:\/sbin:\/bin:\/start/g' /rootfs/etc/profile \
  && echo 'export VAR_LINUX_USER=root' >> /rootfs/etc/profile \
  && echo 'export VAR_ARGON2_PARAMS=-r' >> /rootfs/etc/profile \
  && echo 'export VAR_SALT_FILE=/proc/sys/kernel/hostname' >> /rootfs/etc/profile \
