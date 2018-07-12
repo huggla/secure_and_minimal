@@ -14,6 +14,7 @@ RUN apk add --no-cache sudo argon2 \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
+ && cd / \
  && tar -cpf /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
  && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
  && tar -Jxpf /rootfs.tar.xz -C /rootfs/ \
