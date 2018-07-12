@@ -19,23 +19,18 @@ RUN apk add --no-cache sudo argon2 \
  && cd / \
  && tar -cvp -f /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
- && rm /rootfs/usr/bin/sudo \
- && ln /usr/bin/sudo /rootfs/usr/local/bin/sudo \
+ && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
- && chown root:root /rootfs/usr/local/bin/sudo \
- && chmod ugo+s /rootfs/usr/local/bin/sudo \
  && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
- && chmod 2555 /rootfs/environment /rootfs/start /rootfs/usr/local/bin/sudo \
+ && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
  
-RUN chmod u+s /rootfs/usr/local/bin/sudo
- 
 FROM alpine:edge
 
-COPY --chown=root:root --from=stage1 /rootfs /
+COPY --from=stage1 /rootfs /
 
 RUN chmod u+s /usr/local/bin/sudo
 
