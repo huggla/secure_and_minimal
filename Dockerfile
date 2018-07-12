@@ -16,24 +16,24 @@ RUN apk add --no-cache sudo argon2 \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
  && cd / \
  && tar -cvp -f /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
- && wget -O /rootfs.tar.xz https://github.com/gliderlabs/docker-alpine/raw/rootfs/library-edge/x86_64/versions/library-edge/x86_64/rootfs.tar.xz \
- && tar -Jxvp -f /rootfs.tar.xz -C /rootfs/ \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
- && sed -i -e 's/export PATH.*/export PATH=\/usr\/local\/sbin:\/usr\/local\/bin:\/usr\/sbin:\/usr\/bin:\/sbin:\/bin:\/start/g' /rootfs/etc/profile \
- && echo 'export VAR_LINUX_USER=root' >> /rootfs/etc/profile \
- && echo 'export VAR_ARGON2_PARAMS=-r' >> /rootfs/etc/profile \
- && echo 'export VAR_SALT_FILE=/proc/sys/kernel/hostname' >> /rootfs/etc/profile \
- && echo 'export HISTFILE=/dev/null' >> /rootfs/etc/profile \
+ && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
  
-FROM scratch
+FROM alpine:edge
 
 COPY --from=stage1 /rootfs /
+
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
+    VAR_LINUX_USER="root" \
+    VAR_ARGON2_PARAMS="-r" \
+    VAR_SALT_FILE="/proc/sys/kernel/hostname" \
+    HISTFILE="/dev/null"
 
 CMD ["sudo","start"]
