@@ -1,7 +1,5 @@
 FROM alpine:edge as stage1
 
-USER root
-
 COPY ./start /rootfs/start
 
 RUN apk add --no-cache sudo argon2 \
