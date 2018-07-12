@@ -27,15 +27,15 @@ RUN apk add --no-cache sudo argon2 \
  && chmod ugo+s /rootfs/usr/local/bin/sudo \
  && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
-# && chmod 7700 /rootfs/environment /rootfs/start /rootfs/usr/local/bin/sudo \
+ && chmod 2555 /rootfs/environment /rootfs/start /rootfs/usr/local/bin/sudo \
  && chmod u+x /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
  
-RUN chmod ugo+s /rootfs/usr/local/bin/sudo
+RUN chmod u+s /rootfs/usr/local/bin/sudo
  
 FROM alpine:edge
 
-ADD --from=stage1 /rootfs /
+COPY --chown=root:root --from=stage1 /rootfs /
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
