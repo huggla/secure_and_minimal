@@ -38,6 +38,4 @@ FROM scratch
 
 COPY --from=stage1 /rootfs /
 
-USER starter
-
 CMD ["sudo","start"]
