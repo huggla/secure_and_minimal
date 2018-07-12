@@ -1,3 +1,5 @@
 tryDelete(){
+   local -
+   set +e
    /bin/rm -rf "$(removeQuotes $1)"
 }
