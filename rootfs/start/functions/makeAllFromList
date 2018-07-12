@@ -1,0 +1,35 @@
+makeAllFromList(){
+   local IFS=$(echo -en "\n\b,")
+   local type=""
+   local types="File,Dir"
+   local type_lc=""
+   local match=""
+   local matches=""
+   local p2=""
+   local value=""
+   local values=""
+   local -
+   for type in $types
+   do
+      type_lc="$(toLower $type)"
+      set +e
+      matches="$(echo "$1" | /bin/grep -iE "_$type_lc(s|ectory|ectories)? *=")"
+      set -e
+      for match in $matches
+      do
+         p2=""
+         if [ $(echo $match | /bin/grep -iE "(pass|pw|sec|salt|key)[^=]*=") ]
+         then
+            p2="secret"
+         elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data|_log_)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
+         then
+            p2="write"
+         fi
+         values=${match#*=}
+         for value in $values
+         do
+            tryMake$type $value $p2
+         done
+      done
+   done
+}

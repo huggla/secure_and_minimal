@@ -1,0 +1,6 @@
+isInsecure(){
+   if [ -n "$(/usr/bin/env | grep "VAR_password_")" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
+   then
+      echo "true"
+   fi
+}

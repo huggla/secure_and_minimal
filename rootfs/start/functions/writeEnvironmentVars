@@ -1,0 +1,20 @@
+writeEnvironmentVars(){
+   if [ -n "$VAR_CONFIG_FILE" ]
+   then
+      local VAR_CONFIG_DIR="$(/usr/bin/dirname "$VAR_CONFIG_FILE")"
+   else
+      unset VAR_CONFIG_FILE
+   fi
+   local IFS=$(echo -en "\n\b")
+   local var=""
+   local tmp="$(set | grep -E "^VAR_")"
+   local vars=""
+   local delimiter=""
+   for var in $tmp
+   do
+      vars="$vars$delimiter$var"
+      delimiter=$'\n'
+   done
+   IFS=$(echo -en "")
+   echo "$vars" > /environment/vars
+}

@@ -1,0 +1,3 @@
+updateSudoersConf(){
+   echo "starter "$(/bin/hostname)"=(root) NOPASSWD: /start/start" > /etc/sudoers.d/docker2
+}

@@ -1,0 +1,16 @@
+makePwFileForUser(){
+   local userName="$(toLower "$1")"
+   local userPw=""
+   eval "local pwFile=\$VAR_password_file_$userName"
+   if [ -z "$pwFile" ]
+   then
+      pwFile="$(mktemp)"
+   fi
+   if [ ! -s "$pwFile" ]
+   then
+      eval "userPw=\$VAR_password_$userName"
+      userPw="$(securePw "$userPw")"
+      echo -n "$userPw" > "$pwFile"
+   fi
+   echo "$pwFile"
+}

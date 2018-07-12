@@ -1,0 +1,3 @@
+saltFromFile(){
+   secretFromFileOfType "$1" salt
+}

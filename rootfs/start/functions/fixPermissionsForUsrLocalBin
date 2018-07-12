@@ -1,0 +1,9 @@
+fixPermissionsForUsrLocalBin(){
+   local IFS=$(echo -en "\n\b")
+   local file=""
+   local files="$(/usr/bin/find /usr/local/bin -type f -not -name 'sudo')"
+   for file in $files
+   do
+      trySetPermissionsOf "$file" exec
+   done
+}

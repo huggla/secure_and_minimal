@@ -1,0 +1,3 @@
+fixPermissionsForConfigDir(){
+   trySetPermissionsOf "$VAR_CONFIG_DIR" write recursive
+}
