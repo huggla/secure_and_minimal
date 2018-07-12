@@ -1,9 +1,0 @@
-printSecurityWarning(){
-   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-   echo "  Container was started with either environment variable VAR_password set, or"
-   echo "  with mounted password and/or encryption salt file. These are only needed"
-   echo "  during storage initialization. To improve security, restart the container"
-   echo "  without them."
-   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-   echo
-}
