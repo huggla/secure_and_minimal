@@ -36,6 +36,7 @@ RUN chmod u+s /usr/local/bin/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
+    VAR_FINAL_COMMAND="/bin/sh" \
     VAR_ARGON2_PARAMS="-r" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
