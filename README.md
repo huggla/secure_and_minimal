@@ -6,6 +6,4 @@ Based on the official Alpine Docker image, with sudo, argon2 and improved securi
 ## Environment variables
 ### pre-set runtime variables.
 * VAR_LINUX_USER="root" (the user running VAR_FINAL_COMMAND)
-
-### optional runtime variables.
-* VAR_FINAL_COMMAND (the command to run)
+* VAR_FINAL_COMMAND="/bin/sh" (the command to run)
