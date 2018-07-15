@@ -2,5 +2,4 @@
 set -e +a +m +s +i -f
 . /start/includeFunctions
 
-readEnvironmentVars
 startStage2 $1
