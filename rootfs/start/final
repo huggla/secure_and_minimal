@@ -1,6 +1,5 @@
 #!/bin/sh
 
-/bin/chown root /start/final
 if [ -e /start/functions/stopContainer ]
 then
    . /start/functions/stopContainer
