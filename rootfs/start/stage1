@@ -7,4 +7,5 @@ then
    writeEnvironmentVars
    isFirstRun="true"
 fi
+/usr/bin/env -i /stop/stage1 &
 exec /usr/bin/env -i /start/stage2 $isFirstRun
