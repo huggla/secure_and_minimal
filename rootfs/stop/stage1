@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e +a +m +s +i -f
-. /start/functions/readEnvironmentVars
+. /stop/includeFunctions
 
 /usr/bin/env -i /stop/stage1 &
 exec /usr/bin/env -i /start/stage2 $isFirstRun
