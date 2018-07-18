@@ -27,7 +27,9 @@ RUN apk add --no-cache sudo argon2 \
  && chmod 7700 /rootfs/environment /rootfs/start \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod ug=rx,o= /rootfs/final \
- && chmod u=rw,go= /rootfs/etc/sudoers.d/docker*
+ && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
+ && cd /rootfs/stop \
+ && ln -s ../start/includeFunctions ./
  
 FROM alpine:edge
 
