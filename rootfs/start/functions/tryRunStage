@@ -1,7 +1,7 @@
 tryRunStage(){
-   if [ -f "/start/stage$1" ]
+   if [ -f "stage$1" ]
    then
-      . "/start/stage$1"
+      . "stage$1"
       tryRunStage "$(( $1 + 1 ))"
    fi
 }
