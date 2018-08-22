@@ -24,9 +24,8 @@ RUN apk add --no-cache sudo argon2 \
  && ln -s ../local/bin/sudo sudo \
  && mkdir -p /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
- && chmod 7700 /rootfs/environment /rootfs/start \
- && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
- && chmod ug=rx,o= /rootfs/final \
+ && chmod 7700 /rootfs/environment /rootfs/start /rootfs/stop \
+ && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 /rootfs/stop/stage1 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./
