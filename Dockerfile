@@ -30,7 +30,7 @@ RUN apk add --no-cache sudo argon2 \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./ \
  && cd /rootfs/stop/functions \
- && ln -s ../../start/functions/readEnvironment ./
+ && ln -s ../../start/functions/readEnvironmentVars ./
  
 FROM alpine:edge
 
