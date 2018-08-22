@@ -2,5 +2,4 @@
 set -e +a +m +s +i -f
 . /stop/includeFunctions
 
-/usr/bin/env -i /stop/stage1 &
-exec /usr/bin/env -i /start/stage2 $isFirstRun
+trap 'stop' SIGTERM
