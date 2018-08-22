@@ -1,5 +1,4 @@
 stop(){
-
    readEnvironmentVars
    tryRunStage 3
    allVars quote > /environment/vars
