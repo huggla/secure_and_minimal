@@ -1,11 +1,5 @@
 stop(){
    readEnvironmentVars
-   tryRunStage 3
-   allVars quote > /environment/vars
-   if [ "$VAR_FINAL_CMD_AS_ROOT" == "yes" ]
-   then
-      execCmd "$VAR_FINAL_COMMAND"
-   else
-      execCmdAsLinuxUser "$VAR_FINAL_COMMAND"
-   fi
+   tryRunStage 2
+   echo "Container stopped!"
 }
