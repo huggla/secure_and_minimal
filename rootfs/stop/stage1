@@ -3,3 +3,4 @@ set -e +a +m +s +i -f
 . /stop/includeFunctions
 
 trap 'stop' SIGTERM
+/usr/bin/tail -f /dev/null
