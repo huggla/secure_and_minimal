@@ -1,5 +1,5 @@
 stop(){
    readEnvironmentVars
    tryRunStage 2
-   echo "Container stopped!"
+   echo "Container stopped!" > /tmp/stop/stop
 }
