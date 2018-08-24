@@ -1,4 +1,9 @@
 execCmd(){
-   local command="$(eval "echo $1")"
-   exec /usr/bin/env -i $command
+   if [ -n "$1" ]
+   then
+      local command="$(eval "echo $1")"
+      exec /usr/bin/env -i $command
+   else
+      echo 'execCmd: Nothing to do!'
+   fi
 }
