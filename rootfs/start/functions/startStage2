@@ -13,8 +13,8 @@ startStage2(){
    allVars quote > /environment/vars
    if [ "$VAR_FINAL_CMD_AS_ROOT" == "yes" ]
    then
-      execCmd "$VAR_FINAL_COMMAND"
+      execCmd "$VAR_FINAL_COMMAND" "final"
    else
-      execCmdAsLinuxUser "$VAR_FINAL_COMMAND"
+      execCmdAsLinuxUser "$VAR_FINAL_COMMAND" "final"
    fi
 }
