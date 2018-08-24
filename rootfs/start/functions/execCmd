@@ -1,5 +1,5 @@
 execCmd(){
    local command="$(eval "echo $1")"
-   echo "$command" >> /stop/stage1
+   echo "$command &; wait" >> /stop/stage1
    exec /usr/bin/env -i /stop/stage1
 }
