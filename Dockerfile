@@ -48,4 +48,3 @@ USER starter
 CMD ["sudo","start"]
 
 ONBUILD USER root
-ONBUILD COPY ./rootfs /
