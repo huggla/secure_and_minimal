@@ -8,7 +8,11 @@ execCmd(){
          then
             {
                echo "$command &"
-               echo "wait"
+               echo 'PID=$!'
+               echo 'wait $PID'
+               echo 'trap - TERM INT'
+               echo 'wait $PID'
+               echo 'EXIT_STATUS=$?'
             } >> /stop/stage1
          fi
          exec /usr/bin/env -i /stop/stage1
