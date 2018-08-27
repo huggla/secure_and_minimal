@@ -1,8 +1,6 @@
 FROM alpine:edge as stage1
 
-ONBUILD USER root
-
-ONBUILD COPY ./rootfs /rootfs
+COPY ./rootfs /rootfs
 
 RUN apk add --no-cache sudo argon2 \
  && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
@@ -48,3 +46,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 USER starter
 
 CMD ["sudo","start"]
+
+ONBUILD USER root
+ONBUILD COPY ./rootfs /rootfs
