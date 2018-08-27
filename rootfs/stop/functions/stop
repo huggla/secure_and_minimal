@@ -1,5 +1,5 @@
 stop(){
    readEnvironmentVars
    tryRunStage 2
-   exit 0
+   /bin/kill -TERM $PID
 }
