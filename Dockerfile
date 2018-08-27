@@ -1,8 +1,8 @@
 FROM alpine:edge as stage1
 
-USER root
+ONBUILD USER root
 
-COPY ./rootfs /rootfs
+ONBUILD COPY ./rootfs /rootfs
 
 RUN apk add --no-cache sudo argon2 \
  && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin \
