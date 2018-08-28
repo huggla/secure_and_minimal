@@ -14,7 +14,7 @@ RUN apk add --no-cache sudo argon2 \
  && addgroup -S starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
- && tar -cvpP -f /installed_files.tar $(apk manifest sudo argon2 | awk -F "  " '{print "/"$2;}') \
+ && tar -cvp -f /installed_files.tar -C / $(apk manifest sudo argon2 | awk -F "  " '{print $2;}') \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/local/bin/sudo \
  && cd /rootfs/usr/bin \
