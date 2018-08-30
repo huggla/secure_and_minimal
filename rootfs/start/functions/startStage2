@@ -1,6 +1,6 @@
 startStage2(){
    local isFirstRun=$1
-   local finalCmdString=""
+   local finalCmdString=$VAR_FINAL_COMMAND
    readEnvironmentVars
    if [ "$isFirstRun" == "true" ]
    then
@@ -13,10 +13,6 @@ startStage2(){
    fi
    tryRunStage 3
    allVars quote > /environment/vars
-   if [ -z "$finalCmdString" ]
-   then
-      finalCmdString="$VAR_FINAL_COMMAND &"
-   fi
    if [ "$VAR_FINAL_CMD_AS_ROOT" == "yes" ]
    then
       execCmd "$finalCmdString" "final"
