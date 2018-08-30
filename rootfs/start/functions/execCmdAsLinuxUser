@@ -4,7 +4,7 @@ execCmdAsLinuxUser(){
    if [ -n "$1" ]
    then
       local command="$(eval "echo $1")"
-      execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command" $2
+      execCmd "/usr/local/bin/sudo -u $VAR_LINUX_USER $command"
    else
       echo 'execCmdAsLinuxUser: Nothing to do!'
    fi
