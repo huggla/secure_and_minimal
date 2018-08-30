@@ -1,6 +1,6 @@
 startStage2(){
    local isFirstRun=$1
-   local finalCmdString=$VAR_FINAL_COMMAND
+   local finalCmdString="$VAR_FINAL_COMMAND &"
    readEnvironmentVars
    if [ "$isFirstRun" == "true" ]
    then
@@ -9,7 +9,6 @@ startStage2(){
       fixHosts
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
-      local ampAppendFinal="true"
    fi
    tryRunStage 3
    allVars quote > /environment/vars
