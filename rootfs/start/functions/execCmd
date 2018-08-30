@@ -2,23 +2,7 @@ execCmd(){
    if [ -n "$1" ]
    then
       local command="$(eval "echo $1")"
-      if [ "$2" == "final" ]
-      then
-         if [ "$isFirstRun" == "true" ]
-         then
-            {
-               echo "$command"
-               echo 'PID=$!'
-               echo 'wait $PID'
-               echo 'trap - TERM INT'
-               echo 'wait $PID'
-               echo 'EXIT_STATUS=$?'
-            } >> /stop/stage1
-         fi
-         exec /usr/bin/env -i /stop/stage1
-      else
-         exec /usr/bin/env -i $command
-      fi
+      exec /usr/bin/env -i $command
    else
       echo 'execCmd: Nothing to do!'
    fi
