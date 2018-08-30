@@ -12,7 +12,7 @@ startStage2(){
       tryRunStage 3
       if [ "$VAR_FINAL_CMD_AS_ROOT" != "yes" ] && [ "$VAR_LINUX_USER" != "root" ]
       then
-         finalCmdString="/usr/local/sudo -u $VAR_LINUX_USER $finalCmdString"
+         finalCmdString="/usr/local/bin/sudo -u $VAR_LINUX_USER $finalCmdString"
       fi
       {
          echo "$finalCmdString"
