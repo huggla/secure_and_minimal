@@ -7,12 +7,7 @@ execCmd(){
          if [ "$isFirstRun" == "true" ]
          then
             {
-               if [ "$ampAppendFinal" == "true" ]
-               then
-                  echo "$command &"
-               else
-                  echo "$command"
-               fi
+               echo "$command"
                echo 'PID=$!'
                echo 'wait $PID'
                echo 'trap - TERM INT'
