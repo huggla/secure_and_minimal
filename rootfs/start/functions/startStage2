@@ -15,7 +15,7 @@ startStage2(){
          finalCmdString="/usr/local/bin/sudo -u $VAR_LINUX_USER $finalCmdString"
       fi
       {
-         echo "$finalCmdString"
+         echo -e "$finalCmdString"
          echo 'PID=$!'
          echo 'wait $PID'
          echo 'trap - TERM INT'
