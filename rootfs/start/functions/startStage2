@@ -10,6 +10,10 @@ startStage2(){
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
       tryRunStage 3
+      if [ "$VAR_FINAL_CMD_AS_ROOT" != "yes" ] && [ "$VAR_LINUX_USER" != "root" ]
+      then
+         finalCmdString="/usr/local/sudo -u $VAR_LINUX_USER $finalCmdString"
+      fi
       {
          echo "$finalCmdString"
          echo 'PID=$!'
@@ -22,10 +26,5 @@ startStage2(){
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   if [ "$VAR_FINAL_CMD_AS_ROOT" == "yes" ] || [ "$VAR_LINUX_USER" == "root" ]
-   then
-      execCmd /stop/stage1
-   else
-      execCmdAsLinuxUser /stop/stage1
-   fi
+   execCmd /stop/stage1
 }
