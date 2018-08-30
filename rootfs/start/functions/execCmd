@@ -6,13 +6,13 @@ execCmd(){
       then
          if [ "$isFirstRun" == "true" ]
          then
-            local amp="&"
-            if [ "$noAmpAppend" == "true" ]
-            then
-               amp=""
-            fi
             {
-               echo "$command $amp"
+               if [ "$ampAppendFinal" == "true" ]
+               then
+                  echo "$command &"
+               else
+                  echo "$command"
+               fi
                echo 'PID=$!'
                echo 'wait $PID'
                echo 'trap - TERM INT'
