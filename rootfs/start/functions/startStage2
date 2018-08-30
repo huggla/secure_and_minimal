@@ -11,10 +11,14 @@ startStage2(){
    fi
    tryRunStage 3
    allVars quote > /environment/vars
+   if [ -z "$finalCmdString" ]
+   then
+      finalCmdString="$VAR_FINAL_COMMAND &"
+   fi
    if [ "$VAR_FINAL_CMD_AS_ROOT" == "yes" ]
    then
-      execCmd "$VAR_FINAL_COMMAND" "final"
+      execCmd "$finalCmdString" "final"
    else
-      execCmdAsLinuxUser "$VAR_FINAL_COMMAND" "final"
+      execCmdAsLinuxUser "$finalCmdString" "final"
    fi
 }
