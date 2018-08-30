@@ -1,5 +1,6 @@
 startStage2(){
    local isFirstRun=$1
+   local finalCmdString=""
    readEnvironmentVars
    if [ "$isFirstRun" == "true" ]
    then
