@@ -9,6 +9,7 @@ startStage2(){
       fixHosts
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
+      local ampAppendFinal="true"
    fi
    tryRunStage 3
    allVars quote > /environment/vars
