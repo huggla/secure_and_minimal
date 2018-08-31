@@ -25,5 +25,5 @@ containerControl(){
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   execCmdAsUser '/usr/local/bin/dash /stop/stage1' $finalUser
+   execCmdAsUser /stop/stage1 $finalUser
 }
