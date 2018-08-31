@@ -36,6 +36,7 @@ RUN apk info > /pre_apks.list \
  && cd /rootfs/stop/functions \
  && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./ \
  && chmod -R g=r,o= /rootfs/stop \
+ && chmod g=rx /rootfs/stop \
  && chmod u=rwx,g=rx /rootfs/stop/stage1
  
 FROM alpine:edge
