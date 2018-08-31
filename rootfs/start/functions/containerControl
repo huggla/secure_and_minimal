@@ -19,6 +19,7 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
+      /bin/ls -la /start
       /bin/chmod u=rx,go= /stop/stage1
       /bin/chown $finalUser /stop/stage1
    else
