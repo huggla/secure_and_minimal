@@ -2,5 +2,6 @@
 set -e +a +m +s +i -f
 . /stop/includeFunctions
 
+local PID=""
 trap 'stop' TERM INT
 set +e
