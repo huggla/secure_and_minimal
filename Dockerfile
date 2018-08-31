@@ -23,13 +23,14 @@ RUN apk info > /pre_apks.list \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/bin/dash /rootfs/usr/local/bin/ \
  && chmod go= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
- && chmod -R go= /rootfs/environment /rootfs/start \
+ && chmod -R go= /rootfs/environment \
+ 
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
  && ln -s ../local/bin/dash dash \
  && chmod g= /rootfs/usr/local/bin/sudo \
- && chmod -R o= /rootfs/usr/local/bin \
- && chmod u=rx /rootfs/start/stage1 /rootfs/start/stage2 \
+ && chmod -R o= /rootfs/usr/local/bin /rootfs/start \
+ && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./ \
