@@ -28,7 +28,7 @@ RUN apk info > /pre_apks.list \
  && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && chmod 7700 /rootfs/environment /rootfs/start /rootfs/stop \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
- && chmod ug=rx,o= /rootfs/stop/stage1 \
+ && chmod -R ug=rx,o= /rootfs/stop \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./ \
