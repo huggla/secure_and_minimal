@@ -20,6 +20,7 @@ containerControl(){
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
       /bin/chgrp $finalUser /stop/stage1
+      cat /etc/passwd
    else
       tryRunStage 3
    fi
