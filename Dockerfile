@@ -46,14 +46,16 @@ COPY --from=stage1 /rootfs /
 
 RUN chmod u+s /usr/local/bin/sudo
 
-USER starter
-
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
     VAR_FINAL_COMMAND="/usr/local/bin/dash" \
     VAR_ARGON2_PARAMS="-r" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
+
+USER starter
+
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start"
 
 CMD ["sudo","start"]
 
