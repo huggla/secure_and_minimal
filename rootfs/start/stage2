@@ -1,4 +1,4 @@
-#!/usr/local/bin/dash
+#!/bin/sh
 set -e +a +m +s +i -f
 . /start/includeFunctions
 
