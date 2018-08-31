@@ -18,7 +18,6 @@ RUN apk info > /pre_apks.list \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
- && addgroup -S -g 101 starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/bin/dash /rootfs/usr/local/bin/ \
