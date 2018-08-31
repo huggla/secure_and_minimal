@@ -12,6 +12,7 @@ execCmdAsUser(){
             id
             local command="$(eval "echo $1")"
             echo "/usr/local/bin/sudo -u $2 $command"
+            cat /stop/stage1
             ls -la /stop
             ls -la /stop/functions
             ls -la /usr/local/bin
