@@ -25,5 +25,11 @@ containerControl(){
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   execCmdAsUser /stop/stage1 $finalUser
+   if [ "$finalUser" == "root" ]
+   then
+      exec /usr/bin/env -i /stop/stage1
+   else
+      exec /usr/bin/env -i /usr/local/bin/sudo -u $finalUser /stop/stage1
+   fi
+   #execCmdAsUser /stop/stage1 $finalUser
 }
