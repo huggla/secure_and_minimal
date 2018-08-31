@@ -1,6 +1,7 @@
 startStage2(){
    local isFirstRun=$1
    readEnvironmentVars
+   local finalUser=$VAR_LINUX_USER
    if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser
@@ -10,10 +11,6 @@ startStage2(){
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
       tryRunStage 3
-      if [ "$VAR_FINAL_CMD_AS_ROOT" != "yes" ] && [ "$VAR_LINUX_USER" != "root" ]
-      then
-         finalCmdString="/usr/local/bin/sudo -u $VAR_LINUX_USER $finalCmdString"
-      fi
       {
          echo -e "$finalCmdString"
          echo 'PID=$!'
@@ -26,5 +23,5 @@ startStage2(){
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   execCmd /stop/stage1
+   execCmdAsUser /stop/stage1 $finalUser
 }
