@@ -55,8 +55,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 
 USER starter
 
-ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start"
-
-CMD ["sudo","start"]
+CMD ["/usr/local/bin/sudo","start"]
 
 ONBUILD USER root
