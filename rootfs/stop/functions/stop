@@ -1,6 +1,8 @@
 stop(){
+   local -
+   set -e
    readEnvironmentVars
    tryRunStage 2
-   /bin/kill -TERM $PID
+   local x="${/bin/kill -TERM $PID}"
    echo "Container was stopped."
 }
