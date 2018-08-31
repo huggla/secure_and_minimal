@@ -19,17 +19,10 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
-      /bin/chgrp $finalUser /stop/stage1
-      cat /etc/passwd
+      /bin/chgrp -R $finalUser /stop
    else
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   if [ "$finalUser" == "root" ]
-   then
-      exec /usr/bin/env -i /stop/stage1
-   else
-      exec /usr/bin/env -i /usr/local/bin/sudo -u $finalUser /stop/stage1
-   fi
-   #execCmdAsUser /stop/stage1 $finalUser
+   execCmdAsUser /stop/stage1 $finalUser
 }
