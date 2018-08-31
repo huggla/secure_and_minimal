@@ -28,7 +28,7 @@ RUN apk info > /pre_apks.list \
  && ln -s ../local/bin/sudo sudo \
  && ln -s ../local/bin/dash dash \
  && chgrp starter /rootfs/usr/local/bin/sudo \
- && chmod -R o= /rootfs/usr/local/bin /rootfs/start \
+ && chmod -R o= /rootfs/usr/local/bin/sudo /rootfs/usr/local/bin/dash /rootfs/start \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && cd /rootfs/stop \
