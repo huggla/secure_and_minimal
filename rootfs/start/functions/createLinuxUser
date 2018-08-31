@@ -6,7 +6,7 @@ createLinuxUser(){
       fi
       if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
       then
-         /usr/sbin/adduser -D -S -H -s /usr/local/bin/dash -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
+         /usr/sbin/adduser -D -S -H -h /dev/null -s /bin/false -u 102 -G $VAR_LINUX_USER $VAR_LINUX_USER
       fi
    } 2> /dev/null
 }
