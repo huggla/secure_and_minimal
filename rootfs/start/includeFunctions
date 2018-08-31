@@ -7,9 +7,9 @@ includeFunctions(){
       set +f
       for function in "$(/usr/bin/dirname $0)"/functions/*
       do
-         if [ -f "$function" ] && [ ! $(type -t $(/usr/bin/basename "$function")) ]
+         if [ -f "$function" ]
          then
-            . "$function"
+            type "$(/usr/bin/basename "$function")" || . "$function"
          fi
       done
    fi
