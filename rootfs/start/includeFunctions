@@ -9,7 +9,7 @@ includeFunctions(){
       do
          if [ -f "$function" ]
          then
-            type "$(/usr/bin/basename "$function")" || . "$function"
+            type "$(/usr/bin/basename "$function")" > /dev/null || . "$function"
          fi
       done
    fi
