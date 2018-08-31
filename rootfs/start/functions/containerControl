@@ -19,6 +19,8 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
+      /bin/chmod u=x,go= /stop/stage1
+      /bin/chown $VAR_LINUX_USER /stop/stage1
    else
       tryRunStage 3
    fi
