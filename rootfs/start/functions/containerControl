@@ -1,4 +1,4 @@
-startStage2(){
+containerControl(){
    local isFirstRun=$1
    readEnvironmentVars
    local finalUser=$VAR_LINUX_USER
