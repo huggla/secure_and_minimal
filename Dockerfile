@@ -24,16 +24,18 @@ RUN apk info > /pre_apks.list \
  && mv /rootfs/usr/bin/sudo /rootfs/usr/bin/dash /rootfs/usr/local/bin/ \
  && cd /rootfs/usr/bin \
  && ln -s ../local/bin/sudo sudo \
+ && chmod -R go= /rootfs/environment /rootfs/start /rootfs/usr/local/bin \
  && ln -s ../local/bin/dash dash \
- && chmod o= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
- && chmod 7700 /rootfs/environment /rootfs/start /rootfs/stop \
- && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
- && chmod -R ug=rx,o= /rootfs/stop \
+ && chmod o= /rootfs/usr/local/bin/dash \
+ && chmod go= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
+ && chmod u=rx /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./ \
  && cd /rootfs/stop/functions \
- && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./
+ && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./ \
+ && chmod -R g=r,o= /rootfs/stop \
+ && chmod u=rwx,g=rx /rootfs/stop/stage1
  
 FROM alpine:edge
 
