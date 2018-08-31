@@ -19,7 +19,7 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
-      /bin/chgrp -R $finalUser /stop
+      /bin/chgrp -R $finalUser /stop /start/includeFunctions /start/functions
    else
       tryRunStage 3
    fi
