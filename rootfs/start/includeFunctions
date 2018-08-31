@@ -1,15 +1,16 @@
 includeFunctions(){
-   local functionsDir="$(/usr/bin/dirname $0)/functions"
+
+   local functionsDir="${0%/*}/functions"
    if [ -d "$functionsDir" ]
    then
       local function=""
       local -
       set +f
-      for function in "$(/usr/bin/dirname $0)"/functions/*
+      for function in "$functionsDir/"*
       do
          if [ -f "$function" ]
          then
-            type "$(/usr/bin/basename "$function")" > /dev/null || . "$function"
+            type ${function##*/} > /dev/null || . "$function"
          fi
       done
    fi
