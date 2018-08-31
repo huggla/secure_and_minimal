@@ -4,7 +4,7 @@ set -e +a +m +s +i -f
 
 if [ ! -e "/environment/vars" ]
 then
-   writeEnvironmentVars
    isFirstRun="true"
+   writeEnvironmentVars
 fi
 exec /usr/bin/env -i /start/stage2 $isFirstRun
