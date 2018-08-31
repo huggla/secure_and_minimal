@@ -1,0 +1,21 @@
+[ $(type -t execCmd) ] || . /start/functions/execCmd
+
+execCmdAsUser(){
+   if [ -n "$1" ]
+   then
+      if [ -n "$2" ]
+      then
+         if [ "$2" == "root" ]
+         then
+            execCmd $1
+         else
+            local command="$(eval "echo $1")"
+            execCmd "/usr/local/bin/sudo -u $2 $command"
+         fi
+      else
+         echo 'execCmdAsUser ERROR: No user given!'
+      fi
+   else
+      echo 'execCmdAsUser ERROR: No command given!'
+   fi
+}
