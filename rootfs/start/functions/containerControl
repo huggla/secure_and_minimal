@@ -10,12 +10,13 @@ containerControl(){
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
+      echo "tryRunStage"
       tryRunStage 3
       {
          echo -e "$finalCmdString"
          echo 'PID=$!'
          echo 'wait $PID'
-         echo 'trap - $SIG'
+         echo 'trap - $sig'
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
