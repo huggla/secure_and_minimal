@@ -1,9 +1,12 @@
 #!/usr/local/bin/dash
 set -e +a +m +s +i -f
+echo 'includeFunctions'
 . /stop/includeFunctions
 
 for SIG in 1 2 3 6 9 14 15
 do
+echo "trap $SIG"
    trap 'stop' $SIG
 done
+echo "for done"
 set +e
