@@ -32,7 +32,7 @@ RUN apk info > /pre_apks.list \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && chmod -R g=r,o= /rootfs/stop \
  && chmod g=rx /rootfs/stop \
- && chmod u=rwx,g=rx /rootfs/stop/stage1
+ && chmod u=rwx,g=rx /rootfs/stop/stage1 \
  && cd /rootfs/stop \
  && ln -s ../start/includeFunctions ./ \
  && cd /rootfs/stop/functions \
