@@ -15,7 +15,7 @@ containerControl(){
          echo -e "$finalCmdString"
          echo 'PID=$!'
          echo 'wait $PID'
-         echo 'trap - TERM INT'
+         echo 'trap - $SIG'
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
