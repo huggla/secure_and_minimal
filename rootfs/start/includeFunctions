@@ -8,7 +8,7 @@ includeFunctions(){
       set +f
       for function in "$functionsDir/"*
       do
-         if [ -f "$function" ]
+         if [ -e "$function" ]
          then
             type ${function##*/} > /dev/null || . "$function"
          fi
