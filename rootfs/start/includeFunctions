@@ -1,5 +1,4 @@
 includeFunctions(){
-
    local functionsDir="${0%/*}/functions"
    if [ -d "$functionsDir" ]
    then
