@@ -10,7 +10,6 @@ containerControl(){
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
-      echo "tryRunStage"
       tryRunStage 3
       {
          echo -e "$finalCmdString"
