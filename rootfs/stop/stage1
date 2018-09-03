@@ -2,8 +2,8 @@
 set -e +a +m +s +i -f
 . /stop/includeFunctions
 
-for sig in 1 2 3 6 9 14 15
+for SIG in 1 2 3 6 9 14 15
 do
-   trap "stop $signal" $signal
+   trap 'stop' $SIG
 done
 set +e
