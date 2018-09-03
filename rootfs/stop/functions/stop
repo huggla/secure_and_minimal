@@ -2,7 +2,7 @@ stop(){
    local -
    set -e
    echo 'readEnvironmentVars'
-   readEnvironmentVars
+ #  readEnvironmentVars
    echo 'tryrunstage'
    tryRunStage 2
    echo 'killpid'
