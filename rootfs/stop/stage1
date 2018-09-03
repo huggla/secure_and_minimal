@@ -3,10 +3,10 @@ set -e +a +m +s +i -f
 echo 'includeFunctions'
 . /stop/includeFunctions
 
-for SIG in 1 2 3 6 9 14 15
+for sig in 1 2 3 6 9 14 15
 do
-echo "trap $SIG"
-   trap 'stop' $SIG
+echo "trap $sig"
+   trap 'stop' $sig
 done
 echo "for done"
 set +e
