@@ -1,5 +1,5 @@
 tryRunStage(){
-   local stageFile="$(/usr/bin/dirname $0)/stage$1"
+   local stageFile="${0%/*}/stage$1"
    if [ -f "$stageFile" ]
    then
       . "$stageFile"
