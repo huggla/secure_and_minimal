@@ -3,6 +3,6 @@ stop(){
    set -e
    readEnvironmentVars
    tryRunStage 2
-   /usr/local/bin/killpid $1 $2
+   /usr/local/bin/killpid $PID $SIG
    echo "Container was stopped."
 }
