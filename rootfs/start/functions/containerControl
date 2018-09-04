@@ -9,7 +9,7 @@ containerControl(){
       fixHosts
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
-      eval "local finalCmdString='$VAR_FINAL_COMMAND &'"
+      eval "local finalCmdString=\"$VAR_FINAL_COMMAND &\""
       tryRunStage 3
       {
          echo -e "$finalCmdString"
