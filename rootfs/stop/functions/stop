@@ -2,11 +2,11 @@ stop(){
    local -
    set -e
    tryRunStage 2
-   /usr/local/bin/killpid $PID $sig
+   /usr/local/bin/killpid $PID $1
    if [ "$PID" -eq 1 ]
    then
-      echo "Container was stopped! Signal $sig"
+      echo "Container was stopped! Signal $1"
    else
-      echo "Process was stopped! Signal $sig"
+      echo "Process was stopped! Signal $1"
    fi
 }
