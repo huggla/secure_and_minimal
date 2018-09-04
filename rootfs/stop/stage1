@@ -4,6 +4,7 @@
 PID=0
 for sig in 1 2 3 6 9 14 15
 do
-   trap "stop $sig; killpid $PID $sig" $sig
+   sig$PID=$sig
+   trap "stop $(eval "echo sig$PID"); killpid $PID $(eval "echo sig$PID")" "$(eval "echo sig$PID")"
 done
 #set +e
