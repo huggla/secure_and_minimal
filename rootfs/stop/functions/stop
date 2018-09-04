@@ -1,8 +1,12 @@
 stop(){
    local -
    set -e
- #  readEnvironmentVars
    tryRunStage 2
    /usr/local/bin/killpid $PID $sig
-   echo "Container was stopped."
+   if [ "$PID" == "1" ]
+   then
+      echo "Container was stopped!"
+   else
+      echo "Process was stopped!"
+   fi
 }
