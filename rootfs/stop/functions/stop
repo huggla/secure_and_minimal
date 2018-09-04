@@ -5,8 +5,10 @@ stop(){
    /usr/local/bin/killpid $PID $1
    if [ "$PID" -eq 1 ]
    then
-      echo "Container was stopped! Signal $1"
+      echo "Container was stopped! PID $PID, Signal $1"
+      exit 0
    else
-      echo "Process was stopped! Signal $1"
+      echo "Process was stopped! PID $PID Signal $1"
+      exit 0
    fi
 }
