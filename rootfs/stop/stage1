@@ -1,9 +1,9 @@
 #!/usr/local/bin/dash
-set -e +a +m +s +i -f
+#set -e +a +m +s +i -f
 . /stop/includeFunctions
-
+PID=0
 for sig in 1 2 3 6 9 14 15
 do
-   trap "stop $sig" $sig
+   trap "stop $sig; killpid $PID $sig" $sig
 done
-set +e
+#set +e
