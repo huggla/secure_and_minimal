@@ -8,7 +8,8 @@ RUN find bin usr lib etc var home sbin root run srv tmp -type d -print0 | sed -e
  && cp -a /lib/apk/db /rootfs/lib/apk/ \
  && cp -a /etc/apk /rootfs/etc/ \
  && cd / \
- && cp -a /bin/busybox /bin/sh /rootfs/bin/ \
+ && cp -a /bin /sbin /rootfs/ \
+ && cp -a /usr/bin /usr/sbin /rootfs/usr/ \
  && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
  && apk --no-cache --quiet --root /rootfs add $APKS \
  && mkdir -p /rootfs/environment \
