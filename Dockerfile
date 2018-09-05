@@ -4,15 +4,14 @@ ARG APKS="sudo argon2 dash"
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/lib/apk /rootfs/etc \
+RUN find bin usr lib etc var home sbin root run srv tmp -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
  && cp -a /lib/apk/db /rootfs/lib/apk/ \
  && cp -a /etc/apk /rootfs/etc/ \
  && cd / \
- && find bin usr lib etc var home sbin root run srv tmp -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
  && cp -a /bin/busybox /bin/sh /rootfs/bin/ \
  && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
  && apk --no-cache --quiet --root /rootfs add $APKS \
- && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
+ && mkdir -p /rootfs/environment \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
