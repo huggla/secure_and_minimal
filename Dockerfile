@@ -9,7 +9,7 @@ RUN mkdir -p /rootfs/lib/apk /rootfs/etc \
  && cp -a /lib/apk/db /rootfs/lib/apk/ \
  && ls -la /etc \
  && cp -a /etc/apk /rootfs/etc/ \
- && cp -a /bin /rootfs \
+ && cp -a /bin /rootfs/ \
  && apk --no-cache --quiet info \
  && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
  && apk --no-cache --quiet --root /rootfs info \
