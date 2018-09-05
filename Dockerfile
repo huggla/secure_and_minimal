@@ -43,7 +43,7 @@ FROM alpine:edge
 
 COPY --from=stage1 /rootfs /
 
-RUN chmod u+s /usr/local/bin/sudo
+#RUN chmod u+s /usr/local/bin/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
