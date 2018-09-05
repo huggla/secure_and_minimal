@@ -5,7 +5,7 @@ ARG APKS="sudo argon2 dash"
 COPY ./rootfs /rootfs
 
 RUN apk --no-cache add sudo dash \
- && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/usr/lib/sudo \
+ && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/usr/lib/sudo /rootfs/etc/sudoers.d \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
