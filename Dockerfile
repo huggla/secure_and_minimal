@@ -4,12 +4,11 @@ ARG APKS="sudo argon2 dash"
 
 COPY ./rootfs /rootfs
 
-RUN apk info > /package.list \
- && apk --no-cache add $APKS \
- && apk info > /rootfs/package.list \
- && apk manifest $(diff /package.list /rootfs/package.list | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks_files.list \
- && tar -cvp -f /apks_files.tar -T /apks_files.list -C / \
- && tar -xvp -f /apks_files.tar -C /rootfs/ \
+RUN mkdir -p /rootfs/lib/apk /rootfs/etc \
+ && cp -a /lib/apk/db /rootfs/lib/apk/ \
+ && cp -a /etc/apk /rootfs/etc/ \
+ && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
+ && apk --no-cache --quiet --root /rootfs add $APKS \
  && mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && cd /rootfs/start \
  && ln -s stage1 start \
