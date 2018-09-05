@@ -4,15 +4,8 @@ ARG APKS="sudo argon2 dash"
 
 COPY ./rootfs /rootfs
 
-RUN find bin usr lib etc var home sbin root run srv -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
- && cp -a /lib/apk/db /rootfs/lib/apk/ \
- && cp -a /etc/apk /rootfs/etc/ \
- && cd / \
- && cp -a /bin /sbin /rootfs/ \
- && cp -a /usr/bin /usr/sbin /rootfs/usr/ \
- && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
- && apk --no-cache --quiet --root /rootfs add $APKS \
- && mkdir -p /rootfs/environment \
+RUN apk --no-cache add sudo dash \
+ && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -23,12 +16,10 @@ RUN find bin usr lib etc var home sbin root run srv -type d -print0 | sed -e 's|
  && addgroup -S -g 101 starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
- && mv /rootfs/usr/bin/sudo /rootfs/usr/bin/dash /rootfs/usr/local/bin/ \
+ && mv /usr/bin/sudo /usr/bin/dash /rootfs/usr/local/bin/ \
  && chmod go= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
  && chmod -R go= /rootfs/environment \
  && cd /rootfs/usr/bin \
- && ln -s ../local/bin/sudo sudo \
- && ln -s ../local/bin/dash dash \
  && chmod -R o= /rootfs/usr/local/bin/dash /rootfs/start \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
