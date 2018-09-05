@@ -9,7 +9,12 @@ RUN mkdir -p /rootfs/lib/apk /rootfs/etc \
  && cp -a /lib/apk/db /rootfs/lib/apk/ \
  && ls -la /etc \
  && cp -a /etc/apk /rootfs/etc/ \
- && cp -a /bin /rootfs/ \
+ && cd / \
+ && find bin usr lib etc var home sbin root run srv tmp -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
+ && ln -s /bin/* /rootfs/bin/ \
+ && ln -s /sbin/* /rootfs/sbin/ \
+ && ln -s /usr/bin/* /rootfs/usr/bin/ \
+ && ln -s /usr/sbin/* /rootfs/usr/sbin/ \
  && apk --no-cache --quiet info \
  && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
  && apk --no-cache --quiet --root /rootfs info \
