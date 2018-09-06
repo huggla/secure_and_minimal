@@ -1,10 +1,8 @@
 FROM alpine:edge as stage1
 
-ARG APKS="sudo argon2 dash"
-
 COPY ./rootfs /rootfs
 
-RUN apk --no-cache add sudo dash \
+RUN apk --no-cache add sudo dash argon2 \
  && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/usr/lib/sudo /rootfs/etc/sudoers.d \
  && cd /rootfs/start \
  && ln -s stage1 start \
@@ -16,6 +14,7 @@ RUN apk --no-cache add sudo dash \
  && addgroup -S -g 101 starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
+ && mv /usr/bin/argon2 /rootfs/usr/bin/ \
  && mv /usr/bin/sudo /usr/bin/dash /rootfs/usr/local/bin/ \
  && mv /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
  && chmod go= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
