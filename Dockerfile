@@ -14,6 +14,10 @@ RUN apk --no-cache add sudo dash argon2 \
  && addgroup -S -g 101 starter \
  && adduser -D -S -H -s /bin/false -u 101 -G starter starter \
  && cp -p /etc/group /etc/passwd /etc/shadow /rootfs/etc/ \
+# && apk manifest alpine-baselayout | awk -F "  " '{print $2;}' > /apks_files.list \
+# && tar -cvp -f /apks_files.tar -T /apks_files.list -C / \
+# && tar -xvp -f /apks_files.tar -C /rootfs \
+# && rm /apks_files.tar /apks_files.list \
  && mv /usr/bin/argon2 /rootfs/usr/bin/ \
  && mv /usr/bin/sudo /usr/bin/dash /rootfs/usr/local/bin/ \
  && mv /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
