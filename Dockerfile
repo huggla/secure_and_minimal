@@ -20,11 +20,12 @@ RUN apk --no-cache add sudo dash argon2 \
 # && rm /apks_files.tar /apks_files.list \
  && mv /usr/bin/argon2 /rootfs/usr/bin/ \
  && mv /usr/bin/sudo /usr/bin/dash /rootfs/usr/local/bin/ \
+ && chmod ug=rx,o= /rootfs/usr/local/bin/* \
  && mv /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
  && chmod go= /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
  && chmod -R go= /rootfs/environment \
  && cd /rootfs/usr/bin \
- && chmod -R o= /rootfs/usr/local/bin/dash /rootfs/start \
+ && chmod -R o= /rootfs/start \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && chmod -R g=r,o= /rootfs/stop \
