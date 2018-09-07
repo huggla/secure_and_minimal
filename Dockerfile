@@ -24,6 +24,8 @@ RUN mkdir /rootfs/environment \
  && chmod -R g=r,o= /rootfs/stop \
  && chmod g=rx /rootfs/stop /rootfs/stop/functions \
  && chmod u=rwx,g=rx /rootfs/stop/stage1 \
+ && cd /rootfs/usr/bin \
+ && ln -s ../local/bin/dash dash \
  && cd /rootfs/start \
  && ln -s stage1 start \
  && cd /rootfs/stop \
