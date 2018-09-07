@@ -1,24 +1,19 @@
-FROM huggla/alpine-official as stage1
+FROM huggla/busybox as stage1
+FROM huggla/alpine-official as stage2
 
+COPY --from=stage1 / /rootfs
 COPY ./rootfs /rootfs
 
-RUN apk --no-cache add dash argon2 \
- && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/usr/lib/sudo /rootfs/etc/sudoers.d \
+RUN mkdir /rootfs/environment \
+ && apk --no-cache add dash argon2 \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
- && echo 'root:x:0:0:root:/dev/null:/sbin/nologin' > /rootfs/etc/passwd \
  && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /rootfs/etc/passwd \
- && echo 'root:x:0:root' > /rootfs/etc/group \
  && echo 'starter:x:0:starter' >> /rootfs/etc/group \
- && echo 'root:::0:::::' > /rootfs/etc/shadow \
  && echo 'starter:::0:::::' >> /rootfs/etc/shadow \
-# && apk manifest alpine-baselayout | awk -F "  " '{print $2;}' > /apks_files.list \
-# && tar -cvp -f /apks_files.tar -T /apks_files.list -C / \
-# && tar -xvp -f /apks_files.tar -C /rootfs \
-# && rm /apks_files.tar /apks_files.list \
  && cp -a /usr/bin/argon2 /rootfs/usr/bin/ \
  && cp -a /usr/bin/dash /rootfs/usr/local/bin/ \
  && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
@@ -38,7 +33,7 @@ RUN apk --no-cache add dash argon2 \
  
 FROM huggla/busybox
 
-COPY --from=stage1 /rootfs /
+COPY --from=stage2 /rootfs /
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
