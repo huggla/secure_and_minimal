@@ -18,7 +18,7 @@ RUN mkdir /rootfs/environment \
  && cp -a /usr/bin/dash /rootfs/usr/local/bin/ \
  && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
  && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
- && chmod -R o= /rootfs/start \
+ && chmod -R o= /rootfs/start /tmp \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && chmod -R g=r,o= /rootfs/stop \
