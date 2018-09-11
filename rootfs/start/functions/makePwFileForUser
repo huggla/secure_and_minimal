@@ -4,7 +4,7 @@ makePwFileForUser(){
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
-      pwFile="$(mktemp)"
+      pwFile="$(/bin/mktemp)"
    fi
    if [ ! -s "$pwFile" ]
    then
