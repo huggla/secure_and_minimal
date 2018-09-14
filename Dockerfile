@@ -1,10 +1,8 @@
-FROM huggla/busybox as stage1
-FROM huggla/alpine-slim as stage2
+FROM huggla/alpine-slim as stage1
 
-COPY --from=stage1 / /rootfs
 COPY ./rootfs /rootfs
 
-RUN mkdir /rootfs/environment \
+RUN mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/bin /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add dash argon2 \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -12,6 +10,7 @@ RUN mkdir /rootfs/environment \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
+ && cp -a /etc/passwd /etc/group /etc/shadow /rootfs/etc/ \
  && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /rootfs/etc/passwd \
  && echo 'starter:x:0:starter' >> /rootfs/etc/group \
  && echo 'starter:::0:::::' >> /rootfs/etc/shadow \
@@ -36,7 +35,7 @@ RUN mkdir /rootfs/environment \
  
 FROM huggla/busybox
 
-COPY --from=stage2 /rootfs /
+COPY --from=stage1 /rootfs /
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
