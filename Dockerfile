@@ -2,7 +2,7 @@ FROM huggla/alpine-slim as stage1
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/bin /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
+RUN mkdir -p /rootfs/environment /rootfs/lib /rootfs/etc/sudoers.d /rootfs/usr/bin /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
  && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add dash argon2 \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
