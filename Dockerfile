@@ -1,10 +1,11 @@
 FROM huggla/busybox as stage1
-FROM huggla/alpine-official as stage2
+FROM huggla/alpine-slim as stage2
 
 COPY --from=stage1 / /rootfs
 COPY ./rootfs /rootfs
 
 RUN mkdir /rootfs/environment \
+ && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add dash argon2 \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /rootfs/etc/sudoers.d/docker1 \
