@@ -2,7 +2,7 @@ createLinuxUser(){
    {
       if [ ! $(/usr/bin/getent group $VAR_LINUX_USER) ]
       then
-         /usr/sbin/addgroup -S $VAR_LINUX_USER
+         /usr/sbin/addgroup -S $VAR_LINUX_USER -g 102
       fi
       if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
       then
