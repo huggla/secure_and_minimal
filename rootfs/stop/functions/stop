@@ -3,6 +3,7 @@ stop(){
    set -e
    tryRunStage 2
    /usr/local/bin/killpid $PID $1
+   wait $PID
    if [ "$PID" -eq 1 ]
    then
       echo "Container was stopped! Signal $1"
