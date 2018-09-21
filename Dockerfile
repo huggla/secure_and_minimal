@@ -1,17 +1,21 @@
 FROM huggla/alpine-slim as stage1
 
-ARG APKS="dash argon2"
+ARG APKS="sudo dash argon2"
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/environment /rootfs/lib /rootfs/etc/sudoers.d /rootfs/usr/bin /rootfs/usr/local/bin /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin \
+RUN mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/lib/sudo \
  && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add $APKS \
+ && cp -a /usr/bin/sudo /rootfs/usr/local/bin/ \
+ && cp -a /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/local/lib/sudo/ \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
  && echo 'Defaults !root_sudo' >> /rootfs/etc/sudoers.d/docker2 \
  && echo "starter ALL=(root) NOPASSWD: /start/start" >> /rootfs/etc/sudoers.d/docker2 \
+ && echo 'root ALL=(ALL) ALL' > /rootfs/etc/sudoers \
+ && echo '#includedir /etc/sudoers.d' >> /rootfs/etc/sudoers \
  && cp -a /etc/passwd /etc/group /etc/shadow /rootfs/etc/ \
  && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /rootfs/etc/passwd \
  && echo 'starter:x:0:starter' >> /rootfs/etc/group \
@@ -19,7 +23,7 @@ RUN mkdir -p /rootfs/environment /rootfs/lib /rootfs/etc/sudoers.d /rootfs/usr/b
  && cp -a /usr/bin/argon2 /rootfs/usr/bin/ \
  && cp -a /usr/bin/dash /rootfs/usr/local/bin/ \
  && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
- && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin  \
+ && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/etc/sudoers \
  && chmod -R o= /rootfs/start /tmp \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
@@ -38,6 +42,8 @@ RUN mkdir -p /rootfs/environment /rootfs/lib /rootfs/etc/sudoers.d /rootfs/usr/b
 FROM huggla/busybox
 
 COPY --from=stage1 /rootfs /
+
+RUN chmod u+s /usr/local/bin/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
