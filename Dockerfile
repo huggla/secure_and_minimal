@@ -4,11 +4,11 @@ ARG APKS="sudo dash argon2"
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/local/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin \
+RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin \
  && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add $APKS \
  && cp -a /usr/bin/sudo /rootfs/usr/local/bin/ \
- && cp -a /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/local/lib/sudo/ \
+ && cp -a /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults secure_path="/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' >> /rootfs/etc/sudoers.d/docker1 \
  && echo 'Defaults env_keep = "VAR_*"' > /rootfs/etc/sudoers.d/docker2 \
