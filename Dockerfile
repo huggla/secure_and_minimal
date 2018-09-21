@@ -38,7 +38,7 @@ RUN mkdir -p /rootfs/environment /rootfs/etc/sudoers.d /rootfs/usr/local/lib/sud
  && ln -s ../start/includeFunctions ./ \
  && cd /rootfs/stop/functions \
  && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./
- 
+
 FROM huggla/busybox
 
 COPY --from=stage1 /rootfs /
