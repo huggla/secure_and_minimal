@@ -20,7 +20,6 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /rootfs/etc/passwd \
  && echo 'starter:x:0:starter' >> /rootfs/etc/group \
  && echo 'starter:::0:::::' >> /rootfs/etc/shadow \
- && echo hej1 \
  && cp -a /usr/bin/argon2 /rootfs/usr/bin/ \
  && cp -a /usr/bin/dash /rootfs/usr/local/bin/ \
  && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
