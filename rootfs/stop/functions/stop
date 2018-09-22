@@ -4,6 +4,7 @@ stop(){
    tryRunStage 2
    /usr/local/bin/killpid $PID $1
    wait $PID
+   echo
    echo "Process was stopped! Signal $1"
    exit 0
 }
