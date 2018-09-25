@@ -17,6 +17,9 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && echo 'root ALL=(ALL) ALL' > /rootfs/etc/sudoers \
  && echo '#includedir /etc/sudoers.d' >> /rootfs/etc/sudoers \
  && cp -a /etc/passwd /etc/group /etc/shadow /rootfs/etc/ \
+ && echo 'root:x:0:0:root:/dev/null:/sbin/nologin' > /rootfs/etc/passwd \
+ && echo 'root:x:0:root' > /rootfs/etc/group \
+ && echo 'root:::0:::::' > /rootfs/etc/shadow \
  && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /rootfs/etc/passwd \
  && echo 'starter:x:0:starter' >> /rootfs/etc/group \
  && echo 'starter:::0:::::' >> /rootfs/etc/shadow \
@@ -42,9 +45,6 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && cp -a $(find /sbin/* -type l | xargs) /rootfs/sbin/ \
  && cp -a $(find /usr/bin/* -type l | xargs) /rootfs/usr/bin/ \
  && cp -a $(find /usr/sbin/* -type l | xargs) /rootfs/usr/sbin/ \
- && echo 'root:x:0:0:root:/dev/null:/sbin/nologin' > /rootfs/etc/passwd \
- && echo 'root:x:0:root' > /rootfs/etc/group \
- && echo 'root:::0:::::' > /rootfs/etc/shadow \
  && chmod o= /rootfs/etc/* \
  && chmod ugo=rwx /rootfs/tmp \
  && cd /rootfs/var \
