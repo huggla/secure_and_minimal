@@ -57,13 +57,13 @@ ONBUILD USER root
 ONBUILD COPY --from=stage1 /rootfs /
 
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
-         && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
-         && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/etc/sudoers \
-         && chmod -R o= /rootfs/start /tmp \
-         && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
-         && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
-         && chmod -R g=r,o= /rootfs/stop \
-         && chmod g=rx /rootfs/stop /rootfs/stop/functions \
-         && chmod u=rwx,g=rx /rootfs/stop/stage1
+         && find /usr/local/bin/* ! -name sudo | xargs chmod o-rwx \
+         && chmod go= /environment /bin /sbin /usr/bin /usr/sbin /etc/sudoers \
+         && chmod -R o= /start /tmp \
+         && chmod u=rx,go= /start/stage1 /start/stage2 \
+         && chmod u=rw,go= /etc/sudoers.d/docker* \
+         && chmod -R g=r,o= /stop \
+         && chmod g=rx /stop /stop/functions \
+         && chmod u=rwx,g=rx /stop/stage1
 
 ONBUILD USER starter
