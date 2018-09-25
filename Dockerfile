@@ -1,4 +1,4 @@
-FROM huggla/alpine-slim:20180921-edge as stage1
+FROM huggla/alpine-slim as stage1
 
 ARG APKS="sudo dash argon2"
 
