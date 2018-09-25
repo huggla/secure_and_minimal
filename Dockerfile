@@ -1,4 +1,4 @@
-FROM huggla/alpine-slim as stage1
+FROM huggla/alpine-slim:20180921-edge as stage1
 
 ARG APKS="sudo dash argon2"
 
@@ -37,7 +37,7 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && cd /rootfs/stop/functions \
  && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./
 
-FROM huggla/busybox
+FROM huggla/busybox:20180921-edge
 
 COPY --from=stage1 /rootfs /
 
