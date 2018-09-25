@@ -52,6 +52,8 @@ USER starter
 
 CMD ["sudo","start"]
 
+ONBUILD USER root
+
 ONBUILD COPY --from=stage1 /rootfs /
 
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
@@ -63,3 +65,5 @@ ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod -R g=r,o= /rootfs/stop \
          && chmod g=rx /rootfs/stop /rootfs/stop/functions \
          && chmod u=rwx,g=rx /rootfs/stop/stage1
+
+ONBUILD USER starter
