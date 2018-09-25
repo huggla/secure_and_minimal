@@ -41,8 +41,6 @@ FROM huggla/busybox
 
 COPY --from=stage1 /rootfs /
 
-RUN chmod u+s /usr/local/bin/sudo
-
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
     VAR_FINAL_COMMAND="pause" \
@@ -54,4 +52,14 @@ USER starter
 
 CMD ["sudo","start"]
 
-ONBUILD USER root
+ONBUILD COPY --from=stage1 /rootfs /
+
+ONBUILD RUN chmod u+s /usr/local/bin/sudo \
+         && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
+         && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/etc/sudoers \
+         && chmod -R o= /rootfs/start /tmp \
+         && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
+         && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
+         && chmod -R g=r,o= /rootfs/stop \
+         && chmod g=rx /rootfs/stop /rootfs/stop/functions \
+         && chmod u=rwx,g=rx /rootfs/stop/stage1
