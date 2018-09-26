@@ -27,7 +27,7 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && cp -a /usr/bin/dash /rootfs/usr/local/bin/ \
  && find /rootfs/usr/local/bin/* ! -name sudo | xargs chmod ug=rx,o= \
  && chmod go= /rootfs/environment /rootfs/bin /rootfs/sbin /rootfs/usr/bin /rootfs/usr/sbin /rootfs/etc/sudoers \
- && chmod -R o= /rootfs/start /tmp \
+ && chmod -R o= /rootfs/start \
  && chmod u=rx,go= /rootfs/start/stage1 /rootfs/start/stage2 \
  && chmod u=rw,go= /rootfs/etc/sudoers.d/docker* \
  && chmod -R g=r,o= /rootfs/stop \
@@ -49,9 +49,7 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/e
  && chmod ugo=rwx /rootfs/tmp \
  && cd /rootfs/var \
  && ln -s ../tmp tmp \
- && /rootfs/bin/busybox rm -rf /home /usr /var /root /tmp/* /media /mnt /run /sbin /srv /etc /bin/* || /rootfs/bin/busybox true \
- && /rootfs/bin/busybox cp -a /rootfs/bin/* /bin/ \
- && /rootfs/bin/busybox find /rootfs -type l -exec /rootfs/bin/busybox sh -c 'for x; do [ -e "$x" ] || /rootfs/bin/busybox rm "$x"; done' _ {} +
+ && find /rootfs -type l -exec sh -c 'for x; do [ -e "$x" ] || rm "$x"; done' _ {} +
  
 FROM scratch
  
