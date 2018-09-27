@@ -4,7 +4,8 @@ ARG APKS="sudo dash argon2"
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/lib /rootfs/tmp /rootfs/var/cache /rootfs/run \
+RUN rm -rf /rootfs/rootfs \
+ && mkdir -p /rootfs/environment /rootfs/usr/local/bin /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/lib /rootfs/tmp /rootfs/var/cache /rootfs/run \
  && cp -a /lib/apk /rootfs/lib/ \
  && apk --no-cache add $APKS \
  && cp -a /usr/bin/sudo /rootfs/usr/local/bin/ \
