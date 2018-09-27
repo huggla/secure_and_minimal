@@ -65,6 +65,8 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 
 USER starter
 
+SHELL ["/usr/local/bin/dash", "-c"]
+
 CMD ["sudo","start"]
 
 ONBUILD USER root
