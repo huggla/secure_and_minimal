@@ -46,6 +46,9 @@ ARG RUNCMDS=\
 " && find /rootfs -type l -exec sh -c 'for x; do [ -e \"\$x\" ] || rm \"\$x\"; done' _ {} + "
 
 FROM scratch as stage2
+
+COPY ./Dockerfile /
+
 FROM huggla/alpine-slim as stage1
  
 FROM scratch
