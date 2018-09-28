@@ -62,14 +62,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
 
-USER starter
-
-SHELL ["/usr/local/bin/dash", "-c"]
-
-CMD ["sudo","start"]
-
-ONBUILD USER root
-
 ONBUILD COPY --from=stage1 /rootfs /
 
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
@@ -83,3 +75,7 @@ ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod u=rwx,g=rx /stop/stage1
 
 ONBUILD USER starter
+
+ONBUILD SHELL ["/usr/local/bin/dash", "-c"]
+
+ONBUILD CMD ["sudo","start"]
