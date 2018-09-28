@@ -76,6 +76,4 @@ ONBUILD RUN chmod u+s /usr/local/bin/sudo \
 
 ONBUILD USER starter
 
-ONBUILD SHELL ["/usr/local/bin/dash", "-c"]
-
 ONBUILD CMD ["sudo","start"]
