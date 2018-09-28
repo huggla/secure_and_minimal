@@ -1,11 +1,6 @@
-FROM huggla/alpine-slim as stage1
-
-ARG APKS="sudo dash argon2"
-
-COPY ./rootfs /rootfs
-
-RUN mkdir -p /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/tmp /rootfs/var/cache /rootfs/run \
- && apk --no-cache add $APKS \
+ARG BUILDDEPS="sudo dash argon2"
+ARG RUNCMDS= \
+    mkdir -p /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/tmp /rootfs/var/cache /rootfs/run \
  && cp -a /usr/bin/sudo /rootfs/usr/local/bin/ \
  && cp -a /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
  && echo 'Defaults lecture="never"' > /rootfs/etc/sudoers.d/docker1 \
@@ -49,6 +44,8 @@ RUN mkdir -p /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/u
  && cd /rootfs/var \
  && ln -s ../tmp tmp \
  && find /rootfs -type l -exec sh -c 'for x; do [ -e "$x" ] || rm "$x"; done' _ {} +
+
+FROM huggla/alpine-slim as stage1
  
 FROM scratch
  
