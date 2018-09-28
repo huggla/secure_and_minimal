@@ -1,8 +1,7 @@
 ARG BUILDDEPS="sudo dash argon2"
-ARG RUNCMDS= '\
+ARG RUNCMDS= "\
     mkdir -p /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/tmp /rootfs/var/cache /rootfs/run \
- && cp -a /usr/bin/sudo /rootfs/usr/local/bin/'
-
+ && cp -a /usr/bin/sudo /rootfs/usr/local/bin/"
 
 FROM huggla/alpine-slim as stage1
  
