@@ -4,8 +4,7 @@ ARG APKS="sudo dash argon2"
 
 COPY ./rootfs /rootfs
 
-RUN mkdir -p /rootfs/rootfs/lib /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/tmp /rootfs/var/cache /rootfs/run \
- && cp -a /rootfs/lib/apk /rootfs/rootfs/lib/ \
+RUN mkdir -p /rootfs/environment /rootfs/usr/bin /rootfs/etc/sudoers.d /rootfs/usr/lib/sudo /rootfs/bin /rootfs/sbin /rootfs/usr/sbin /rootfs/tmp /rootfs/var/cache /rootfs/run \
  && apk --no-cache add $APKS \
  && cp -a /usr/bin/sudo /rootfs/usr/local/bin/ \
  && cp -a /usr/lib/sudo/libsudo* /usr/lib/sudo/sudoers* /rootfs/usr/lib/sudo/ \
@@ -65,8 +64,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 ONBUILD COPY --from=stage1 /rootfs /
 
 ONBUILD RUN rm -rf /lib/apk /etc/apk \
-         && cp -a /rootfs/lib/apk /lib/ \
-         && rm -rf /rootfs \
          && chmod u+s /usr/local/bin/sudo \
          && find /usr/local/bin/* ! -name sudo | xargs chmod o-rwx \
          && chmod go= /environment /bin /sbin /usr/bin /usr/sbin /etc/sudoers \
