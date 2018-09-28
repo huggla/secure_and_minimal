@@ -47,7 +47,7 @@ ARG RUNCMDS=\
 
 FROM scratch as stage2
 
-COPY ./Dockerfile /
+COPY ./null /
 
 FROM huggla/alpine-slim as stage1
  
