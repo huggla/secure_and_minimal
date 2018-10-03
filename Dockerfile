@@ -1,4 +1,4 @@
-ARG BUILDDEPS="sudo dash argon2"
+ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
 
