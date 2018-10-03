@@ -20,8 +20,7 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 ONBUILD COPY --from=build /imagefs /
 #ONBUILD RUN rm -rf /lib/apk /etc/apk \
 
-ONBUILD RUN chmod u+s /usr/local/bin/sudo \
-         && find /usr/local/bin/* ! -name sudo | xargs chmod o-rwx \
+ONBUILD RUN chmod u+s,o+rx /usr/local/bin/sudo \
          && chmod go= /environment /bin /sbin /usr/bin /usr/sbin /etc/sudoers \
          && chmod -R o= /start /tmp \
          && chmod u=rx,go= /start/stage1 /start/stage2 \
