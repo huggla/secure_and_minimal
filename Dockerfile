@@ -11,12 +11,12 @@ ARG RUNCMDS=\
 " && echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
 " && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /imagefs/etc/passwd "\
 " && echo 'starter:x:0:starter' >> /imagefs/etc/group "\
-" && echo 'starter:::0:::::' >> /rootfs/etc/shadow "\
-" && cd /rootfs/start "\
+" && echo 'starter:::0:::::' >> /imagefs/etc/shadow "\
+" && cd /imagefs/start "\
 " && ln -s stage1 start "\
-" && cd /rootfs/stop "\
+" && cd /imagefs/stop "\
 " && ln -s ../start/includeFunctions ./ "\
-" && cd /rootfs/stop/functions "\
+" && cd /imagefs/stop/functions "\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./ "
 
 FROM huggla/busybox as init
