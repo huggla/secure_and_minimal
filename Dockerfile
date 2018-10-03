@@ -23,7 +23,7 @@ FROM huggla/busybox as init
 
 FROM huggla/build as build
 
-FROM scratch as final-image
+FROM scratch as image
 
 COPY --from=build /imagefs /
 
