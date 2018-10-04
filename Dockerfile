@@ -9,9 +9,6 @@ ARG BUILDCMDS=\
 " && echo 'starter ALL=(root) NOPASSWD: /start/start' >> /imagefs/etc/sudoers.d/docker2 "\
 " && echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 " && echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
-" && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /imagefs/etc/passwd "\
-" && echo 'starter:x:0:starter' >> /imagefs/etc/group "\
-" && echo 'starter:::0:::::' >> /imagefs/etc/shadow "\
 " && cd /imagefs/start "\
 " && ln -s stage1 start "\
 " && cd /imagefs/stop "\
