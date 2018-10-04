@@ -1,7 +1,7 @@
 ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
-ARG RUNCMDS=\
+ARG BUILDCMDS=\
 " ls -la "\
 " && echo 'Defaults lecture=\"never\"' > /imagefs/etc/sudoers.d/docker1 "\
 " && echo 'Defaults secure_path=\"/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"' >> /imagefs/etc/sudoers.d/docker1 "\
