@@ -9,6 +9,7 @@ ARG BUILDCMDS=\
 " && echo 'starter ALL=(root) NOPASSWD: /start/start' >> /imagefs/etc/sudoers.d/docker2 "\
 " && echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 " && echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
+" && chgrp starter /etc/sudoers* "\
 " && cd /imagefs/start "\
 " && ln -s stage1 start "\
 " && cd /imagefs/stop "\
@@ -35,8 +36,8 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 ONBUILD COPY --from=build /imagefs /
 
 ONBUILD RUN chmod u+s,o+rx /usr/local/bin/sudo \
-         && chmod go= /environment /etc/sudoers* \
-         && chmod -R o= /start \
+         && chmod go= /environment \
+         && chmod -R o= /start /etc/sudoers* \
          && chmod u=rx,go= /start/stage1 /start/stage2 \
          && chmod -R g=r,o= /stop \
          && chmod g=rx /stop /stop/functions \
