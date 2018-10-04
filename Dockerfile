@@ -12,6 +12,7 @@ ARG RUNCMDS=\
 " && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /imagefs/etc/passwd "\
 " && echo 'starter:x:0:starter' >> /imagefs/etc/group "\
 " && echo 'starter:::0:::::' >> /imagefs/etc/shadow "\
+" && ls -la /imagefs "\
 " && cd /imagefs/start "\
 " && ln -s stage1 start "\
 " && cd /imagefs/stop "\
