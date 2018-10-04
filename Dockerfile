@@ -2,8 +2,7 @@ ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
 ARG BUILDCMDS=\
-" ls -la "\
-" && echo 'Defaults lecture=\"never\"' > /imagefs/etc/sudoers.d/docker1 "\
+" false &&  echo 'Defaults lecture=\"never\"' > /imagefs/etc/sudoers.d/docker1 "\
 " && echo 'Defaults secure_path=\"/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"' >> /imagefs/etc/sudoers.d/docker1 "\
 " && echo 'Defaults env_keep = \"VAR_*\"' > /imagefs/etc/sudoers.d/docker2 "\
 " && echo 'Defaults !root_sudo' >> /imagefs/etc/sudoers.d/docker2 "\
@@ -13,7 +12,6 @@ ARG BUILDCMDS=\
 " && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /imagefs/etc/passwd "\
 " && echo 'starter:x:0:starter' >> /imagefs/etc/group "\
 " && echo 'starter:::0:::::' >> /imagefs/etc/shadow "\
-" && ls -la /imagefs "\
 " && cd /imagefs/start "\
 " && ln -s stage1 start "\
 " && cd /imagefs/stop "\
