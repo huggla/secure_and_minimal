@@ -15,8 +15,7 @@ ARG BUILDCMDS=\
 " && cd /imagefs/stop "\
 " && ln -s ../start/includeFunctions ./ "\
 " && cd /imagefs/stop/functions "\
-" && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./ "\
-" || exit 1"
+" && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
 FROM huggla/busybox as init
 
