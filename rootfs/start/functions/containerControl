@@ -1,4 +1,5 @@
 containerControl(){
+   local -
    local isFirstRun=$1
    readEnvironmentVars
    local finalUser=$VAR_LINUX_USER
@@ -10,7 +11,9 @@ containerControl(){
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
+      set +f
       /bin/chgrp -R $finalUser /stop /usr/local/bin /start /tmp /bin/* /usr/bin/*
+      set -f
       tryRunStage 3
       {
          eval "echo -e \"$finalCmdString\""
@@ -22,7 +25,9 @@ containerControl(){
       } >> /stop/stage1
       if [ "$finalUser" != "$VAR_LINUX_USER" ]
       then
+         set +f
          /bin/chgrp -R $finalUser /stop /usr/local/bin /start /tmp /bin/* /usr/bin/*
+         set -f
       fi
    else
       tryRunStage 3
