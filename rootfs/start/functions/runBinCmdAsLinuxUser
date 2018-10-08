@@ -3,7 +3,7 @@
 runBinCmdAsLinuxUser(){
    id="$(date +%s%N)"
    /bin/touch "/run/runBinCmdAsLinuxUser.$id"
-   /bin/chown $VAR_LINUX_USER /bin /usr/bin
+   /bin/chgrp $VAR_LINUX_USER /bin /usr/bin
    local -
    set +e
    runCmdAsLinuxUser "$1"
@@ -12,7 +12,7 @@ runBinCmdAsLinuxUser(){
    /bin/rm "/run/runBinCmdAsLinuxUser.$id"
    if ! /bin/ls /run/runBinCmdAsLinuxUser.* &> /dev/null
    then
-      /bin/chown root /bin /usr/bin
+      /bin/chgrp root /bin /usr/bin
    fi
    return $exitCode
 }
