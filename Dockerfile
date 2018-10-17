@@ -17,10 +17,8 @@ ARG BUILDCMDS=\
 " && cd /imagefs/stop/functions "\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
-FROM huggla/busybox as init
-
-FROM huggla/build as build
-
+FROM huggla/busybox:20181017-edge as init
+FROM huggla/build:20181017-edge as build
 FROM scratch as image
 
 COPY --from=build /imagefs /
@@ -33,7 +31,6 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     HISTFILE="/dev/null"
 
 ONBUILD COPY --from=build /imagefs /
-
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod go= /environment \
          && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
@@ -41,7 +38,5 @@ ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod -R g=r,o= /stop \
          && chmod g=rx /stop /stop/functions \
          && chmod u=rwx,g=rx /stop/stage1
-
 ONBUILD USER starter
-
 ONBUILD CMD ["sudo","start"]
