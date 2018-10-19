@@ -17,8 +17,18 @@ ARG BUILDCMDS=\
 " && cd /imagefs/stop/functions "\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
+FROM huggla/apk-tool:20181017-edge as apk-tool
+FROM huggla/busybox:20181017-edge as busybox
+FROM huggla/busybox:20181017-edge as init
+
+COPY --from=busybox /onbuild-exclude.filelist /busybox/onbuild-exclude.filelist
+COPY --from=apk-tool /onbuild-exclude.filelist /apk-tool/onbuild-exclude.filelist
+
+RUN cat /busybox/onbuild-exclude.filelist /apk-tool/onbuild-exclude.filelist | sort - > /onbuild-exclude.filelist
+
 FROM huggla/build as build
-FROM huggla/scratch:20181017-edge as image
+
+FROM scratch as image
 
 COPY --from=build /imagefs /
 
