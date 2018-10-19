@@ -17,9 +17,8 @@ ARG BUILDCMDS=\
 " && cd /imagefs/stop/functions "\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
-FROM huggla/scratch:20181017-edge as init
 FROM huggla/build as build
-FROM scratch as image
+FROM huggla/scratch:20181017-edge as image
 
 COPY --from=build /imagefs /
 
