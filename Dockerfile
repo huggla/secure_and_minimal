@@ -30,7 +30,7 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
 
-ONBUILD COPY --from=build /imagefs /
+#ONBUILD COPY --from=build /imagefs /
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod go= /environment \
          && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
