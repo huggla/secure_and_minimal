@@ -19,7 +19,7 @@ ARG BUILDCMDS=\
 
 FROM huggla/busybox:20181017-edge as init
 FROM huggla/build as build
-FROM scratch as image
+FROM huggla/busybox:20181017-edge as image
 
 COPY --from=build /imagefs /
 
