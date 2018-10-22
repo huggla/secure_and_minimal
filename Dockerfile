@@ -34,6 +34,12 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
 
+#---------------Don't edit----------------
+USER starter
+CMD ["sudo","start"]
+ONBUILD USER root
+#-----------------------------------------
+
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod go= /environment \
          && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
@@ -41,5 +47,3 @@ ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod -R g=r,o= /stop \
          && chmod g=rx /stop /stop/functions \
          && chmod u=rwx,g=rx /stop/stage1
-ONBUILD USER starter
-ONBUILD CMD ["sudo","start"]
