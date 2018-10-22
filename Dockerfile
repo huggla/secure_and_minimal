@@ -1,4 +1,4 @@
-ARG BASEIMAGE="busybox:20181017-edge"
+ARG BASEIMAGE="huggla/busybox:20181017-edge"
 ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
