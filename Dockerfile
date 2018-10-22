@@ -36,9 +36,10 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 
 #---------------Don't edit----------------
 USER starter
-CMD ["sudo","start"]
 ONBUILD USER root
 #-----------------------------------------
+
+CMD ["sudo","start"]
 
 ONBUILD RUN chmod u+s /usr/local/bin/sudo \
          && chmod go= /environment \
