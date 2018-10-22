@@ -17,7 +17,8 @@ ARG BUILDCMDS=\
 " && cd /imagefs/stop/functions "\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
-FROM ${INITIMAGE:-scratch} as init
+FROM ${CONTENTIMAGE1:-scratch} as content1
+FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as base
 FROM huggla/build as build
 FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as image
