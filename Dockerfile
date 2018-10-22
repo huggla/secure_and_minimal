@@ -1,5 +1,5 @@
 ARG BASEIMAGE="huggla/busybox:20181017-edge"
-ARG INITIMAGE=$BASEIMAGE
+#ARG INITIMAGE=$BASEIMAGE
 
 ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
@@ -21,9 +21,9 @@ ARG BUILDCMDS=\
 " && ln -s ../../start/functions/readEnvironmentVars ../../start/functions/tryRunStage ./"
 
 FROM ${INITIMAGE:-scratch} as init
-FROM $BASEIMAGE as base
+FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as base
 FROM huggla/build as build
-FROM $BASEIMAGE as image
+FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as image
 
 COPY --from=build /imagefs /
 
