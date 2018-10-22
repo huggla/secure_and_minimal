@@ -1,3 +1,4 @@
+ARG BASEIMAGE="busybox:20181017-edge"
 ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
@@ -19,9 +20,9 @@ ARG BUILDCMDS=\
 
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
-FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as base
+FROM ${BASEIMAGE:-huggla/base} as base
 FROM huggla/build as build
-FROM ${BASEIMAGE:-huggla/busybox:20181017-edge} as image
+FROM ${BASEIMAGE:-huggla/base} as image
 
 COPY --from=build /imagefs /
 
