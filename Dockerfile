@@ -45,6 +45,13 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
 #---------------Don't edit----------------
 USER starter
 ONBUILD USER root
+ONBUILD RUN chmod u+s /usr/local/bin/sudo \
+         && chmod go= /environment \
+         && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
+         && chmod u=rx,go= /start/stage1 /start/stage2 \
+         && chmod -R g=r,o= /stop \
+         && chmod g=rx /stop /stop/functions \
+         && chmod u=rwx,g=rx /stop/stage1
 #-----------------------------------------
 
 CMD ["sudo","start"]
