@@ -27,6 +27,14 @@ FROM ${BASEIMAGE:-huggla/base} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
 
+RUN chmod u+s /usr/local/bin/sudo \
+ && chmod go= /environment \
+ && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
+ && chmod u=rx,go= /start/stage1 /start/stage2 \
+ && chmod -R g=r,o= /stop \
+ && chmod g=rx /stop /stop/functions \
+ && chmod u=rwx,g=rx /stop/stage1
+
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
     VAR_FINAL_COMMAND="pause" \
@@ -40,11 +48,3 @@ ONBUILD USER root
 #-----------------------------------------
 
 CMD ["sudo","start"]
-
-ONBUILD RUN chmod u+s /usr/local/bin/sudo \
-         && chmod go= /environment \
-         && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
-         && chmod u=rx,go= /start/stage1 /start/stage2 \
-         && chmod -R g=r,o= /stop \
-         && chmod g=rx /stop /stop/functions \
-         && chmod u=rwx,g=rx /stop/stage1
