@@ -35,7 +35,7 @@ COPY --from=build /imagefs /
 #-----------------------------------------
 
 RUN chmod u+s /usr/local/bin/sudo \
- && chgrp -R 101 /imagefs/etc/sudoers* /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo
+ && chgrp -R 101 /etc/sudoers* /usr/bin/sudo /usr/lib/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
