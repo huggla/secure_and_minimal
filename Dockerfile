@@ -12,7 +12,7 @@ ARG BUILDCMDS=\
 "&& echo 'starter ALL=(root) NOPASSWD: /start/start' >> /imagefs/etc/sudoers.d/docker2 "\
 "&& echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 "&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
-"&& chgrp -R 101 /imagefs/etc/sudoers* /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo "\
+"&& chmod o= /imagefs/etc/sudoers* /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo /imagefs/start /imagefs/stop "\
 "&& cd /imagefs/start "\
 "&& ln -s stage1 start "\
 "&& cd /imagefs/stop "\
@@ -34,7 +34,8 @@ FROM ${BASEIMAGE:-huggla/base} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
 
-RUN chmod u+s /usr/local/bin/sudo
+RUN chmod u+s /usr/local/bin/sudo \
+ && chgrp -R 101 /imagefs/etc/sudoers* /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
