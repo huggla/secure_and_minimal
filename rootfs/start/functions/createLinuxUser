@@ -1,11 +1,6 @@
 createLinuxUser(){
-   if [ ! $(/usr/bin/getent group $VAR_LINUX_USER) ]
-   then
-      echo $VAR_LINUX_USER >> /etc/group
-      echo "$VAR_LINUX_USER:x:102:" >> /etc/group \
-   fi
    if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
    then
-      echo "$VAR_LINUX_USER:x:102:102:$VAR_LINUX_USER:/dev/null:/sbin/nologin" >> /etc/passwd
+      echo "$VAR_LINUX_USER:x:102:0:$VAR_LINUX_USER:/dev/null:/sbin/nologin" >> /etc/passwd
    fi
 }
