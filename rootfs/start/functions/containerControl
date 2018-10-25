@@ -10,7 +10,6 @@ containerControl(){
       makeAllFromList "$(allVars noquote)"
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
-      /bin/chgrp -R $finalUser /stop /usr/local/bin /start /tmp /lib
       tryRunStage 3
       {
          eval "echo -e \"$finalCmdString\""
@@ -20,10 +19,6 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
-      if [ "$finalUser" != "$VAR_LINUX_USER" ]
-      then
-         /bin/chgrp -R $finalUser /stop /usr/local/bin /start /tmp /lib
-      fi
    else
       tryRunStage 3
    fi
