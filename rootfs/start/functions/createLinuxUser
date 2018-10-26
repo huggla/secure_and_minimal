@@ -1,7 +1,7 @@
 createLinuxUser(){
    if [ ! $(/usr/bin/id $VAR_LINUX_USER 2>/dev/null) ]
    then
-      echo "$VAR_LINUX_USER:x:102:0:$VAR_LINUX_USER:/dev/null:/sbin/nologin" >> /etc/passwd
+      echo "$VAR_LINUX_USER:x:102:0:$VAR_LINUX_USER:/tmp:/sbin/nologin" >> /etc/passwd
       echo "$VAR_LINUX_USER:x:102:$VAR_LINUX_USER" >> /etc/group
    fi
 }
