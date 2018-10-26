@@ -14,10 +14,9 @@ trySetPermissionsOf(){
    fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
-      /bin/chown $flag :$VAR_LINUX_USER "$obj"
       /bin/chmod $flag g+rX "$obj"
    fi
-   /bin/chmod $flag o= "$obj"
+#   /bin/chmod $flag o= "$obj"
    if [ "$2" == "exec" ]
    then
       /bin/chmod $flag ug+x "$obj"
