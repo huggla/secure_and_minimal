@@ -1,5 +1,5 @@
 createLinuxUser(){
-   if [ ! $(/usr/bin/getent passwd $VAR_LINUX_USER) ]
+   if [ ! $(/usr/bin/id $VAR_LINUX_USER) ]
    then
       echo "$VAR_LINUX_USER:x:102:0:$VAR_LINUX_USER:/dev/null:/sbin/nologin" >> /etc/passwd
    fi
