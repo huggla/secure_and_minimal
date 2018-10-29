@@ -23,7 +23,8 @@ ARG BUILDCMDS=\
 "&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 "\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
-"&& chmod u=rwx,g=rx /imagefs/stop/stage1"
+"&& chmod u=rwx,g=rx /imagefs/stop/stage1 "\
+"&& find /usr/local/bin/* -type f ! -name 'sudo' -exec chmod o= {} +"
 
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
@@ -34,8 +35,8 @@ FROM ${BASEIMAGE:-huggla/base} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
 
-RUN chmod u+s /usr/local/bin/sudo \
- && chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo
+RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
+ && chmod u+s /usr/local/bin/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
