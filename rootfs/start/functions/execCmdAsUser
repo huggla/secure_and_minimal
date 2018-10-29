@@ -7,7 +7,7 @@ execCmdAsUser(){
       then
          if [ "$2" == "root" ]
          then
-            execCmd $1
+            execCmd "capsh --drop=cap_chown,cap_dac_override,cap_fowner,cap_setgid,cap_setuid,cap_setpcap -- -c $1"
          else
             local command="$(eval "echo $1")"
             execCmd "/usr/local/bin/sudo -u $2 $command"
