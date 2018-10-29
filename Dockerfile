@@ -1,5 +1,5 @@
 ARG BASEIMAGE="huggla/busybox:20181017-edge"
-ARG RUNDEPS="sudo dash argon2 libcap"
+ARG RUNDEPS="sudo dash argon2"
 ARG MAKEDIRS="/environment"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
