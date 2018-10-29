@@ -13,7 +13,7 @@ execCmdAsUser(){
             do
                delcaps="$(echo $delcaps | sed s'/$cap//' | sed s'/,,/,/')"
             done
-            execCmd "capsh --drop=$delcaps -- -c $1"
+            execCmd "/usr/sbin/capsh --drop=$delcaps -- -c $1"
          else
             local command="$(eval "echo $1")"
             execCmd "/usr/local/bin/sudo -u $2 $command"
