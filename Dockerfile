@@ -23,8 +23,7 @@ ARG BUILDCMDS=\
 "&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 "\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
-"&& chmod u=rwx,g=rx /imagefs/stop/stage1 "\
-"&& find /usr/local/bin/* -type f ! -name 'sudo' -exec chmod o= {} +"
+"&& chmod u=rwx,g=rx /imagefs/stop/stage1"
 
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
