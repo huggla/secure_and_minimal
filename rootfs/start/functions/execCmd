@@ -23,7 +23,7 @@ execCmd(){
             cap="$(trim $cap)"
             delcaps="$(echo $delcaps | sed 's/$cap//')"
          done
-         sed 's/,,/,/;s/^,*//;s/,*$//'
+         delcaps="$(echo $delcaps | sed 's/,,/,/;s/^,*//;s/,*$//')"
          command="/usr/sbin/capsh --drop=$delcaps -- -c $1"
       fi
       command="$(eval "echo $command")"
