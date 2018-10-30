@@ -2,7 +2,7 @@ execCmd(){
    if [ -n "$1" ]
    then
       local command=''
-      if [ "$(/bin/id -un 2>/dev/null)" != "root" ]
+      if [ "$(/usr/bin/id -un 2>/dev/null)" != "root" ]
       then
          command=$1
       else
