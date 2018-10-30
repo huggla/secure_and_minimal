@@ -49,6 +49,4 @@ USER starter
 ONBUILD USER root
 #-----------------------------------------
 
-SHELL ["/bin/ash", "-c"]
-
 CMD ["sudo","start"]
