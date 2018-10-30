@@ -11,7 +11,7 @@ execCmd(){
          then
             ln -s /usr/local/bin/dash /bin/bash
          fi
-         if [ "${command%% *}" == "/start/stage2" ]
+         if [ "$command" == "/start/stage2" ]
          then
             keepCaps="cap_chown,cap_fowner,cap_setgid,cap_setuid,cap_setpcap"
             if [ -n "$VAR_KEEP_CAPS" ]
@@ -30,7 +30,7 @@ execCmd(){
          done
          IFS=$IFS_org
          delcaps="$(echo $delcaps | sed 's/,,*/,/g;s/^,*//;s/,*$//')"
-         command="/usr/sbin/capsh --drop=$delcaps -- -c $1"
+         command="/usr/sbin/capsh --drop=$delcaps -- $command"
       fi
       command="$(eval "echo $command")"
       echo "Executing: $command" >> /tmp/execCmd.log
