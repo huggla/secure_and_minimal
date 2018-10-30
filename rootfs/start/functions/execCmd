@@ -1,3 +1,5 @@
+[ $(type -t trim) ] || . /start/functions/trim
+
 execCmd(){
    if [ -n "$1" ]
    then
