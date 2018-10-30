@@ -8,10 +8,10 @@ then
    isFirstRun="true"
    writeEnvironmentVars
 fi
-startKeepCaps="cap_chown, cap_fowner, cap_setgid, cap_setuid, cap_setpcap"
+startKeepCaps="cap_chown,cap_fowner,cap_setgid,cap_setuid,cap_setpcap"
 if [ -n "$VAR_KEEP_CAPS" ]
 then
-   startKeepCaps="$startKeepCaps, $VAR_KEEP_CAPS"
+   startKeepCaps="$startKeepCaps,$VAR_KEEP_CAPS"
 fi
 
 execCmd "/start/stage2 $isFirstRun" $startKeepCaps
