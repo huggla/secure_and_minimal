@@ -13,8 +13,10 @@ ARG BUILDCMDS=\
 "&& echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 "&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
 "&& chmod o= /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo /imagefs/start /imagefs/stop "\
-"&& cd /imagefs/bin "\
-"&& ln -s ../usr/bin/dash bash || true "\
+"&& if [ ! -e "/imagefs/bin/bash" ]; "\
+"   then "\
+"      cd /imagefs/bin && ln -s ../usr/bin/dash bash; "\
+"   fi "\
 "&& cd /imagefs/start "\
 "&& ln -s stage1 start "\
 "&& cd /imagefs/stop "\
