@@ -14,7 +14,7 @@ ARG BUILDCMDS=\
 "&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
 "&& chmod o= /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo /imagefs/start /imagefs/stop "\
 "&& cd /imagefs/bin "\
-"&& ln -s ../usr/bin/dash bash "\
+"&& ln -s ../usr/bin/dash bash || true "\
 "&& cd /imagefs/start "\
 "&& ln -s stage1 start "\
 "&& cd /imagefs/stop "\
