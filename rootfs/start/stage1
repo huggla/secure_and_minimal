@@ -6,11 +6,6 @@ set -e +a +m +s +i -f
 if [ ! -e "/environment/vars" ]
 then
    isFirstRun="true"
-   VAR_START_KEEP_CAPS="cap_chown,cap_fowner,cap_setgid,cap_setuid,cap_setpcap"
-   if [ -n "$VAR_KEEP_CAPS" ]
-   then
-      VAR_START_KEEP_CAPS="$startKeepCaps,$VAR_KEEP_CAPS"
-   fi
    writeEnvironmentVars
 fi
 
