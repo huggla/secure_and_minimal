@@ -7,12 +7,12 @@ execCmd(){
       local keepCaps=$VAR_KEEP_CAPS
       if [ "$(/usr/bin/id -un 2>/dev/null)" == "root" ]
       then
-         if [ ! -e "/bin/bash" ]
-         then
-            ln -s /usr/local/bin/dash /bin/bash
-         fi
          if [ "$command" == "/start/stage2" ]
          then
+            if [ ! -e "/bin/bash" ]
+            then
+               ln -s /usr/local/bin/dash /bin/bash
+            fi
             keepCaps="cap_chown,cap_fowner,cap_setgid,cap_setuid,cap_setpcap"
             if [ -n "$VAR_KEEP_CAPS" ]
             then
