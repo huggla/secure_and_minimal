@@ -5,8 +5,8 @@ set -e +a +m +s +i -f
 
 if [ ! -e "/environment/vars" ]
 then
-   isFirstRun="true"
+   /bin/touch /environment/isFirstRun
    writeEnvironmentVars
 fi
 
-execCmd "/start/stage2 $isFirstRun"
+execCmd "/start/stage2"
