@@ -16,4 +16,4 @@ then
    startKeepCaps="$startKeepCaps,$VAR_KEEP_CAPS"
 fi
 
-execCmd "/start/stage2 $isFirstRun" $startKeepCaps
+execCmd "/start/stage2 \'$isFirstRun\'" $startKeepCaps
