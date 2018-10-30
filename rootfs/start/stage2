@@ -2,4 +2,10 @@
 set -e +a +m +s +i -f
 . /start/includeFunctions
 
-containerControl $1
+if [ -e "/environment/isFirstRun" ]
+then
+   /bin/rm -f /environment/isFirstRun
+   containerControl true
+else
+   containerControl
+fi
