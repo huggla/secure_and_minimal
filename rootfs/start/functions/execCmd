@@ -26,7 +26,7 @@ execCmd(){
             delcaps="$(echo "$delcaps" | sed "s/$cap//")"
          done
          IFS=$IFS_org
-         delcaps="$(echo $delcaps | sed 's/,+/,/g;s/^,*//;s/,*$//')"
+         delcaps="$(echo $delcaps | sed 's/,,*/,/g;s/^,*//;s/,*$//')"
          command="/usr/sbin/capsh --drop=$delcaps -- -c $1"
       fi
       command="$(eval "echo $command")"
