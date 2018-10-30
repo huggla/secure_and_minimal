@@ -10,7 +10,7 @@ execCmd(){
       else
          if [ ! -e "/bin/bash" ]
          then
-            ln -s /bin/ash /bin/bash
+            ln -s /bin/dash /bin/bash
          fi
          if [ -n "$2" ]
          then
