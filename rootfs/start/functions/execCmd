@@ -30,7 +30,7 @@ execCmd(){
          done
          IFS=$IFS_org
          delcaps="$(echo $delcaps | sed 's/,,*/,/g;s/^,*//;s/,*$//')"
-         command="/usr/sbin/capsh --drop=$delcaps -- $command"
+         command="/usr/sbin/capsh --drop=$delcaps -- -c $command"
       fi
       command="$(eval "echo $command")"
       echo "Executing: $command" >> /tmp/execCmd.log
