@@ -12,7 +12,7 @@ ARG BUILDCMDS=\
 "&& echo 'starter ALL=(root) NOPASSWD: /start/start' >> /imagefs/etc/sudoers.d/docker2 "\
 "&& echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 "&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
-"&& echo '/bin/sh' > /imagefs/usr/bin/script "\
+"&& echo 'exec /bin/sh' > /imagefs/usr/bin/script "\
 "&& chmod u+x /imagefs/usr/bin/script "\
 "&& chmod o= /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo /imagefs/start /imagefs/stop "\
 "&& cd /imagefs/start "\
