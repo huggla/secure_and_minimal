@@ -7,3 +7,6 @@ With sudo, argon2 and improved security.
 ### pre-set runtime variables.
 * VAR_LINUX_USER="root" (the user running VAR_FINAL_COMMAND)
 * VAR_FINAL_COMMAND="pause" (the command to run)
+
+## Capabilities
+Can drop all but SETPCAP, SETGID and SETUID.
