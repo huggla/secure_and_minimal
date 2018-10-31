@@ -30,9 +30,15 @@ execCmd(){
          done
          IFS=$IFS_org
          delcaps="$(echo $delcaps | sed 's/,,*/,/g;s/^,*//;s/,*$//')"
-         command="/usr/sbin/capsh --drop=$delcaps -- -c $command"
+         command="/usr/sbin/capsh --drop=$delcaps --caps=$delcaps-e -- -c $command"
       fi
       command="$(eval "echo $command")"
+      echo "Current process status:" >> /tmp/execCmd.log
+      /bin/cat /proc/self/status >> /tmp/execCmd.log
+      echo >> /tmp/execCmd.log
+      echo "Current process environment:" >> /tmp/execCmd.log
+      /bin/cat /proc/self/environ >> /tmp/execCmd.log
+      echo >> /tmp/execCmd.log
       echo "Executing: $command" >> /tmp/execCmd.log
       exec /usr/bin/env -i $command
    else
