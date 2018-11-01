@@ -15,7 +15,7 @@ execCmd(){
             then
                ln -s /usr/local/bin/dash /bin/bash
             fi
-            keepCaps="cap_setpcap,cap_setgid,cap_setuid"
+            keepCaps=$VAR_INIT_CAPS
             if [ -n "$VAR_KEEP_CAPS" ]
             then
                keepCaps="$keepCaps,$VAR_KEEP_CAPS"
