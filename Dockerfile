@@ -1,4 +1,4 @@
-ARG BASEIMAGE="huggla/busybox:20181017-edge"
+ARG BASEIMAGE="huggla/busybox:20181101-edge"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEDIRS="/environment"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
