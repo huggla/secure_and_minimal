@@ -25,7 +25,8 @@ ARG BUILDCMDS=\
 "&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 "\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
-"&& chmod u=rwx,g=rx /imagefs/stop/stage1"
+"&& chmod u=rwx,g=rx /imagefs/stop/stage1 "\
+"&& chmod u=,g=rx /imagefs/.r"
 
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
