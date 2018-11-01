@@ -33,6 +33,7 @@ execCmd(){
          command="/usr/sbin/capsh --drop=$delcaps --caps=$delcaps-e -- -c $command"
       fi
       command="$(eval "echo $command")"
+      echo $command
       exec /usr/bin/env -i $command
    else
       echo 'execCmd: Nothing to do!'
