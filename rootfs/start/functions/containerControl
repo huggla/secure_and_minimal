@@ -23,6 +23,5 @@ containerControl(){
       tryRunStage 3
    fi
    allVars quote > /environment/vars
-   cat proc/self/status
    execCmdAsUser /stop/stage1 $finalUser
 }
