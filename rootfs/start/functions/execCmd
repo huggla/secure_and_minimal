@@ -9,7 +9,7 @@ execCmd(){
       local cap=''
       if [ "$(/usr/bin/id -un 2>/dev/null)" == "root" ]
       then
-         if [ "$command" == "/start/stage2" ]
+         if [ "$command" == "/start/stage2" ] || [ "${command%% *}" == "/usr/local/bin/sudo" ]
          then
             if [ ! -e "/bin/bash" ]
             then
