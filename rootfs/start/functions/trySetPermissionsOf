@@ -9,14 +9,12 @@ trySetPermissionsOf(){
    set +e
    if [ "$2" == "write" ]
    then
-      /bin/chown $VAR_LINUX_USER "$obj"
-      /bin/chmod $flag ug+w "$obj"
+      /bin/chmod $flag g+w "$obj"
    fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
       /bin/chmod $flag g+rX "$obj"
    fi
-#   /bin/chmod $flag o= "$obj"
    if [ "$2" == "exec" ]
    then
       /bin/chmod $flag ug+x "$obj"
