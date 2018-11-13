@@ -13,7 +13,7 @@ makeAllFromList(){
    do
       type_lc="$(toLower $type)"
       set +e
-      matches="$(echo "$1" | /bin/grep -iE "^[^ ]*_$type_lc(s|ectory|ectories)? *=")"
+      matches="$(echo "$1" | /bin/grep -iE "^[^ ]*_(log)?$type_lc(s|ectory|ectories)? *=")"
       set -e
       for match in $matches
       do
@@ -21,7 +21,7 @@ makeAllFromList(){
          if [ $(echo $match | /bin/grep -iE "(pass|pw|sec|salt|key)[^=]*=") ]
          then
             p2="secret"
-         elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data|_log_)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
+         elif [ $(echo $match | /bin/grep -iE "(conf|sock|storage|data|logfile|logdir|_log_)[^=]*=") ] || [ $(echo $match | /bin/grep "$VAR_CONFIG_DIR") ]
          then
             p2="write"
          fi
