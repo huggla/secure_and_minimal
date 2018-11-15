@@ -1,16 +1,26 @@
 makePwFileForUser(){
+   local VAR_LINUX_USER=$1
    local userName="$(toLower "$1")"
    local userPw=""
    eval "local pwFile=\$VAR_password_file_$userName"
    if [ -z "$pwFile" ]
    then
-      pwFile="$(/bin/mktemp)"
-   fi
+      if [ "$2" == "owner" ]
+      then
+         pwFile="$(runBinCmdAsLinuxUser /bin/mktemp)"
+      else
+         pwFile="$(/bin/mktemp)"
+      fi
    if [ ! -s "$pwFile" ]
    then
       eval "userPw=\$VAR_password_$userName"
       userPw="$(securePw "$userPw")"
-      echo -n "$userPw" > "$pwFile"
+      if [ "$2" == "owner" ]
+      then
+         runBinCmdAsLinuxUser "/bin/echo -n \"$userPw\" > \"$pwFile\""
+      else
+         echo -n "$userPw" > "$pwFile"
+      fi
    fi
    echo "$pwFile"
 }
