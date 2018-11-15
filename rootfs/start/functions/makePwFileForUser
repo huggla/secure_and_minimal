@@ -11,6 +11,7 @@ makePwFileForUser(){
       else
          pwFile="$(/bin/mktemp)"
       fi
+   fi
    if [ ! -s "$pwFile" ]
    then
       eval "userPw=\$VAR_password_$userName"
