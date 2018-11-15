@@ -18,9 +18,11 @@ makePwFileForUser(){
       userPw="$(securePw "$userPw")"
       if [ "$2" == "owner" ]
       then
-         runBinCmdAsLinuxUser "/bin/echo -n \"$userPw\" > \"$pwFile\""
+         runBinCmdAsLinuxUser "/bin/chmod g+w \"$pwFile\""
+         echo -n "$userPw" >> "$pwFile"
+         runBinCmdAsLinuxUser "/bin/chmod g-w \"$pwFile\""
       else
-         echo -n "$userPw" > "$pwFile"
+         echo -n "$userPw" >> "$pwFile"
       fi
    fi
    echo "$pwFile"
