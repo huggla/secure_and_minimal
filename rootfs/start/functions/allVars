@@ -1,7 +1,7 @@
 allVars(){
    local IFS=$(echo -en "\n\b")
    local var=""
-   local tmp="$(set | grep -E "^VAR$2_")"
+   local tmp="$(set | grep -E "^VAR$2$3_" | sort)"
    local vars=""
    local delimiter=""
    local varName=""
@@ -10,7 +10,7 @@ allVars(){
    do
       if [ -n "$2" ]
       then
-         var=${var#VAR$2_}
+         var=${var#VAR$2$3_}
       fi
       if [ "$1" != "quote" ]
       then
