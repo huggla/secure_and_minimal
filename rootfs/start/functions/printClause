@@ -1,8 +1,8 @@
 printClause(){
    local name=$1
    local leftBracket="$(head -1 $2)"
-   local rightBracket="$(tail -1 $2)"
-   local IFS=$(echo -en "$3")
+   local rightBracket="$(head +2 $2)"
+   local IFS=$(echo -en "\n")
    local row=""
    local echoStr="$(echo "${name%\#*} $leftBracket")"
    eval "local clauseVar=\"\$VAR_CLAUSE_$name\""
