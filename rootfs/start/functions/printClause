@@ -1,0 +1,19 @@
+printClause(){
+   local name=$1
+   local leftBracket=$2
+   local contents=$3
+   local rightBracket=$4
+   local IFS=$(echo -en ";")
+   local row=""
+   local echoStr="$(echo "$name $leftBracket")"
+   for row in $contents
+   do
+      if [ "${row% *}" == "clause" ]
+      then
+         echoStr="$echoStr$(eval $row)"
+      else
+         echoStr="$echoStr$(echo $row)"
+      fi
+   done
+   echo "$echoStr$(echo $rightBracket)"
+}
