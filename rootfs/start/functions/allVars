@@ -23,7 +23,12 @@ allVars(){
             varName="$(echo "$varName" | /usr/bin/tr '_' '-')"
          fi
          eval "varValue=${var#*=}"
-         var="$varName""=""$varValue"
+         var=$varName
+         if [ "$1" != "noEqual" ]
+         then
+            var=$var" ="
+         fi
+         var="$var $varValue"
       fi
       vars="$vars$delimiter$var"
       delimiter=$'\n'
