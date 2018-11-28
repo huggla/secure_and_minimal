@@ -1,4 +1,4 @@
-ARG TAG="20181122"
+ARG TAG="20181128"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEDIRS="/environment"
@@ -31,7 +31,7 @@ ARG BUILDCMDS=\
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
-FROM ${BASEIMAGE:-huggla/base:$TAG} as base
+FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
 FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 COPY --from=build /imagefs /
