@@ -1,16 +1,22 @@
 allVars(){
    local IFS=$(echo -en "\n\b")
+   local group=$2
    local var=""
-   local tmp="$(set | grep -E "^VAR$2[0-9]*_" | sort)"
+   local tmp="$(set | grep -E "^VAR$group[0-9]*_" | sort)"
    local vars=""
    local delimiter=""
    local varName=""
    local varValue=""
+   local -
+   set -u
+   eval "local begin=\$$group_begin" || local begin="="
+   eval "local end=\$$group_end" || local end=""
+   set +u
    for var in $tmp
    do
-      if [ -n "$2" ]
+      if [ -n "$group" ]
       then
-         var=${var#VAR$2*_}
+         var=${var#VAR$group*_}
       fi
       if [ "$1" != "quote" ]
       then
@@ -23,12 +29,7 @@ allVars(){
             varName="$(echo "$varName" | /usr/bin/tr '_' '-')"
          fi
          eval "varValue=${var#*=}"
-         var=$varName
-         if [ "$1" != "noEqual" ]
-         then
-            var=$var" ="
-         fi
-         var="$var $varValue"
+         var="$varName $begin $varValue $end"
       fi
       vars="$vars$delimiter$var"
       delimiter=$'\n'
