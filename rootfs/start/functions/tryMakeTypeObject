@@ -1,5 +1,5 @@
 tryMakeTypeObject(){
-   local obj="$(removeQuotes $2)"
+   local obj="$(trim "$(removeQuotes $2)")"
    local -
    if [ ! -e "$obj" ]
    then
