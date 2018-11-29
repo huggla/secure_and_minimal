@@ -34,5 +34,5 @@ allVars(){
       delimiter=$'\n'
    done
    IFS=$(echo -en "")
-   echo "$vars"
+   echo -e "$vars"
 }
