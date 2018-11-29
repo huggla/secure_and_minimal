@@ -13,8 +13,8 @@ allVars(){
    if [ -n "$group" ]
    then
       set -u
-      eval "begin=\$${group#?}_begin" || true
-      eval "end=\$${group#?}_end" || true
+      $(eval "begin=\$${group#?}_begin") || true
+      $(eval "end=\$${group#?}_end") || true
       set +u
    fi
    for var in $tmp
