@@ -7,8 +7,8 @@ allVars(){
    local delimiter=""
    local varName=""
    local varValue=""
-   local begin
-   local end
+   local begin="="
+   local end=""
    local -
    if [ -n "$group" ]
    then
