@@ -2,35 +2,32 @@ allVars(){
    local IFS=$(echo -en "\n\b")
    local group=$2
    local var=""
-   local tmp="$(set | grep -E "^VAR$group[0-9]*_" | sort)"
+   local tmp="$(set | grep -E "^VAR_")"
    local vars=""
    local delimiter=""
-   local varName=""
-   local varValue=""
-   local begin="="
-   local end=""
-   local -
    if [ -n "$group" ]
    then
+      local varName=""
+      local varValue=""
+      local quote
+      local dblUScore
+      local uScore
+      local begin
+      local end
+      local -
+      quote="$(set -u && eval "echo -e \$${group#?}_quote")" || quote=""
+      dblUScore="$(set -u && eval "echo -e \$${group#?}_dblUScore")" || dblUScore="__"
+      uScore="$(set -u && eval "echo -e \$${group#?}_uScore")" || uScore="_"
       begin="$(set -u && eval "echo -e \$${group#?}_begin")" || begin="="
       end="$(set -u && eval "echo -e \$${group#?}_end")" || end=""
+      tmp="$(echo $tmp | grep -E "^VAR_$group[0-9]*_" | sort)"
    fi
    for var in $tmp
    do
       if [ -n "$group" ]
       then
-         var=${var#VAR$group*_}
-      fi
-      if [ "$1" != "quote" ]
-      then
-         varName=${var%%=*}
-         if [ "$1" == "noUnderscore" ]
-         then
-            varName="$(echo "$varName" | /usr/bin/tr '_' ' ')"
-         elif [ "$1" == "noUnderscore2" ]
-         then
-            varName="$(echo "$varName" | /usr/bin/tr '_' '-')"
-         fi
+         var=${var#VAR_$group*_}
+         varName="$(echo ${var%%=*} | sed "s/__/$dblUScore/g" | sed "s/_/$uScore/g")"
          eval "varValue=${var#*=}"
          var="$varName $begin $varValue $end"
       fi
