@@ -12,8 +12,8 @@ allVars(){
    local -
    if [ -n "$group" ]
    then
-      begin="$(set -u && eval "echo \$${group#?}_begin")" || begin="="
-      end="$(set -u && eval "echo \$${group#?}_end")" || end=""
+      begin="$(set -u && eval "echo -e \$${group#?}_begin")" || begin="="
+      end="$(set -u && eval "echo -e \$${group#?}_end")" || end=""
    fi
    for var in $tmp
    do
