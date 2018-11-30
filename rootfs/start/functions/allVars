@@ -7,15 +7,13 @@ allVars(){
    local delimiter=""
    local varName=""
    local varValue=""
-   local begin="="
-   local end=""
+   local begin
+   local end
    local -
    if [ -n "$group" ]
    then
-      set -u
-      begin="$(eval "echo \$${group#?}_begin")" || true
-      end="$(eval "echo \$${group#?}_end")" || true
-      set +u
+      begin="$(set -u && eval "echo \$${group#?}_begin")" || begin="="
+      end="$(set -u && eval "echo \$${group#?}_end")" || end=""
    fi
    for var in $tmp
    do
