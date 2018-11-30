@@ -1,10 +1,33 @@
 configFromVarGroup(){
-   local p1=""
-   if [ -z "$2" ]
-   then
-      p1="noquote"
-   else
-      p1=$2
-   fi
-   allVars $p1 _$1
+   local IFS=$(echo -en "\n\b")
+   local group=$1
+   local var=""
+   local allVars="$(allVars)"
+   local vars=""
+   local delimiter=""
+   local varName=""
+   local varValue=""
+   local quote
+   local dblUScore
+   local uScore
+   local begin
+   local end
+   local -
+   quote="$(set -u && eval "echo -e \$${group#?}_quote")" || quote=""
+   dblUScore="$(set -u && eval "echo -e \$${group#?}_dblUScore")" || dblUScore="__"
+   uScore="$(set -u && eval "echo -e \$${group#?}_uScore")" || uScore="_"
+   begin="$(set -u && eval "echo -e \$${group#?}_begin")" || begin="="
+   end="$(set -u && eval "echo -e \$${group#?}_end")" || end=""
+   tmp="$(echo $tmp | grep -E "^VAR_$group[0-9]*_" | sort)"
+   for var in $allVars
+   do
+      var=${var#VAR_$group*_}
+      varName="$(echo ${var%%=*} | sed "s/__/$dblUScore/g" | sed "s/_/$uScore/g")"
+      eval "varValue=${var#*=}"
+      var="$varName $begin $varValue $end"
+      vars="$vars$delimiter$var"
+      delimiter=$'\n'
+   done
+   IFS=$(echo -en "")
+   echo -e "$vars"
 }
