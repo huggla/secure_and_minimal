@@ -7,7 +7,7 @@ containerControl(){
       createLinuxUser
       updateSudoersConf
       fixHosts
-      makeAllFromList "$(allVars noquote)"
+      makeAllFromList "$(allVars)"
       fixPermissionsForUsrLocalBin
       local finalCmdString="$VAR_FINAL_COMMAND &"
       tryRunStage 3
@@ -19,9 +19,9 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
+      allVars > /environment/vars
    else
       tryRunStage 3
    fi
-   allVars quote > /environment/vars
    execCmdAsUser /stop/stage1 $finalUser
 }
