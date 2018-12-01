@@ -1,4 +1,4 @@
-makeAllFromList(){
+makeAllFromList(){ 
    local IFS=$(echo -en "\n\b,")
    local type=""
    local types="File,Dir"
@@ -6,8 +6,8 @@ makeAllFromList(){
    local match=""
    local matches=""
    local p2=""
-   local value=""
-   local values=""
+   local path=""
+   local paths=""
    local -
    for type in $types
    do
@@ -25,10 +25,11 @@ makeAllFromList(){
          then
             p2="write"
          fi
-         values=${match#*=}
-         for value in $values
+         paths="$(eval "echo ${match#*=}")"
+         for path in $paths
          do
-            tryMake$type $value $p2
+            path="$(eval "echo $path")"
+            tryMake$type "$path" $p2
          done
       done
    done
