@@ -1,4 +1,5 @@
 makeAllFromList(){ 
+   local list="$(eval "echo \"$1\"")"
    local IFS=$(echo -en "\n\b,")
    local type=""
    local types="File,Dir"
@@ -13,7 +14,7 @@ makeAllFromList(){
    do
       type_lc="$(toLower $type)"
       set +e
-      matches="$(echo "$1" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= *'?/")"
+      matches="$(echo "$list" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= *'?/")"
       set -e
       for match in $matches
       do
