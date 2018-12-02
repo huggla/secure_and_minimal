@@ -13,7 +13,7 @@ makeAllFromList(){
    do
       type_lc="$(toLower $type)"
       set +e
-      matches="$(echo "$1" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= */")"
+      matches="$(echo "$1" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= *'?/")"
       set -e
       for match in $matches
       do
