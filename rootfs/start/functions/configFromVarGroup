@@ -2,7 +2,7 @@ configFromVarGroup(){
    local IFS=$(echo -en "\n\b")
    local group=$1
    local var=""
-   local allVars="$(allVars)"
+   local groupVars="$(allVars | /bin/grep -E "^VAR_$group[0-9]*_")"
    local vars=""
    local delimiter=""
    local varName=""
@@ -19,7 +19,7 @@ configFromVarGroup(){
    begin="$(set -u && eval "echo -e \$${group#?}_begin")" || begin="="
    end="$(set -u && eval "echo -e \$${group#?}_end")" || end=""
    tmp="$(echo $tmp | grep -E "^VAR_$group[0-9]*_" | sort)"
-   for var in $allVars
+   for var in $groupVars
    do
       var=${var#VAR_$group*_}
       varName="$(echo ${var%%=*} | sed "s/__/$dblUScore/g" | sed "s/_/$uScore/g")"
