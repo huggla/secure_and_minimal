@@ -7,5 +7,5 @@ writeEnvironmentVars(){
    then
       vars=="$(echo "$(echo "$vars")")"
    fi
-   echo "$vars" > /environment/vars
+   echo "$vars" > "$envFile"
 }
