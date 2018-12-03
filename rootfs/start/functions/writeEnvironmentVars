@@ -3,9 +3,5 @@
 writeEnvironmentVars(){
    local vars="$(allVars | /bin/sed 's/\\/\\\\/g')"
    local envFile="/environment/vars"
-   if [ -e "$envFile" ]
-   then
-      vars=="$(echo "$(echo "$vars")")"
-   fi
    echo "$vars" > "$envFile"
 }
