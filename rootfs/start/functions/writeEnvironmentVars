@@ -1,5 +1,11 @@
 [ $(type -t allVars) ] || . /start/functions/allVars
 
 writeEnvironmentVars(){
-   allVars | /bin/sed 's/\\/\\\\/g' > /environment/vars
+   local vars="$(allVars | /bin/sed 's/\\/\\\\/g')"
+   local envFile="/environment/vars"
+   if [ -e "$envFile" ]
+   then
+      vars=="$(echo "$(echo "$vars")")"
+   fi
+   echo "$vars" > /environment/vars
 }
