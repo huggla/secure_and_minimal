@@ -19,7 +19,7 @@ containerControl(){
          echo 'wait $PID'
          echo 'EXIT_STATUS=$?'
       } >> /stop/stage1
-      allVars > /environment/vars
+      writeEnvironmentVars
    else
       tryRunStage 3
    fi
