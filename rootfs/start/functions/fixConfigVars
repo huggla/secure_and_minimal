@@ -1,0 +1,8 @@
+fixConfigVars(){
+   if [ -n "$VAR_CONFIG_FILE" ]
+   then
+      local VAR_CONFIG_DIR="$(/usr/bin/dirname "$VAR_CONFIG_FILE")"
+   else
+      unset VAR_CONFIG_FILE
+   fi
+}
