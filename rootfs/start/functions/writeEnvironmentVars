@@ -1,5 +1,5 @@
 [ $(type -t allVars) ] || . /start/functions/allVars
 
 writeEnvironmentVars(){
-   allVars | /bin/sed 's/\\/\\\\/g' > "/environment/vars"
+   allVars | /bin/sed 's/\\/\\\\/g' 's/$/\\$/g' > "/environment/vars"
 }
