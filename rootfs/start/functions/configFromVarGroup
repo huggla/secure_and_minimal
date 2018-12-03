@@ -7,18 +7,15 @@ configFromVarGroup(){
    local delimiter=""
    local varName=""
    local varValue=""
-   local quote
    local dblUScore
    local uScore
    local begin
    local end
    local -
-   quote="$(set -u && eval "echo -e \$${group#?}_quote")" || quote=""
-   dblUScore="$(set -u && eval "echo -e \$${group#?}_dblUScore")" || dblUScore="__"
-   uScore="$(set -u && eval "echo -e \$${group#?}_uScore")" || uScore="_"
-   begin="$(set -u && eval "echo -e \$${group#?}_begin")" || begin="="
-   end="$(set -u && eval "echo -e \$${group#?}_end")" || end=""
-   tmp="$(echo $tmp | grep -E "^VAR_$group[0-9]*_" | sort)"
+   dblUScore="$(set -u && eval "echo -e \$${group}_dblUScore")" || dblUScore="__"
+   uScore="$(set -u && eval "echo -e \$${group}_uScore")" || uScore="_"
+   begin="$(set -u && eval "echo -e \$${group}_begin")" || begin="="
+   end="$(set -u && eval "echo -e \$${group}_end")" || end=""
    for var in $groupVars
    do
       var=${var#VAR_$group*_}
