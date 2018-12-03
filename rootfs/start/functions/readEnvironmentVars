@@ -2,6 +2,6 @@ readEnvironmentVars(){
    local var=""
    while read var
    do 
-      eval "$var"
+      eval "$(echo "$(echo "$var")")"
    done < /environment/vars
 }
