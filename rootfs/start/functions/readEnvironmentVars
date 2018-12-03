@@ -2,7 +2,6 @@ readEnvironmentVars(){
    local var=""
    while read var
    do 
-      var="$(echo "$var" | sed 's/\\/\\\\/g' | sed 's/\$/\\\$/g')"
       eval "$var"
    done < /environment/vars
 }
