@@ -12,9 +12,9 @@ configFromVarGroup(){
    local begin
    local end
    local -
-   dblUScore="$(set -u && eval "echo -e \$${group}_dblUScore")" || dblUScore="__"
-   uScore="$(set -u && eval "echo -e \$${group}_uScore")" || uScore="_"
-   begin="$(set -u && eval "echo -e \$${group}_begin")" || begin="="
+   dblUScore="$(set -u && eval "echo -e \$${group}_dblUScore")" > /dev/null 2>&1 || dblUScore="__"
+   uScore="$(set -u && eval "echo -e \$${group}_uScore 2>/dev/null")" || uScore="_"
+   begin="$(set -u && eval "echo -e \$${group}_begin" 2>/dev/null)" || begin="="
    end="$(set -u && eval "echo -e \$${group}_end")" || end=""
    for var in $groupVars
    do
