@@ -1,4 +1,4 @@
-ARG TAG="20181128"
+ARG TAG="20181204"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEDIRS="/environment"
