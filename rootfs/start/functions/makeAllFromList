@@ -1,11 +1,11 @@
 makeAllFromList(){ 
    local list="$1"
    local newList=""
+   local IFS=$(echo -en "\n\b,")
    for var in $list
    do
       newList="$newList"$'\n'"${var%%=*}=$(eval "echo ${var#*=}")"
    done
-   local IFS=$(echo -en "\n\b,")
    local type=""
    local types="File,Dir"
    local type_lc=""
