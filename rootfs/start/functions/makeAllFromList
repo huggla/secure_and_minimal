@@ -1,12 +1,10 @@
 makeAllFromList(){ 
-#   local list="$1"
-#   local newList=""
-#   for var in $list
-#   do
-#      newList="$newList"$'\n'"${var%%=*}=$(eval "echo ${var#*=}")"
-#   done
-
-   local list="$(echo "$(echo "$1")")"
+   local list="$1"
+   local newList=""
+   for var in $list
+   do
+      newList="$newList"$'\n'"${var%%=*}=$(eval "echo ${var#*=}")"
+   done
    local IFS=$(echo -en "\n\b,")
    local type=""
    local types="File,Dir"
@@ -21,7 +19,7 @@ makeAllFromList(){
    do
       type_lc="$(toLower $type)"
       set +e
-      matches="$(echo "$list" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= *'?/")"
+      matches="$(echo "$newList" | /bin/grep -iE "^[^ =]*_(log)?$type_lc(s|ectory|ectories)? *= *'?/")"
       set -e
       for match in $matches
       do
