@@ -1,4 +1,11 @@
 makeAllFromList(){ 
+#   local list="$1"
+#   local newList=""
+#   for var in $list
+#   do
+#      newList="$(echo "$newList${var%%=*}=$(eval "echo ${var#*=}")")"
+#   done
+
    local list="$(echo "$(echo "$1")")"
    local IFS=$(echo -en "\n\b,")
    local type=""
