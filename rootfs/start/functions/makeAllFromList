@@ -6,7 +6,7 @@ makeAllFromList(){
    do
       newList="$newList"$'\n'"${var%%=*}=$(eval "echo ${var#*=}")"
    done
-   local IFS=$(echo -en "\n\b,")
+   IFS=$(echo -en "\n\b,")
    local type=""
    local types="File,Dir"
    local type_lc=""
