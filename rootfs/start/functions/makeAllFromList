@@ -3,7 +3,7 @@ makeAllFromList(){
 #   local newList=""
 #   for var in $list
 #   do
-#      newList="$(echo "$newList${var%%=*}=$(eval "echo ${var#*=}")")"
+#      newList="$newList"$'\n'"${var%%=*}=$(eval "echo ${var#*=}")"
 #   done
 
    local list="$(echo "$(echo "$1")")"
