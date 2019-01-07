@@ -10,7 +10,7 @@ runBinCmdAsLinuxUser(){
    local exitCode=$?
    set -e
    /bin/rm "/run/runBinCmdAsLinuxUser.$id"
-   if ! /bin/ls /run/runBinCmdAsLinuxUser.* &> /dev/null
+   if ! $(/bin/ls /run/runBinCmdAsLinuxUser.* &> /dev/null)
    then
       /bin/chmod g-rx /bin /usr/bin
    fi
