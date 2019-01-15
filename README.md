@@ -1,7 +1,5 @@
-**Note! I use Docker latest tag for development, which means that it isn't allways working. Date tags are stable.**
-
 # base
-With sudo, argon2 and improved security.
+Baseimage based on Alpine edge, with sudo, argon2 and custom scripts for improved security.
 
 ## Environment variables
 ### pre-set runtime variables.
