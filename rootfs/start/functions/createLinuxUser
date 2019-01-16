@@ -1,7 +1,13 @@
 createLinuxUser(){
-   if ! $(/usr/bin/id $VAR_LINUX_USER > /dev/null 2>&1)
+   local user="${1:-$VAR_LINUX_USER}"
+   local id=102
+   if ! $(/usr/bin/id $user > /dev/null 2>&1)
    then
-      echo "$VAR_LINUX_USER:x:102:0:$VAR_LINUX_USER:/dev/null:/sbin/nologin" >> /etc/passwd
-      echo "$VAR_LINUX_USER:x:102:$VAR_LINUX_USER" >> /etc/group
+      while $(/usr/bin/id $id > /dev/null 2>&1)
+      do
+         id=$[ $id + 1 ]
+      done
+      echo "$user:x:$id:0:$user:/dev/null:/sbin/nologin" >> /etc/passwd
+      echo "$user:x:$id:$user" >> /etc/group
    fi
 }
