@@ -1,6 +1,6 @@
 createLinuxUser(){
    local user="${1:-$VAR_LINUX_USER}"
-   local id=102
+   local id=${2:-102}
    if ! $(/usr/bin/id $user > /dev/null 2>&1)
    then
       while $(/usr/bin/id $id > /dev/null 2>&1)
