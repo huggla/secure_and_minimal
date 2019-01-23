@@ -28,14 +28,23 @@ ARG BUILDCMDS=\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
 "&& chmod u=rwx,g=rx /imagefs/stop/stage1"
 
-#---------------Don't edit----------------
+#--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
 FROM ${BUILDIMAGE:-huggla/build} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
+ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
+ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
+ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ARG DOWNLOADSDIR
+ARG MAKEDIRS
+ARG MAKEFILES
+ARG EXECUTABLES
+ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-#-----------------------------------------
+#---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
  && chmod u+s /usr/local/bin/sudo \
@@ -48,9 +57,9 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
 
-#---------------Don't edit----------------
+#--------Generic template (don't edit)--------
 USER starter
 ONBUILD USER root
-#-----------------------------------------
+#---------------------------------------------
 
 CMD ["sudo","start"]
