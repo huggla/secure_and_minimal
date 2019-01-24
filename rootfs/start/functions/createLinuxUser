@@ -5,7 +5,7 @@ createLinuxUser(){
    then
       while /usr/bin/id $id > /dev/null 2>&1
       do
-         id=$[ $id + 1 ]
+         id=$[[ $id + 1 ]]
       done
       echo "$user:x:$id:0:$user:/dev/null:/sbin/nologin" >> /etc/passwd
       echo "$user:x:$id:$user" >> /etc/group
