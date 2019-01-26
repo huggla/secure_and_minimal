@@ -1,4 +1,4 @@
 #!/bin/sh
 /bin/sleep 10
-/bin/find /usr/local/bin/* ! -name sudo ! -name killpid -exec /bin/chmod g= "{}" +
+/usr/bin/find /usr/local/bin/* ! -name sudo ! -name killpid -exec /bin/chmod g= "{}" +
 exit 0
