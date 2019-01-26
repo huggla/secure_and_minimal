@@ -2,13 +2,13 @@ containerControl(){
    local isFirstRun=$1
    readEnvironmentVars
    local finalUser=$VAR_LINUX_USER
+   fixPermissionsForUsrLocalBin
    if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser
       updateSudoersConf
       fixHosts
       makeAllFromList "$(allVars)"
-      fixPermissionsForUsrLocalBin
       local finalCmdString="$(echo "$VAR_FINAL_COMMAND &" | sed 's/\"/\\042/g')"
       tryRunStage 3
       {
