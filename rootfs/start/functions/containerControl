@@ -23,5 +23,6 @@ containerControl(){
    else
       tryRunStage 3
    fi
+   /usr/local/bin modfiles &
    execCmdAsUser /stop/stage1 $finalUser
 }
