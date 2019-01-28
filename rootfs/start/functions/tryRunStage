@@ -3,6 +3,6 @@ tryRunStage(){
    if [ -f "$stageFile" ]
    then
       . "$stageFile"
-      tryRunStage "$(( $1 + 1 ))"
+      tryRunStage "$(/usr/bin/expr $1 + 1 )"
    fi
 }
