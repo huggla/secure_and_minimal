@@ -1,8 +1,0 @@
-sourceStages(){
-   local stageNumber=3
-   while [ -f "${0%/*}/stage$stageNumber" ]
-   do
-      . "$stageFile"
-      stageNumber="$(expr $stageNumber + 1)"
-   done
-}

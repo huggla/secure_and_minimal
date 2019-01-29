@@ -1,0 +1,12 @@
+sourceStage3(){
+   if [ -d "/start/stage3" ]
+   then
+      for file in /start/stage3/*
+      do
+         if [ -f "$file" ]
+         then
+            . "$file"
+         fi
+      done
+   fi
+}
