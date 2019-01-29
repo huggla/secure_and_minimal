@@ -1,6 +1,8 @@
 sourceStage3(){
+   local -
    if [ -d "/start/stage3" ]
    then
+      set +f
       for file in /start/stage3/*
       do
          if [ -f "$file" ]
