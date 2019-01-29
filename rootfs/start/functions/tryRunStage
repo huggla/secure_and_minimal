@@ -1,8 +1,0 @@
-tryRunStage(){
-   local stageFile="${0%/*}/stage$1"
-   if [ -f "$stageFile" ]
-   then
-      . "$stageFile"
-      tryRunStage "$(/usr/bin/expr $1 + 1 )"
-   fi
-}
