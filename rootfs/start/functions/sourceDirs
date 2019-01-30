@@ -1,0 +1,19 @@
+sourceDirs(){
+   local -
+   local dir=""
+   local file=""
+   set +f
+   for dir in $1
+   do
+      if [ -d "$dir" ]
+      then
+         for file in $dir/*
+         do
+            if [ -f "$file" ]
+            then
+               . "$file"
+            fi
+         done
+      fi
+   done
+}
