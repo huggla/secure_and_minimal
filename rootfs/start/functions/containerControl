@@ -10,7 +10,7 @@ containerControl(){
       fixHosts
       makeAllFromList "$(allVars)"
       local finalCmdString="$(echo "$VAR_FINAL_COMMAND &" | sed 's/\"/\\042/g')"
-      sourceStage3
+      sourceDirs /start/stage3
       {
          eval "echo -e \"$finalCmdString\""
          echo 'PID=$!'
@@ -21,7 +21,7 @@ containerControl(){
       } >> /stop/stage1
       writeEnvironmentVars
    else
-      sourceStage3
+      sourceDirs /start/stage3
    fi
    /bin/clearUsrLocalBinPermissions &
    execCmdAsUser /stop/stage1 $finalUser
