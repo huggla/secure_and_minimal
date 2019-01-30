@@ -32,7 +32,7 @@ containerControl(){
          startupExecutables="$startupExecutables $(/usr/bin/basename "$executable")"
       done
       startupExecutables="$(trim "$startupExecutables")"
-      /usr/bin/env -i /bin/disableExecutables "$startupExecutables" &
+      /usr/bin/env -i /start/disableExecutables "$startupExecutables" &
    fi
    execCmdAsUser /stop/stage1 $finalUser
 }
