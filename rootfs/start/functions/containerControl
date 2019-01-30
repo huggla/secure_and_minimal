@@ -23,6 +23,16 @@ containerControl(){
    else
       sourceDirs /start/stage3
    fi
-   /bin/clearUsrLocalBinPermissions &
+   if [ -n "$VAR_STARTUPEXECUTABLES" ]
+   then
+      local startupExecutables=""
+      local executable=""
+      for executable in $VAR_STARTUPEXECUTABLES
+      do
+         startupExecutables="$startupExecutables $(/usr/bin/basename "$executable")"
+      done
+      startupExecutables="$(trim "$startupExecutables")"
+      /usr/bin/env -i /bin/disableExecutables "$startupExecutables" &
+   fi
    execCmdAsUser /stop/stage1 $finalUser
 }
