@@ -14,7 +14,7 @@ ARG BUILDCMDS=\
 "&& echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
 "&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
 "&& echo 'exec /bin/sh' > /imagefs/usr/bin/script "\
-"&& chmod u+x /imagefs/usr/bin/script /imagefs/bin/disableExecutables "\
+"&& chmod u+x /imagefs/usr/bin/script "\
 "&& chmod o= /imagefs/usr/bin/sudo /imagefs/usr/lib/sudo /imagefs/start /imagefs/stop "\
 "&& cd /imagefs/start "\
 "&& ln -s stage1 start "\
@@ -23,7 +23,7 @@ ARG BUILDCMDS=\
 "&& cd /imagefs/stop/functions "\
 "&& ln -s ../../start/functions/readEnvironmentVars ../../start/functions/sourceDirs ./ "\
 "&& chmod go= /imagefs/environment "\
-"&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 "\
+"&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 /imagefs/start/disableExecutables "\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
 "&& chmod u=rwx,g=rx /imagefs/stop/stage1"
