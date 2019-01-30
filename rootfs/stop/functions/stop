@@ -1,7 +1,7 @@
 stop(){
    local -
    set -e
-   sourceStage 2
+   sourceDirs /stop/stage2
    /usr/local/bin/killpid $PID $1
    wait $PID
    echo
