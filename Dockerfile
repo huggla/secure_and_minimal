@@ -46,7 +46,7 @@ ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-RUN if [ -n "$EXECUTABLES" ]; then chgrp 102 $EXECUTABLES; fi
+ENV VAR_STARTUPEXECUTABLES="$STARTUPEXECUTABLES"
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
