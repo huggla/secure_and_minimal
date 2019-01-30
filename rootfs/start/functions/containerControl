@@ -2,7 +2,7 @@ containerControl(){
    local isFirstRun=$1
    readEnvironmentVars
    local finalUser=$VAR_LINUX_USER
-   /bin/chmod -R ug=rx /usr/local/bin
+   find /usr/local/bin/* ! -perm -4000 -exec /bin/chmod ug=rx "{}" +
    if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser
