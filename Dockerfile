@@ -64,3 +64,7 @@ ONBUILD USER root
 #---------------------------------------------
 
 CMD ["sudo","start"]
+
+ONBUILD ARG STARTUPEXECUTABLES
+
+ONBUILD RUN if [ -n "$STARTUPEXECUTABLES" ]; then chgrp 102 $STARTUPEXECUTABLES; fi
