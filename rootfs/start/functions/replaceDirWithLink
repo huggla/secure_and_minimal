@@ -1,19 +1,19 @@
 replaceDirWithLink() {
    local dir=$1
-   local linkDir=$2
-   if [ "$linkDir" != "$dir" ]
+   local link=$2
+   if [ "$link" != "$dir" ]
    then
-      if [ ! -s "$linkDir" ] && [ -s "$dir" ]
+      if [ ! -s "$link" ] && [ -s "$dir" ]
       then
          local -
          set +f
-         cp -a "$dir/"* "$linkDir/"
+         cp -a "$dir/"* "$link/"
          set -f
       fi
       if [ -e "$dir" ]
       then
          rm -rf "$dir"
       fi
-      ln -s "$linkDir" "$dir/"
+      ln -s "$link" "$dir/"
    fi
 }
