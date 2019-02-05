@@ -1,19 +1,29 @@
 replaceDirWithLink() {
    local dir=$1
    local link=$2
-   if [ "$link" != "$dir" ]
+   if [ -d "$link" ]
    then
-      if [ ! -s "$link" ] && [ -s "$dir" ]
+      if [ "$link" != "$dir" ]
       then
-         local -
-         set +f
-         cp -a "$dir/"* "$link/"
-         set -f
+         if [ -d "$dir" ] && [ -n "$(ls -A "$dir")" ]
+         then
+            if [ -n "$(ls -A "$link")" ]
+            then
+               echo "$link has contents"
+            else
+               echo "$link is empty but $dir has contents"
+               echo "Moving contents from $dir to $link" 
+               local -
+               set +f
+               cp -a "$dir/"* "$link/"
+               set -f
+            fi
+         fi
+         echo "Replacing $dir with a link to $link"
+         ln -sf "$link" "$dir"
       fi
-      if [ -e "$dir" ]
-      then
-         rm -rf "$dir"
-      fi
-      ln -s "$link" "$dir"
+   else
+      echo "$link doesn't exist or isn't a directory"
+      exit 1
    fi
 }
