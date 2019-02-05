@@ -14,5 +14,8 @@ tryMakeTypeObject(){
       fi
       set -e
       trySetPermissionsOf "$obj" $3
+   elif [ "$3" == "write" ] || [ "$3" == "exec" ] || [ "$3" == "secure" ]
+   then
+      trySetPermissionsOf "$obj" $3
    fi
 }
