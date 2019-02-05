@@ -27,6 +27,7 @@ ARG BUILDCMDS=\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
 "&& chmod u=rwx,g=rx /imagefs/stop/stage1"
+ARG REMOVEDIRS="/sbin /usr/include /usr/share /usr/sbin"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
