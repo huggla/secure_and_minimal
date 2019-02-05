@@ -22,5 +22,5 @@ trySetPermissionsOf(){
    then
       /bin/chmod $flag g= "$obj"
    fi
-   set -e
+   /bin/chmod $flag o= "$obj"
 }
