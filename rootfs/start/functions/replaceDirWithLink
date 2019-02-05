@@ -20,7 +20,8 @@ replaceDirWithLink() {
             fi
          fi
          echo "Replacing $dir with a link to $link"
-         ln -sf "$link" "$dir"
+         rm -rf "$dir"
+         ln -s "$link" "$dir"
       fi
    else
       echo "$link doesn't exist or isn't a directory"
