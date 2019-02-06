@@ -1,7 +1,6 @@
 ARG TAG="20190129"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
-ARG MAKEDIRS="/environment"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
@@ -50,7 +49,6 @@ ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-ENV VAR_STARTUPEXECUTABLES="$STARTUPEXECUTABLES"
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
