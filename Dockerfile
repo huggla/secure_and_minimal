@@ -21,7 +21,6 @@ ARG BUILDCMDS=\
 "&& ln -s ../start/includeFunctions ./ "\
 "&& cd /imagefs/stop/functions "\
 "&& ln -s ../../start/functions/readEnvironmentVars ../../start/functions/sourceDirs ./ "\
-"&& chmod go= /imagefs/environment "\
 "&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 /imagefs/start/disableExecutables "\
 "&& chmod -R g=r /imagefs/stop "\
 "&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
