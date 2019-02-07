@@ -23,6 +23,6 @@ containerControl(){
    else
       sourceDirs /start/stage3
    fi
-   /usr/bin/env -i /start/delayedDisableExecutables &
+   /usr/bin/env -i /start/delayedDisableStartupExecutables &
    execCmdAsUser /stop/stage1 $finalUser
 }
