@@ -2,8 +2,8 @@
 set +a +m +s +i -f
 
 /bin/sleep 10
-while read startupExecutable
-do   
-   /bin/chmod g= "/usr/local/bin/$startupExecutable"
+while read executable
+do
+   /bin/chmod g= "/usr/local/bin/$(/usr/bin/basename "$executable")"
 done < /environment/startupexecutables
 exit 0
