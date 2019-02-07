@@ -1,0 +1,9 @@
+#!/bin/sh
+set +a +m +s +i -f
+
+/bin/sleep 10
+while read startupExecutable
+do   
+   /bin/chmod g= "/usr/local/bin/$startupExecutable"
+done < /environment/startupexecutables
+exit 0

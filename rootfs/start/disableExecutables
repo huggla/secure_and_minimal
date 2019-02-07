@@ -1,9 +1,0 @@
-#!/bin/sh
-set +a +m +s +i -f
-
-/bin/sleep 10
-for executable in $1
-do
-   /bin/chmod g= "/usr/local/bin/$executable"
-done
-exit 0
