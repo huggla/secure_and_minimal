@@ -1,14 +1,24 @@
 createLinuxUser(){
    local user="${1:-$VAR_LINUX_USER}"
    local uid=${2:-102}
-   local gid==${3:-$uid}
+   local gid=$3
    if ! /usr/bin/id $user > /dev/null 2>&1
    then
-      while /bin/grep -q "x:$uid" /etc/passwd || /bin/grep -q "x:$uid" /etc/group
+      while /bin/grep -q "x:$uid" /etc/passwd
       do
          uid=$(expr $uid + 1)
+         if [ -z "$3" ]
+         then
+            gid=$uid
+         fi
       done
       echo "$user:x:$uid:$gid:$user:/dev/null:/sbin/nologin" >> /etc/passwd
-      echo "$user:x:$uid:$user" >> /etc/group
+      if ! /bin/grep -q "x:$gid" /etc/group
+      then
+         echo "$user:x:$gid:$user" >> /etc/group
+      elif [ "$gid" != "$uid" ] && ! /bin/grep -q "x:$uid" /etc/group
+      then
+         echo "$user:x:$uid:$user" >> /etc/group
+      fi
    fi
 }
