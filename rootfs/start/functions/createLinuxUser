@@ -4,6 +4,10 @@ createLinuxUser(){
    local gid=$3
    if ! /usr/bin/id $user > /dev/null 2>&1
    then
+      if [ -z "$gid" ]
+      then
+         gid=$uid
+      fi
       while /bin/grep -q "x:$uid" /etc/passwd
       do
          uid=$(expr $uid + 1)
