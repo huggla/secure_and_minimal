@@ -5,7 +5,7 @@ containerControl(){
    find /usr/local/bin -type f -exec /bin/chmod g=rx "{}" +
    if [ "$isFirstRun" == "true" ]
    then
-      createLinuxUser $VAR_LINUX_USER 102 0
+      createLinuxUser "$VAR_LINUX_USER" 102 0
       updateSudoersConf
       fixHosts
       makeAllFromList "$(allVars)"
