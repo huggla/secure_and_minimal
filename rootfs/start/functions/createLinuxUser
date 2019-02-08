@@ -22,7 +22,7 @@ createLinuxUser(){
          echo "$user:x:$gid:$user" >> /etc/group
       elif [ "$gid" != "$uid" ] && ! /bin/grep -q "x:$uid" /etc/group
       then
-         echo "$user:x:$uid:$user" >> /etc/group
+         echo "$user:x:$uid:" >> /etc/group
       fi
    fi
 }
