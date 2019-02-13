@@ -47,7 +47,9 @@ ARG MAKEFILES
 ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
+ARG LINUXUSEROWNED
 COPY --from=build /imagefs /
+RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
