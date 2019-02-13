@@ -9,7 +9,7 @@ trySetPermissionsOf(){
    set +e
    if [ "$2" == "write" ]
    then
-      /bin/chmod $flag g+w "$obj"
+      find "$obj" -prune ! -perm /g=w -exec /bin/chmod $flag g+w "{}" +
    fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
