@@ -9,19 +9,18 @@ trySetPermissionsOf(){
    set +e
    if [ "$2" == "write" ]
    then
-      find "$obj" -prune ! -perm /g=w -exec /bin/chmod $flag g+w "{}" +
+      /usr/bin/find "$obj" -prune ! -perm /g=w -exec /bin/chmod $flag g+w "{}" +
    fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
-      find "$obj" -prune -perm /u=x ! -perm /g=x -exec /bin/chmod $flag g+x "{}" +
-      find "$obj" -prune ! -perm /g=r -exec /bin/chmod $flag g+r "{}" +
+      /usr/bin/find "$obj" -prune \(-perm /u=x ! -perm /g=x -exec /bin/chmod $flag g+x "{}" +\), \(! -perm /g=r -exec /bin/chmod $flag g+r "{}" +\)
    fi
    if [ "$2" == "exec" ]
    then
       /bin/chmod $flag ug+x "$obj"
    elif [ "$2" == "secret" ]
    then
-      /bin/chmod $flag g= "$obj"
+      /usr/bin/find "$obj" -prune -perm /g=r -o -perm /g=w -0 -perm /g=x -exec /bin/chmod $flag g= "{}" +
    fi
-   /bin/chmod $flag o= "$obj"
+   /usr/bin/find "$obj" -prune -perm /o=r -o -perm /o=w -0 -perm /o=x -exec /bin/chmod $flag o= "{}" +
 }
