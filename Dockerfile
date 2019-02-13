@@ -51,7 +51,7 @@ ARG GID0WRITABLES
 ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
 COPY --from=build /imagefs /
-RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED
+RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED || true
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
