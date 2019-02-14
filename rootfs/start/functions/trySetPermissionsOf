@@ -13,7 +13,7 @@ trySetPermissionsOf(){
    fi
    if [ "$(/bin/stat -c "%U" "$obj")" != "$VAR_LINUX_USER" ]
    then
-      /usr/bin/find "$obj" -prune \(-perm /u=x ! -perm /g=x -exec /bin/chmod $flag g+x "{}" +\), \(! -perm /g=r -exec /bin/chmod $flag g+r "{}" +\)
+      /usr/bin/find "$obj" -prune \( -perm /u=x ! -perm /g=x -exec /bin/chmod $flag g+x "{}" + \), \( ! -perm /g=r -exec /bin/chmod $flag g+r "{}" + \)
    fi
    if [ "$2" == "exec" ]
    then
