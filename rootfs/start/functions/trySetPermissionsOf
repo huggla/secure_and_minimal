@@ -20,7 +20,7 @@ trySetPermissionsOf(){
       /bin/chmod $flag ug+x "$obj"
    elif [ "$2" == "secret" ]
    then
-      /usr/bin/find "$obj" -prune -perm /g=r -o -perm /g=w -0 -perm /g=x -exec /bin/chmod $flag g= "{}" +
+      /usr/bin/find "$obj" -prune -perm /g=r -o -perm /g=w -o -perm /g=x -exec /bin/chmod $flag g= "{}" +
    fi
-   /usr/bin/find "$obj" -prune -perm /o=r -o -perm /o=w -0 -perm /o=x -exec /bin/chmod $flag o= "{}" +
+   /usr/bin/find "$obj" -prune -perm /o=r -o -perm /o=w -o -perm /o=x -exec /bin/chmod $flag o= "{}" +
 }
