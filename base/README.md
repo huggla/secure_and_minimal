@@ -1,5 +1,7 @@
-# base
-Baseimage based on Alpine edge, with sudo, argon2 and custom scripts for improved security.
+# huggla/base
+Baseimage based on Alpine, with sudo, argon2 and custom scripts for improved security.
+
+Latest: Alpine Edge.
 
 ## Environment variables
 ### pre-set runtime variables.
