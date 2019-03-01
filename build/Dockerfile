@@ -1,4 +1,4 @@
-FROM huggla/alpine-official as image
+FROM huggla/alpine as image
 
 COPY ./rootfs /
 
