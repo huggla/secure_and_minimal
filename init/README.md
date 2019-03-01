@@ -1,3 +1,5 @@
 # huggla/init
 
-A minimal base image containing Busybox from Alpine edge.
+A minimal image containing Busybox from Alpine.
+
+Latest: Alpine Edge
