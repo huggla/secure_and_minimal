@@ -1,4 +1,4 @@
-FROM huggla/alpine-official as alpine
+FROM huggla/alpine as alpine
 
 RUN mkdir -m 755 /imagefs \
  && mkdir -m 755 /imagefs/lib /imagefs/usr \
