@@ -248,4 +248,4 @@ ONBUILD RUN chmod go= /environment \
             done \
          && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
          && mv /environment /imagefs/ \
-&& apk --purge del .builddeps .builddeps_untrusted
+         && apk --purge del .builddeps .builddeps_untrusted
