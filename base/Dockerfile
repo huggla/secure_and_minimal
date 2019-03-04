@@ -1,6 +1,5 @@
 ARG TAG="20190220"
-ARG INITIMAGE="huggla/busybox:$TAG"
-ARG BASEIMAGE="$INITIMAGE"
+ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
