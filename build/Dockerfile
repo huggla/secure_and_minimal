@@ -168,6 +168,7 @@ ONBUILD RUN chmod go= /environment \
                if [ -z "$DOWNLOADSDIR" ]; \
                then \
                   tar -xvp -f $downloadsDir/*.tar* -C $buildDir || true; \
+                  unzip "$downloadDir/*.zip" -d $buildDir || true; \
                fi; \
             fi \
          && if [ -n "$BUILDCMDS" ]; \
