@@ -170,7 +170,7 @@ ONBUILD RUN chmod go= /environment \
                   tarfiles="$(ls *.tar *.tar.*)"; \
                   for tar in $tarfiles; \
                   do \
-                     tar -xp -f "$tar" -C $buildDir; \
+                     tar -xvp -f "$tar" -C $buildDir; \
                   done; \
                   zipfiles="$(ls *.zip)"; \
                   for zip in $zipfiles; \
