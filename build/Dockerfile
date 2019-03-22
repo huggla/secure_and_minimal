@@ -175,7 +175,7 @@ ONBUILD RUN chmod go= /environment \
                   zipfiles="$(ls *.zip)"; \
                   for zip in $zipfiles; \
                   do \
-                     unzip "$zip" -d $buildDir; \
+                     unzip -o "$zip" -d $buildDir; \
                   done; \
                fi; \
             fi \
