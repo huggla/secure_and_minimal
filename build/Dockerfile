@@ -130,11 +130,6 @@ ONBUILD RUN chmod go= /environment \
          && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -m 750 "/imagefs/{}" + \
          && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/imagefs/"$1"\"")}' \
-         && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
-         && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
-         && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
-         && mv /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.old \
-         && cat /tmp/onbuild/exclude.filelist.old /tmp/onbuild/exclude.filelist.new | sort -u - > /tmp/onbuild/exclude.filelist \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
          && apk --virtual .builddeps add $BUILDDEPS \
@@ -255,6 +250,14 @@ ONBUILD RUN chmod go= /environment \
                set +f; \
                find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
             done \
+         && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
+         && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
+         && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
+         && cd /imagefs \
+         && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
+         && mv /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.old \
+         && cat /tmp/onbuild/exclude.filelist.old /tmp/onbuild/exclude.filelist.new | sort -u - > /tmp/onbuild/exclude.filelist \
+         && rm -f /tmp/onbuild/exclude.filelist.* \
          && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
          && mv /environment /imagefs/ \
          && apk --purge del .builddeps .builddeps_untrusted
