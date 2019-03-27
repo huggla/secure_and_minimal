@@ -59,8 +59,7 @@ RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED || true
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
- && chmod u+s /usr/local/bin/sudo \
- && chmod u=,g=rx /.r
+ && chmod u+s /usr/local/bin/sudo
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
