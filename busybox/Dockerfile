@@ -4,7 +4,6 @@ RUN mkdir -m 755 /imagefs \
  && mkdir -m 755 /imagefs/lib /imagefs/usr \
  && mkdir -m 755 /imagefs/usr/local /imagefs/usr/lib \
  && mkdir -m 755 /imagefs/usr/local/bin \
- && mkdir -m 770 /imagefs/.r \
  && mkdir -m 700 /imagefs/bin /imagefs/sbin /imagefs/.dockerenv /imagefs/environment \
  && mkdir -m 750 /imagefs/etc /imagefs/var /imagefs/run \
  && mkdir -m 770 /imagefs/tmp \
@@ -34,5 +33,3 @@ RUN mkdir -m 755 /imagefs \
 FROM scratch as image
 
 COPY --from=alpine /imagefs /
-
-RUN chgrp 101 /.r
