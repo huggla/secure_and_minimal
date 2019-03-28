@@ -46,10 +46,10 @@ ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/us
          && ln -s ../run run \
          && cp -a /buildfs/tmp /buildfs/run /buildfs/var /imagefs/
 
+ONBUILD COPY --from=init / /
 ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
 ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
-ONBUILD COPY --from=init /environment /environment
 ONBUILD COPY ./ /tmp/
 
 ONBUILD RUN chmod go= /environment \
