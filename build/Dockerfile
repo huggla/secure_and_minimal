@@ -162,13 +162,13 @@ ONBUILD RUN chmod go= /environment \
                done; \
                if [ -z "$DOWNLOADSDIR" ]; \
                then \
-                  tarfiles="$(ls *.tar *.tar.*)"; \
-                  for tar in $tarfiles; \
+                  tarFiles="$(ls *.tar *.tar.*)"; \
+                  for tar in $tarFiles; \
                   do \
                      tar -xvp -f "$tar" -C $buildDir; \
                   done; \
-                  zipfiles="$(ls *.zip)"; \
-                  for zip in $zipfiles; \
+                  zipFiles="$(ls *.zip)"; \
+                  for zip in $zipFiles; \
                   do \
                      unzip -o "$zip" -d $buildDir; \
                   done; \
