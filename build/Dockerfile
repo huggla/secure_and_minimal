@@ -52,7 +52,7 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN chmod go= /environment \
+ONBUILD RUN mv /buildfs/environment /environment \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$ADDREPOS" ]; \
             then \
