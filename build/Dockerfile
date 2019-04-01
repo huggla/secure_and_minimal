@@ -250,6 +250,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
             done \
+         && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
