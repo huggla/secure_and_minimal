@@ -1,0 +1,12 @@
+replaceFileWithLink() {
+   local file=$1
+   local link=$2
+   if [ ! -s "$link" ] && [ -s "$file" ]
+   then
+      echo "$link is empty but $file has contents"
+      echo "Moving contents from $file to $link" 
+      mv -f $file $link
+   fi
+   echo "Replacing $file with a link to $link"
+   ln -sf "$link" "$file"
+}
