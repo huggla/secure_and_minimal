@@ -15,7 +15,7 @@ replaceDirWithLink() {
                echo "Moving contents from $dir to $link" 
                local -
                set +f
-               cp -a "$dir/"* "$link/"
+               mv -f "$dir/"* "$link/"
                set -f
             fi
          fi
