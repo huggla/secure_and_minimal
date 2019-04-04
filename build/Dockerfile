@@ -234,22 +234,38 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
             done \
+         && set -f \
          && for exe in $STARTUPEXECUTABLES; \
             do \
+               set +f; \
                echo "$exe" >> /environment/startupexecutables; \
             done \
          && set -f \
          && for file in $GID0WRITABLES; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
+               echo "$file" >> /environment/gid0writables; \
             done \
          && set -f \
-         && for file in $GID0WRITABLESRECURSIVE; \
+         && sort -u /environment/gid0writables \
+         && while read file; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
+               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
+            done </environment/gid0writables \
+         && set -f \
+         && for dir in $GID0WRITABLESRECURSIVE; \
+            do \
+               set +f; \
+               echo "$dir" >> /environment/gid0writablesrecursive; \
             done \
+         && set -f \
+         && sort -u /environment/gid0writablesrecursive \
+         && while read dir; \
+            do \
+               set +f; \
+               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
+            done </environment/gid0writablesrecursive \        
          && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
