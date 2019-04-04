@@ -247,7 +247,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                echo "$file" >> /environment/gid0writables; \
             done \
          && set -f \
-         && sort -u /environment/gid0writables \
+         && sort -u -o /environment/gid0writables /environment/gid0writables \
          && while read file; \
             do \
                set +f; \
@@ -260,7 +260,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                echo "$dir" >> /environment/gid0writablesrecursive; \
             done \
          && set -f \
-         && sort -u /environment/gid0writablesrecursive \
+         && sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive \
          && while read dir; \
             do \
                set +f; \
