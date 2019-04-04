@@ -246,13 +246,16 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                echo "$file" >> /environment/gid0writables; \
             done \
-         && set -f \
-         && sort -u -o /environment/gid0writables /environment/gid0writables \
-         && while read file; \
-            do \
-               set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
-            done </environment/gid0writables \
+         && if [ -s /environment/gid0writables ]; \
+            then \
+               set -f && \
+               sort -u -o /environment/gid0writables /environment/gid0writables && \
+               while read file; \
+               do \
+                  set +f; \
+                  find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
+               done </environment/gid0writables; \
+            fi \
          && set -f \
          && for dir in $GID0WRITABLESRECURSIVE; \
             do \
