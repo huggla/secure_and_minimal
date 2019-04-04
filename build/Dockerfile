@@ -262,13 +262,16 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                echo "$dir" >> /environment/gid0writablesrecursive; \
             done \
-         && set -f \
-         && sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive \
-         && while read dir; \
-            do \
-               set +f; \
-               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
-            done </environment/gid0writablesrecursive \        
+         && if [ -s /environment/gid0writables ]; \
+            then \
+               set -f && \
+               sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive && \
+               while read dir; \
+               do \
+                  set +f; \
+                  find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
+               done </environment/gid0writablesrecursive \        
+            fi \
          && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
