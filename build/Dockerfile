@@ -262,7 +262,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                echo "$dir" >> /environment/gid0writablesrecursive; \
             done \
-         && if [ -s /environment/gid0writables ]; \
+         && if [ -s /environment/gid0writablesrecursive ]; \
             then \
                set -f && \
                sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive && \
