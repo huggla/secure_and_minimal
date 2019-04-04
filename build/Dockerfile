@@ -270,7 +270,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                do \
                   set +f; \
                   find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
-               done </environment/gid0writablesrecursive \        
+               done </environment/gid0writablesrecursive; \        
             fi \
          && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
