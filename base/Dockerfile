@@ -56,18 +56,6 @@ ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
 ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
-RUN set -f; \
-    while read file; \
-    do \
-       set +f; \
-       find "$(dirname "$file")" -name "$(basename "$file")" ! -user 102 -maxdepth 1 -exec chown 102 "{}" +; \
-    done </environment/linuxuserowned; \
-    set -f; \
-    while read dir; \
-    do \
-       set +f; \
-       find "$dir" ! -user 102 -exec chown 102 "{}" +; \
-    done </environment/linuxuserownedrecursive
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
