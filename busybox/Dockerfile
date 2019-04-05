@@ -12,6 +12,7 @@ RUN mkdir -m 755 /imagefs \
  && >/imagefs/environment/startupexecutables \
  && >/imagefs/environment/gid0writables \
  && >/imagefs/environment/gid0writablesrecursive \
+ && >/imagefs/environment/linuxuserowned \
  && >/imagefs/environment/linuxuserownedrecursive \
  && cp -a /lib/libz.so* /lib/*musl* /imagefs/lib/ \
  && cp -a /bin/busybox /bin/sh /imagefs/bin/ \
