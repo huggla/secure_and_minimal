@@ -64,11 +64,14 @@ RUN ( \
           find "$(dirname "$file")" -name "$(basename "$file")" ! -user 102 -maxdepth 1 -exec chown 102 "{}" +; \
        done; \
        set -f; \
-       while read dir; \
-       do \
-          set +f; \
-          find "$dir" ! -user 102 -exec chown 102 "{}" +; \
-       done </environment/linuxuserownedrecursive \
+       if [ -s "/environment/linuxuserownedrecursive" ]; \
+       then \
+          while read dir; \
+          do \
+             set +f; \
+             find "$dir" ! -user 102 -exec chown 102 "{}" +; \
+          done </environment/linuxuserownedrecursive; \
+       fi \
     ) 2>/dev/null
 #---------------------------------------------
 
