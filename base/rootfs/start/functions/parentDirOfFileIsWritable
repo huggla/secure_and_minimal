@@ -1,0 +1,4 @@
+parentDirOfFileIsWritable(){
+   local parentDir="$(/usr/bin/dirname "$1")"
+   /bin/stat -c "%A" $parentDir | /bin/grep -q ".....w...."
+}
