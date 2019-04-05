@@ -1,0 +1,8 @@
+isGroupWritable(){
+   if /bin/stat -c "%A" "$1" | /bin/grep -q ".....w...."
+   then
+      echo "true"
+   else
+      echo "false"
+   fi
+}

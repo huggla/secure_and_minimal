@@ -1,9 +1,0 @@
-parentDirOfFileIsWritable(){
-   local parentDir="$(/usr/bin/dirname "$1")"
-   if /bin/stat -c "%A" $parentDir | /bin/grep -q ".....w...."
-   then
-      echo "true"
-   else
-      echo "false"
-   fi
-}
