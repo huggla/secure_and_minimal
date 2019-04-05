@@ -9,6 +9,10 @@ RUN mkdir -m 755 /imagefs \
  && mkdir -m 770 /imagefs/tmp \
  && mkdir -m 700 /imagefs/usr/bin /imagefs/usr/sbin /tmp/onbuild \
  && mkdir -m 750 /imagefs/var/cache \
+ && >/imagefs/environment/startupexecutables \
+ && >/imagefs/environment/gid0writables \
+ && >/imagefs/environment/gid0writablesrecursive \
+ && >/imagefs/environment/linuxuserownedrecursive \
  && cp -a /lib/libz.so* /lib/*musl* /imagefs/lib/ \
  && cp -a /bin/busybox /bin/sh /imagefs/bin/ \
  && cp -a $(find /bin/* -type l | xargs) /imagefs/bin/ \
