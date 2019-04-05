@@ -56,7 +56,20 @@ ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
 ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
-RUN ( chown 102 $LINUXUSEROWNED; xargs -a "/environment/linuxuserownedrecursive" chown -R 102; true ) 2>/dev/null
+RUN ( \
+       set -f; \
+       for file in $LINUXUSEROWNED; \
+       do \
+          set +f; \
+          find "$(dirname "$file")" -name "$(basename "$file")" ! -user 102 -maxdepth 1 -exec chown 102 "{}" +; \
+       done; \
+       set -f; \
+       while read dir; \
+       do \
+          set +f; \
+          find "$dir" ! -user 102 -exec chown 102 "{}" +; \
+       done </environment/linuxuserownedrecursive \
+    ) 2>/dev/null
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
