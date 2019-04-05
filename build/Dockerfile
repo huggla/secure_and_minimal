@@ -32,6 +32,7 @@ ONBUILD ARG MAKEDIRS
 ONBUILD ARG MAKEFILES
 ONBUILD ARG GID0WRITABLESRECURSIVE
 ONBUILD ARG GID0WRITABLES
+ONBUILD ARG LINUXUSEROWNEDRECURSIVE
 ONBUILD ARG REMOVEDIRS
 ONBUILD ARG REMOVEFILES
 ONBUILD ARG EXECUTABLES
@@ -272,6 +273,12 @@ ONBUILD RUN mv /buildfs/environment /environment \
                   find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
                done </environment/gid0writablesrecursive; \        
             fi \
+         && set -f \
+         && for dir in $LINUXUSEROWNEDRECURSIVE; \
+            do \
+               set +f; \
+               echo "$dir" >> /environment/linuxuserownedrecursive; \
+            done \
          && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
