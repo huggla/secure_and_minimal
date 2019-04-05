@@ -267,7 +267,14 @@ ONBUILD RUN mv /buildfs/environment /environment \
             do \
                set +f; \
                find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
-            done </environment/gid0writablesrecursive \        
+            done </environment/gid0writablesrecursive \
+         && set -f \
+         && for file in $LINUXUSEROWNED; \
+            do \
+               set +f; \
+               echo "$file" >> /environment/linuxuserowned; \
+            done \
+         && sort -u -o /environment/linuxuserowned /environment/linuxuserowned \
          && set -f \
          && for dir in $LINUXUSEROWNEDRECURSIVE; \
             do \
