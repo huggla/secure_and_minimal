@@ -1,23 +1,17 @@
 setLinuxUserAsOwner(){
    local -
    local file=""
-   local parentDir=""
-   local parentWritable=""
+   local dir=""
    set -f
    while read file
    do
-      parentDir="$(/usr/bin/dirname "$file")"
-      parentWritable="$(isGroupWritable "$file")"
-      if [ "$parentWritable" == "false" ]
-      then
-         chmod g+w "$parentDir"
       set +f
-      find "$parentDir" -name "$(basename "$file")" ! -user 102 -maxdepth 1 -exec chown 102 "{}" +
+      find "$(/usr/bin/dirname "$file")" -name "$(/usr/bin/basename "$file")" -user 0 -maxdepth 1 -exec chown 102 "{}" +
    done </environment/linuxuserowned
    set -f
    while read dir
    do
       set +f
-      find "$dir" ! -user 102 -exec chown 102 "{}" +
+      find "$dir" -user 0 -exec chown 102 "{}" +
    done </environment/linuxuserownedrecursive
 }
