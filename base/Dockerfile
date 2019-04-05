@@ -57,7 +57,7 @@ ARG LINUXUSEROWNED
 ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
 RUN chown 102 $LINUXUSEROWNED; \
-    xargs -a "/environment/linuxuserownedrecursive" chown -R 102
+    xargs -a "/environment/linuxuserownedrecursive" chown -R 102;
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
