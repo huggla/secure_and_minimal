@@ -241,44 +241,40 @@ ONBUILD RUN mv /buildfs/environment /environment \
                set +f; \
                echo "$exe" >> /environment/startupexecutables; \
             done \
+         && sort -u -o /environment/startupexecutables /environment/startupexecutables \
          && set -f \
          && for file in $GID0WRITABLES; \
             do \
                set +f; \
                echo "$file" >> /environment/gid0writables; \
             done \
-         && if [ -s /environment/gid0writables ]; \
-            then \
-               set -f && \
-               sort -u -o /environment/gid0writables /environment/gid0writables && \
-               while read file; \
-               do \
-                  set +f; \
-                  find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
-               done </environment/gid0writables; \
-            fi \
+         && sort -u -o /environment/gid0writables /environment/gid0writables \
+         && set -f \
+         && while read file; \
+            do \
+               set +f; \
+               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
+            done </environment/gid0writables \
          && set -f \
          && for dir in $GID0WRITABLESRECURSIVE; \
             do \
                set +f; \
                echo "$dir" >> /environment/gid0writablesrecursive; \
             done \
-         && if [ -s /environment/gid0writablesrecursive ]; \
-            then \
-               set -f && \
-               sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive && \
-               while read dir; \
-               do \
-                  set +f; \
-                  find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
-               done </environment/gid0writablesrecursive; \        
-            fi \
+         && sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive \
+         && set -f \
+         && while read dir; \
+            do \
+               set +f; \
+               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
+            done </environment/gid0writablesrecursive \        
          && set -f \
          && for dir in $LINUXUSEROWNEDRECURSIVE; \
             do \
                set +f; \
                echo "$dir" >> /environment/linuxuserownedrecursive; \
             done \
+         && sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive \
          && set +f \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
