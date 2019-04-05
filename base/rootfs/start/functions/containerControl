@@ -6,6 +6,7 @@ containerControl(){
    if [ "$isFirstRun" == "true" ]
    then
       createLinuxUser "$VAR_LINUX_USER" 102 0
+      setLinuxUserAsOwner
       updateSudoersConf
       fixHosts
       makeAllFromList "$(allVars)"
