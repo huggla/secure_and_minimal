@@ -129,7 +129,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                eval "$INITCMDS || exit 1"; \
             fi \
          && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -m 750 "/imagefs/{}" + \
-         && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
+         && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u -o /tmp/onbuild/exclude.filelist.new -\
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/imagefs/"$1"\"")}' \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
