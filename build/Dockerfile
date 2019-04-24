@@ -75,15 +75,44 @@ ONBUILD RUN mv /buildfs/environment /environment \
                   if [ -n "$EXCLUDEDEPS" ]; \
                   then \
                      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /excludefs add $EXCLUDEDEPS; \
-                     apk --root /excludefs info -R $EXCLUDEDEPS | grep -v 'depends on:$' | grep -v '^$' | sort -u - | xargs apk --root /excludefs info -L | grep -v 'contains:$' | grep -v '^$' | awk '{system("md5sum \""$0"\"")}' | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' | sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist -; \
+                     excludeFiles="$(apk --root /excludefs info -R $EXCLUDEDEPS | grep -v 'depends on:$' | grep -v '^$' | sort -u - | xargs apk --root /excludefs info -L | grep -v 'contains:$' | grep -v '^$')"; \
+                     for file in $excludeFiles; \
+                     do \
+                        if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .; \
+                        then \
+                           if [ -L "$file" ]; \
+                           then \
+                              (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist; \
+                           elif [ -f "$file" ]; \
+                           then \
+                              md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist; \
+                           fi; \
+                        fi; \
+                     done; \
+                     unset excludeFiles; \
                   fi; \
                   if [ -n "$EXCLUDEAPKS" ]; \
                   then \
                      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /excludefs add $EXCLUDEAPKS; \
-                     apk --root /excludefs info -L $EXCLUDEAPKS | grep -v 'contains:$' | grep -v '^$' | awk '{system("md5sum \""$0"\"")}' | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' | sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist -; \
+                     excludeFiles="$(apk --root /excludefs info -L $EXCLUDEAPKS | grep -v 'contains:$' | grep -v '^$')"; \
+                     for file in $excludeFiles; \
+                     do \
+                        if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .; \
+                        then \
+                           if [ -L "$file" ]; \
+                           then \
+                              (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist; \
+                           elif [ -f "$file" ]; \
+                           then \
+                              md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist; \
+                           fi; \
+                        fi; \
+                     done; \
+                     unset excludeFiles; \
                   fi; \
                   cd /; \
                   rm -rf /excludefs; \
+                  sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist; \
                fi; \
                apk --root /buildfs add --initdb; \
                ln -s /var/cache/apk/* /buildfs/var/cache/apk/; \
@@ -227,13 +256,13 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && for dir in $REMOVEDIRS; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
+               find "/imagefs$dir" -maxdepth 0 -type d -exec rm -rf "{}" +; \
             done \
          && set -f \
          && for file in $REMOVEFILES; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
+               find "/imagefs$file" -maxdepth 0 ! -type d ! -type c -exec rm -f "{}" +; \
             done \
          && set -f \
          && for exe in $STARTUPEXECUTABLES; \
