@@ -256,13 +256,13 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && for dir in $REMOVEDIRS; \
             do \
                set +f; \
-               find "/imagefs$dir" -maxdepth 0 -type d -exec rm -rf "{}" +; \
+               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
             done \
          && set -f \
          && for file in $REMOVEFILES; \
             do \
                set +f; \
-               find "/imagefs$file" -maxdepth 0 ! -type d ! -type c -exec rm -f "{}" +; \
+               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
             done \
          && set -f \
          && for exe in $STARTUPEXECUTABLES; \
