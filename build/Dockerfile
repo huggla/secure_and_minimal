@@ -319,6 +319,10 @@ ONBUILD RUN mv /buildfs/environment /environment \
             then \
                echo "$RUNDEPS" >> "/imagefs${DESTDIR#/buildfs}/RUNDEPS.txt"; \
             fi \
+         && if [ -s "/imagefs/app" ] && ! ls /imagefs | grep -vq -e "^app"; \
+            then \
+               cp -a /imagefs/app*/* /imagefs/; \
+            fi \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
