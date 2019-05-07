@@ -18,10 +18,13 @@ ONBUILD ARG CONTENTDESTINATION3
 ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
 ONBUILD ARG DESTDIR
 ONBUILD ARG DESTDIR="${DESTDIR:-/app}"
+ONBUILD ARG DESTDIR="/buildfs${DESTDIR#/buildfs}"
 ONBUILD ARG CLONEGITS
 ONBUILD ARG CLONEGITSDIR
+ONBUILD ARG CLONEGITSDIR="${CLONEGITSDIR:+/buildfs$CLONEGITSDIR}"
 ONBUILD ARG DOWNLOADS
 ONBUILD ARG DOWNLOADSDIR
+ONBUILD ARG DOWNLOADSDIR="${DOWNLOADSDIR:+/buildfs$DOWNLOADSDIR}"
 ONBUILD ARG ADDREPOS
 ONBUILD ARG EXCLUDEAPKS
 ONBUILD ARG EXCLUDEDEPS
@@ -123,32 +126,28 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
-               clonegitsDirSet="true"; \
                if [ -n "$MAKEDIRS" ]; \
                then \
                   MAKEDIRS="$MAKEDIRS "; \
                fi; \
                MAKEDIRS="$MAKEDIRS$CLONEGITSDIR"; \
-               CLONEGITSDIR="/imagefs$CLONEGITSDIR"; \
             fi \
          && if [ -n "$DOWNLOADSDIR" ]; \
             then \
-               downloadsDirSet="true"; \
                if [ -n "$MAKEDIRS" ]; \
                then \
                   MAKEDIRS="$MAKEDIRS "; \
                fi; \
                MAKEDIRS=$MAKEDIRS$DOWNLOADSDIR; \
-               DOWNLOADSDIR="/imagefs$DOWNLOADSDIR"; \
             fi \
          && for dir in $MAKEDIRS; \
             do \
-               mkdir -p "$dir" "/buildfs$dir"; \
+               mkdir -p "${dir#/buildfs}" "/buildfs${dir#/buildfs}"; \
             done \
          && for file in $MAKEFILES; \
             do \
-               mkdir -p "/buildfs$(dirname "$file")"; \
-               touch "/buildfs$file"; \
+               mkdir -p "$(dirname ${file#/buildfs})" "/buildfs$(dirname ${file#/buildfs})"; \
+               touch "${file#/buildfs}" "/buildfs${file#/buildfs}"; \
             done \
          && cp -a /tmp/rootfs/* /buildfs/ || true \
          && chmod -R o= /imagefs /buildfs \
@@ -172,7 +171,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && if [ -n "$CLONEGITS" ]; \
             then \
                apk add git; \
-               if [ "$clonegitsDirSet" != "true" ]; \
+               if [ -z "$CLONEGITSDIR" ]; \
                then \
                   CLONEGITSDIR=$buildDir; \
                fi; \
@@ -185,7 +184,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && if [ -n "$DOWNLOADS" ]; \
             then \
-               if [ "$downloadsDirSet" != "true" ]; \
+               if [ -z "$DOWNLOADSDIR" ]; \
                then \
                   DOWNLOADSDIR=$buildDir; \
                fi; \
@@ -194,7 +193,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
                do \
                   wget "$download"; \
                done; \
-               if [ "$downloadsDirSet" != "true" ]; \
+               if [ "$DOWNLOADSDIR" == "$buildDir" ]; \
                then \
                   tarFiles="$(ls *.tar *.tar.*)"; \
                   for tar in $tarFiles; \
