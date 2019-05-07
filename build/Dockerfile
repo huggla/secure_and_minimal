@@ -16,6 +16,8 @@ ONBUILD ARG CONTENTSOURCE3
 ONBUILD ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ONBUILD ARG CONTENTDESTINATION3
 ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
+ONBUILD ARG DESTDIR
+ONBUILD ARG DESTDIR="${DESTDIR:-/app}"
 ONBUILD ARG CLONEGITS
 ONBUILD ARG CLONEGITSDIR
 ONBUILD ARG DOWNLOADS
@@ -40,7 +42,7 @@ ONBUILD ARG STARTUPEXECUTABLES
 ONBUILD ARG EXPOSEFUNCTIONS
 ONBUILD ARG BUILDCMDS
 
-ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin \
+ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin $DESTDIR \
          && chmod 770 /buildfs/tmp \
          && cd /buildfs/var \
          && ln -s ../tmp tmp \
@@ -130,12 +132,13 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && if [ -n "$DOWNLOADSDIR" ]; \
             then \
+               downloadsDirSet="true"; \
                if [ -n "$MAKEDIRS" ]; \
                then \
                   MAKEDIRS="$MAKEDIRS "; \
                fi; \
                MAKEDIRS=$MAKEDIRS$DOWNLOADSDIR; \
-               downloadsDir="/imagefs$DOWNLOADSDIR"; \
+               DOWNLOADSDIR="/imagefs$DOWNLOADSDIR"; \
             fi \
          && for dir in $MAKEDIRS; \
             do \
@@ -181,16 +184,16 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && if [ -n "$DOWNLOADS" ]; \
             then \
-               if [ -z "$downloadsDir" ]; \
+               if [ "$downloadsDirSet" != "true" ]; \
                then \
-                  downloadsDir=$buildDir; \
+                  DOWNLOADSDIR=$buildDir; \
                fi; \
-               cd $downloadsDir; \
+               cd $DOWNLOADSDIR; \
                for download in $DOWNLOADS; \
                do \
                   wget "$download"; \
                done; \
-               if [ -z "$DOWNLOADSDIR" ]; \
+               if [ "$downloadsDirSet" != "true" ]; \
                then \
                   tarFiles="$(ls *.tar *.tar.*)"; \
                   for tar in $tarFiles; \
