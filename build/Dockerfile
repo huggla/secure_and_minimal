@@ -44,6 +44,7 @@ ONBUILD ARG EXECUTABLES
 ONBUILD ARG STARTUPEXECUTABLES
 ONBUILD ARG EXPOSEFUNCTIONS
 ONBUILD ARG BUILDCMDS
+ONBUILD ARG C_INCLUDE_PATH="/buildfs/usr/include:/buildfs/usr/local/include"
 
 ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin $DESTDIR \
          && chmod 770 /buildfs/tmp \
