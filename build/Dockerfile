@@ -63,7 +63,6 @@ ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
 ONBUILD RUN mv /buildfs/environment /environment \
-         && cp -fa /buildfs/etc /etc \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$ADDREPOS" ]; \
             then \
