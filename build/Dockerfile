@@ -44,10 +44,9 @@ ONBUILD ARG EXECUTABLES
 ONBUILD ARG STARTUPEXECUTABLES
 ONBUILD ARG EXPOSEFUNCTIONS
 ONBUILD ARG BUILDCMDS
-
-ONBUILD ENV C_INCLUDE_PATH="$C_INCLUDE_PATH:/buildfs/usr/include:/buildfs/usr/local/include" \
-            LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib" \
-            PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
+ONBUILD ARG CPATH="$CPATH:/buildfs/usr/include:/buildfs/usr/local/include"
+ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
+ONBUILD ARG PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
 
 ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin $DESTDIR \
          && chmod 770 /buildfs/tmp \
