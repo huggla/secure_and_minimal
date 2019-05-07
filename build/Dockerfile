@@ -123,12 +123,13 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
+               clonegitsDirSet="true"; \
                if [ -n "$MAKEDIRS" ]; \
                then \
                   MAKEDIRS="$MAKEDIRS "; \
                fi; \
                MAKEDIRS="$MAKEDIRS$CLONEGITSDIR"; \
-               cloneGitsDir="/imagefs$CLONEGITSDIR"; \
+               CLONEGITSDIR="/imagefs$CLONEGITSDIR"; \
             fi \
          && if [ -n "$DOWNLOADSDIR" ]; \
             then \
@@ -171,11 +172,11 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && if [ -n "$CLONEGITS" ]; \
             then \
                apk add git; \
-               if [ -z "$cloneGitsDir" ]; \
+               if [ "$clonegitsDirSet" != "true" ]; \
                then \
-                  cloneGitsDir=$buildDir; \
+                  CLONEGITSDIR=$buildDir; \
                fi; \
-               cd $cloneGitsDir; \
+               cd $CLONEGITSDIR; \
                for git in "$CLONEGITS"; \
                do \
                   cloneStr="git clone $(eval "echo $(echo $git)")"; \
