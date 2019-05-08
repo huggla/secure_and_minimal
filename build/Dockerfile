@@ -45,6 +45,7 @@ ONBUILD ARG STARTUPEXECUTABLES
 ONBUILD ARG EXPOSEFUNCTIONS
 ONBUILD ARG BUILDCMDS
 ONBUILD ARG CPATH="$CPATH:/buildfs/usr/include:/buildfs/usr/local/include"
+ONBUILD ARG LIBRARY_PATH="$LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
 
