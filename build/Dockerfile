@@ -146,10 +146,12 @@ ONBUILD RUN mv /buildfs/environment /environment \
             fi \
          && for dir in $MAKEDIRS; \
             do \
+               dir="$(eval "$dir")"; \
                mkdir -p "${dir#/buildfs}" "/buildfs${dir#/buildfs}"; \
             done \
          && for file in $MAKEFILES; \
             do \
+               file="$(eval "$file")"; \
                mkdir -p "$(dirname ${file#/buildfs})" "/buildfs$(dirname ${file#/buildfs})"; \
                touch "${file#/buildfs}" "/buildfs${file#/buildfs}"; \
             done \
