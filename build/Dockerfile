@@ -219,9 +219,11 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             fi \
          && if [ -n "$BUILDCMDS" ]; \
             then \
+    ls -la /imagefs; \
                cd $buildDir; \
                mkdir -p $DESTDIR; \
                eval "$BUILDCMDS || exit 1"; \
+    ls -la /imagefs; \
             fi \
          && rm -rf /buildfs \
          && if [ -n "$EXECUTABLES" ] || [ -n "$STARTUPEXECUTABLES" ]; \
