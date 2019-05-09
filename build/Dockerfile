@@ -266,6 +266,9 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
          && find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
+    && echo "$DESTDIR" \
+    && ls -la /imagefs \
+    && ls -la "$DESTDIR" \
          && if [ ! -s "$DESTDIR" ] || [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                rm -rf "$DESTDIR"; \
@@ -278,7 +281,14 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                topDir="${topDir%%/*}"; \
                if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
                then \
+       echo "$DESTDIR"; \
+       ls -la /imagefs; \
+       ls -la "$DESTDIR"; \
+       ls -la $DESTDIR*/*; \
                   cp -a $DESTDIR*/* /imagefs/; \
+       echo "$DESTDIR"; \
+       ls -la /imagefs; \
+       ls -la "$DESTDIR"; \
                fi; \
             fi \
          && set -f \
