@@ -266,9 +266,20 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
          && find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
-         && if [ "${DESTDIR::8}" == "/imagefs" ] && [ ! -s "$DESTDIR" ]; \
+         && if [ ! -s "$DESTDIR" ] || [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                rm -rf "$DESTDIR"; \
+            else \
+               if [ -n "$RUNDEPS" ]; \
+               then \
+                  echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
+               fi \
+               topDir="${DESTDIR#/imagefs/}"; \
+               topDir="${topDir%%/*}"; \
+               if ! ls /imagefs | grep -vq -e "^$topDir"; \
+               then \
+                  cp -a $DESTDIR*/* /imagefs/; \
+               fi \
             fi \
          && set -f \
          && for dir in $REMOVEDIRS; \
@@ -330,14 +341,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             done \
          && sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive \
          && set +f \
-         && if [ -n "$RUNDEPS" ] && [ -s "/imagefs${DESTDIR#/buildfs}" ]; \
-            then \
-               echo "$RUNDEPS" >> "/imagefs${DESTDIR#/buildfs}/RUNDEPS.txt"; \
-            fi \
-         && if [ -s "/imagefs/app" ] && ! ls /imagefs | grep -vq -e "^app"; \
-            then \
-               cp -a /imagefs/app*/* /imagefs/; \
-            fi \
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
