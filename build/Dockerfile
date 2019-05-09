@@ -273,13 +273,13 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                if [ -n "$RUNDEPS" ]; \
                then \
                   echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
-               fi \
+               fi; \
                topDir="${DESTDIR#/imagefs/}"; \
                topDir="${topDir%%/*}"; \
                if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
                then \
                   cp -a $DESTDIR*/* /imagefs/; \
-               fi \
+               fi; \
             fi \
          && set -f \
          && for dir in $REMOVEDIRS; \
