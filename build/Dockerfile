@@ -17,7 +17,7 @@ ONBUILD ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ONBUILD ARG CONTENTDESTINATION3
 ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
 ONBUILD ARG DESTDIR
-ONBUILD ARG DESTDIR="${DESTDIR:-/app}"
+ONBUILD ARG DESTDIR="${DESTDIR:-/imagefs/app}"
 ONBUILD ARG CLONEGITS
 ONBUILD ARG CLONEGITSDIR
 ONBUILD ARG CLONEGITSDIR="${CLONEGITSDIR:+/buildfs$CLONEGITSDIR}"
@@ -48,7 +48,7 @@ ONBUILD ARG LIBRARY_PATH="$LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/u
 ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
 
-ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin $DESTDIR \
+ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin \
          && chmod 770 /buildfs/tmp \
          && cd /buildfs/var \
          && ln -s ../tmp tmp \
@@ -61,7 +61,11 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN mv /buildfs/environment /environment \
+ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
+            then \
+               DESTDIR="/imagefs$DESTDIR"; \
+            fi \
+         && mv /buildfs/environment /environment \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$ADDREPOS" ]; \
             then \
@@ -216,6 +220,7 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && if [ -n "$BUILDCMDS" ]; \
             then \
                cd $buildDir; \
+               mkdir -p $DESTDIR; \
                eval "$BUILDCMDS || exit 1"; \
             fi \
          && rm -rf /buildfs \
@@ -261,6 +266,10 @@ ONBUILD RUN mv /buildfs/environment /environment \
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
          && find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
+         && if [ "${DESTDIR::8}" == "/imagefs" ] && [ ! -s "$DESTDIR" ]; \
+            then \
+               rm -rf "$DESTDIR"; \
+            fi \
          && set -f \
          && for dir in $REMOVEDIRS; \
             do \
