@@ -276,7 +276,7 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                fi \
                topDir="${DESTDIR#/imagefs/}"; \
                topDir="${topDir%%/*}"; \
-               if ! ls /imagefs | grep -vq -e "^$topDir"; \
+               if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
                then \
                   cp -a $DESTDIR*/* /imagefs/; \
                fi \
