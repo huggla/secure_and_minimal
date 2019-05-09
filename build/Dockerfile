@@ -74,6 +74,8 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                   echo $repo >> /etc/apk/repositories; \
                done; \
             fi \
+    && echo banan \
+    && ls -la /imagefs \
          && apk update \
          && apk upgrade \
          && if [ -n "$RUNDEPS" ]; \
@@ -131,6 +133,8 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --virtual .rundeps add $RUNDEPS; \
                apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --allow-untrusted --virtual .rundeps_untrusted add $RUNDEPS_UNTRUSTED; \
             fi \
+    && echo apa \
+    && ls -la /imagefs \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
                if [ -n "$MAKEDIRS" ]; \
