@@ -65,6 +65,8 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             then \
                DESTDIR="/imagefs$DESTDIR"; \
             fi \
+    && echo bil \
+    && ls -la /imagefs \
          && mv /buildfs/environment /environment \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$ADDREPOS" ]; \
