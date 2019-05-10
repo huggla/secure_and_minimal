@@ -65,8 +65,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             then \
                DESTDIR="/imagefs$DESTDIR"; \
             fi \
-    && echo bil \
-    && ls -la /imagefs \
          && mv /buildfs/environment /environment \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$ADDREPOS" ]; \
@@ -77,6 +75,7 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                done; \
             fi \
     && echo banan \
+    && ls -la /buildfs \
     && ls -la /imagefs \
          && apk update \
          && apk upgrade \
@@ -136,6 +135,7 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --allow-untrusted --virtual .rundeps_untrusted add $RUNDEPS_UNTRUSTED; \
             fi \
     && echo apa \
+    && ls -la /buildfs \
     && ls -la /imagefs \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
@@ -164,6 +164,9 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                mkdir -p "$(dirname ${file#/buildfs})" "/buildfs$(dirname ${file#/buildfs})"; \
                touch "${file#/buildfs}" "/buildfs${file#/buildfs}"; \
             done \
+    && echo bil \
+    && ls -la /buildfs \
+    && ls -la /imagefs \
          && cp -a /tmp/rootfs/* /buildfs/ || true \
          && chmod -R o= /imagefs /buildfs \
          && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
@@ -175,6 +178,9 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             then \
                eval "$INITCMDS || exit 1"; \
             fi \
+    && echo bil2 \
+    && ls -la /buildfs \
+    && ls -la /imagefs \
          && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -p -m 750 "/imagefs/{}" + \
          && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/imagefs/"$1"\"")}' \
