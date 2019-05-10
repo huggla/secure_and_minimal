@@ -283,11 +283,20 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
      echo "$topDir"; \
                topDir="${topDir%%/*}"; \
     echo "$topDir"; \
+    echo apa; \
+    ls -la /imagefs; \
+    echo banan; \
     ls /imagefs | grep -v -e "^$topDir"; \
+    echo bil; \
                if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
                then \
+    echo "$DESTDIR"; \
     ls -la $DESTDIR*/*; \
+    echo vin; \
+    find /imagefs -path "$DESTDIR*/*"; \
+    echo beer;\
                   cp -a $DESTDIR*/* /imagefs/; \
+    ls -la /imagefs; \
                fi; \
             fi \
          && set -f \
