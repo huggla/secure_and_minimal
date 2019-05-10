@@ -74,9 +74,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                   echo $repo >> /etc/apk/repositories; \
                done; \
             fi \
-    && echo banan \
-    && ls -la /buildfs \
-    && ls -la /imagefs \
          && apk update \
          && apk upgrade \
          && if [ -n "$RUNDEPS" ]; \
@@ -134,9 +131,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --virtual .rundeps add $RUNDEPS; \
                apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --allow-untrusted --virtual .rundeps_untrusted add $RUNDEPS_UNTRUSTED; \
             fi \
-    && echo apa \
-    && ls -la /buildfs \
-    && ls -la /imagefs \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
                if [ -n "$MAKEDIRS" ]; \
@@ -156,17 +150,18 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && for dir in $MAKEDIRS; \
             do \
                dir="$(eval "echo $dir")"; \
-               mkdir -p "${dir#/buildfs}" "/buildfs${dir#/buildfs}"; \
+               dir="${dir#/buildfs}"; \
+               dir="${dir#/imagefs}"; \
+               mkdir -p "$dir" "/buildfs$dir"; \
             done \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
-               mkdir -p "$(dirname ${file#/buildfs})" "/buildfs$(dirname ${file#/buildfs})"; \
-               touch "${file#/buildfs}" "/buildfs${file#/buildfs}"; \
+               file="${file#/buildfs}"; \
+               file="${file#/imagefs}"; \
+               mkdir -p "$(dirname "$file")" "/buildfs$(dirname "$file")"; \
+               touch "$file" "/buildfs$file"; \
             done \
-    && echo bil \
-    && ls -la /buildfs \
-    && ls -la /imagefs \
          && cp -a /tmp/rootfs/* /buildfs/ || true \
          && chmod -R o= /imagefs /buildfs \
          && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
@@ -178,9 +173,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             then \
                eval "$INITCMDS || exit 1"; \
             fi \
-    && echo bil2 \
-    && ls -la /buildfs \
-    && ls -la /imagefs \
          && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -p -m 750 "/imagefs/{}" + \
          && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/imagefs/"$1"\"")}' \
@@ -231,11 +223,9 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             fi \
          && if [ -n "$BUILDCMDS" ]; \
             then \
-    ls -la /imagefs; \
                cd $buildDir; \
                mkdir -p $DESTDIR; \
                eval "$BUILDCMDS || exit 1"; \
-    ls -la /imagefs; \
             fi \
          && rm -rf /buildfs \
          && if [ -n "$EXECUTABLES" ] || [ -n "$STARTUPEXECUTABLES" ]; \
@@ -280,9 +270,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
          && find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
-    && echo "$DESTDIR" \
-    && ls -la /imagefs \
-    && ls -la "$DESTDIR" \
          && if [ ! -s "$DESTDIR" ] || [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                rm -rf "$DESTDIR"; \
@@ -295,14 +282,7 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                topDir="${topDir%%/*}"; \
                if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
                then \
-       echo "$DESTDIR"; \
-       ls -la /imagefs; \
-       ls -la "$DESTDIR"; \
-       ls -la $DESTDIR*/*; \
                   cp -a $DESTDIR*/* /imagefs/; \
-       echo "$DESTDIR"; \
-       ls -la /imagefs; \
-       ls -la "$DESTDIR"; \
                fi; \
             fi \
          && set -f \
