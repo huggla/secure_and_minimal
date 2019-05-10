@@ -270,7 +270,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
          && find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
-  && echo "$DESTDIR" \
          && if [ ! -s "$DESTDIR" ] || [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                rm -rf "$DESTDIR"; \
@@ -280,23 +279,10 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                   echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
                fi; \
                topDir="${DESTDIR#/imagefs/}"; \
-     echo "$topDir"; \
                topDir="${topDir%%/*}"; \
-    echo "$topDir"; \
-    echo apa; \
-    ls -la /imagefs; \
-    echo banan; \
-    ls /imagefs | grep -v -e "^$topDir"; \
-    echo bil; \
-               if [ -n "$topDir" ] && ! ls /imagefs | grep -vq -e "^$topDir"; \
+               if [ -n "$topDir" ] && ! find /imagefs ! -path "/imagefs/$topDir*" -maxdepth 1 | grep -qe .; \
                then \
-    echo "$DESTDIR"; \
-    ls -la $DESTDIR*/*; \
-    echo vin; \
-    find /imagefs -path "$DESTDIR*/*"; \
-    echo beer;\
                   cp -a $DESTDIR*/* /imagefs/; \
-    ls -la /imagefs; \
                fi; \
             fi \
          && set -f \
