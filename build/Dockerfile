@@ -48,12 +48,12 @@ ONBUILD ARG LIBRARY_PATH="$LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/u
 ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
 
-ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin \
-         && chmod 770 /buildfs/tmp \
-         && cd /buildfs/var \
-         && ln -s ../tmp tmp \
-         && ln -s ../run run \
-         && cp -a /buildfs/tmp /buildfs/run /buildfs/var /imagefs/
+#ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin \
+#         && chmod 770 /buildfs/tmp \
+#         && cd /buildfs/var \
+#         && ln -s ../tmp tmp \
+#         && ln -s ../run run \
+#         && cp -a /buildfs/tmp /buildfs/run /buildfs/var /imagefs/
 
 ONBUILD COPY --from=init / /buildfs/
 ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
@@ -61,7 +61,8 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
+ONBUILD RUN mkdir -p /imagefs \
+         && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                DESTDIR="/imagefs$DESTDIR"; \
             fi \
