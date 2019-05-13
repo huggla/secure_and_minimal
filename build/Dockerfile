@@ -267,36 +267,6 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                   ln -s ../../../../start/functions/$func ./; \
                done; \
             fi \
-         && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk \
-         && find /imagefs/var/cache ! -type d ! -type c -delete; \
-            find /imagefs/tmp ! -type d ! -type c -delete \
-         && if [ ! -s "$DESTDIR" ] || [ "${DESTDIR::8}" != "/imagefs" ]; \
-            then \
-               rm -rf "$DESTDIR"; \
-            else \
-               if [ -n "$RUNDEPS" ]; \
-               then \
-                  echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
-               fi; \
-               topDir="${DESTDIR#/imagefs/}"; \
-               topDir="${topDir%%/*}"; \
-               if [ -n "$topDir" ] && ! find /imagefs ! -path "/imagefs/$topDir*" -maxdepth 1 | grep -qe .; \
-               then \
-                  cp -a $DESTDIR*/* /imagefs/; \
-               fi; \
-            fi \
-         && set -f \
-         && for dir in $REMOVEDIRS; \
-            do \
-               set +f; \
-               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
-            done \
-         && set -f \
-         && for file in $REMOVEFILES; \
-            do \
-               set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
-            done \
          && set -f \
          && for exe in $STARTUPEXECUTABLES; \
             do \
@@ -345,6 +315,37 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             done \
          && sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive \
          && set +f \
+         && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk; \
+            find /imagefs/var/cache ! -type d ! -type c -delete; \
+            find /imagefs/tmp ! -type d ! -type c -delete \
+         && set -f \
+         && for dir in $REMOVEDIRS; \
+            do \
+               set +f; \
+               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
+            done \
+         && set -f \
+         && for file in $REMOVEFILES; \
+            do \
+               set +f; \
+               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
+            done \
+         && set +f \         
+         && du -lx -d 1 / | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         && if [ -d "$DESTDIR" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
+            then \
+               if [ -n "$RUNDEPS" ]; \
+               then \
+                  echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
+               fi; \
+               topDir="${DESTDIR#/imagefs/}"; \
+               topDir="${topDir%%/*}"; \
+               if [ -n "$topDir" ] && [ "$(ls -1 /imagefs | wc -l)" != "1" ]; \
+               then \
+                  cp -a $DESTDIR*/* /imagefs/; \
+               fi; \
+            fi \
+
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
