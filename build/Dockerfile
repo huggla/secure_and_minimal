@@ -334,6 +334,7 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
          && ls -la /imagefs \
          && du -lx -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
          && ls -la /imagefs \
+         && ls -lar /imagefs/etc /imagefs/var /imagefs/usr \
          && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
