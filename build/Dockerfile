@@ -332,20 +332,17 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
             done \
          && set +f \         
          && du -lx -d 1 / | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
-         && if [ -d "$DESTDIR" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
+         && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
                then \
                   echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
                fi; \
-               topDir="${DESTDIR#/imagefs/}"; \
-               topDir="${topDir%%/*}"; \
-               if [ -n "$topDir" ] && [ "$(ls -1 /imagefs | wc -l)" != "1" ]; \
+               if [ "$(find $DESTDIR* -type f | wc -l)" == "$(find /imagefs/* -type f | wc -l)" ]; \
                then \
                   cp -a $DESTDIR*/* /imagefs/; \
                fi; \
             fi \
-
          && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
