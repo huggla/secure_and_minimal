@@ -330,8 +330,10 @@ ONBUILD RUN if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] &
                set +f; \
                find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
             done \
-         && set +f \         
-         && du -lx -d 1 / | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         && set +f \
+         && ls -la /imagefs \
+         && du -lx -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         && ls -la /imagefs \
          && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
