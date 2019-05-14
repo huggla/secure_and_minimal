@@ -31,7 +31,7 @@ RUN mkdir -m 755 /imagefs \
  && /imagefs/bin/busybox rm -rf /home /usr /var /root /media /mnt /run /sbin /srv /etc /bin/* || /imagefs/bin/busybox true \
  && /imagefs/bin/busybox cp -a /imagefs/bin/* /bin/ \
  && /imagefs/bin/busybox chroot /imagefs /bin/busybox find . -type l -exec /bin/busybox test ! -e {} \; -delete \
- && /imagefs/bin/busybox ls -lar /imagefs \
+ && /imagefs/bin/busybox ls -laR /imagefs \
  && cd /imagefs \
  && (/imagefs/bin/busybox find * ! -type d ! -type c -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec echo -n "/{}>" \; -exec /imagefs/bin/busybox readlink "{}" \; && /imagefs/bin/busybox find * ! -type d ! -type c ! -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec /imagefs/bin/busybox md5sum "{}" \; | /imagefs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /imagefs/bin/busybox sed 's|^ |/|') | /imagefs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
  && /imagefs/bin/busybox tar -c -z -f /imagefs/environment/onbuild.tar.gz -C /tmp onbuild
