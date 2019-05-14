@@ -356,5 +356,5 @@ ONBUILD RUN cd /buildfs \
          && rm -f /tmp/onbuild/exclude.filelist.* \
          && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
          && mv /environment /imagefs/ \
-         && setfacl --restore=/tmp/init-permissions.txt \
+         && setfacl --restore=/tmp/init-permissions.txt || true \
          && apk --purge del .builddeps .builddeps_untrusted
