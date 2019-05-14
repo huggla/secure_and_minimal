@@ -7,15 +7,15 @@ RUN chmod u+x /usr/sbin/relpath
 ONBUILD ARG CONTENTSOURCE1
 ONBUILD ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
 ONBUILD ARG CONTENTDESTINATION1
-ONBUILD ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ONBUILD ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/initfs/}"
 ONBUILD ARG CONTENTSOURCE2
 ONBUILD ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
 ONBUILD ARG CONTENTDESTINATION2
-ONBUILD ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ONBUILD ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/initfs/}"
 ONBUILD ARG CONTENTSOURCE3
 ONBUILD ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ONBUILD ARG CONTENTDESTINATION3
-ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
+ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/initfs/}"
 ONBUILD ARG DESTDIR
 ONBUILD ARG DESTDIR="${DESTDIR:-/imagefs/app}"
 ONBUILD ARG CLONEGITS
@@ -48,20 +48,13 @@ ONBUILD ARG LIBRARY_PATH="$LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/u
 ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG PATH="$PATH:/buildfs/bin:/buildfs/usr/bin:/buildfs/usr/local/bin"
 
-#ONBUILD RUN mkdir -p /imagefs /buildfs/tmp /buildfs/run /buildfs/var /buildfs/usr/local/bin \
-#         && chmod 770 /buildfs/tmp \
-#         && cd /buildfs/var \
-#         && ln -s ../tmp tmp \
-#         && ln -s ../run run \
-#         && cp -a /buildfs/tmp /buildfs/run /buildfs/var /imagefs/
-
 ONBUILD COPY --from=init / /buildfs/
 ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
 ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN mkdir -p /imagefs \
+ONBUILD RUN mkdir -p /excludefs /initfs /buildfs /imagefs \
          && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                DESTDIR="/imagefs$DESTDIR"; \
@@ -81,7 +74,6 @@ ONBUILD RUN mkdir -p /imagefs \
             then \
                if [ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ]; \
                then \
-                  mkdir /excludefs; \
                   cd /excludefs; \
                   apk --root /excludefs add --initdb; \
                   ln -s /var/cache/apk/* /excludefs/var/cache/apk/; \
@@ -127,10 +119,10 @@ ONBUILD RUN mkdir -p /imagefs \
                   rm -rf /excludefs; \
                   sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist; \
                fi; \
-               apk --root /buildfs add --initdb; \
-               ln -s /var/cache/apk/* /buildfs/var/cache/apk/; \
-               apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --virtual .rundeps add $RUNDEPS; \
-               apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /buildfs --allow-untrusted --virtual .rundeps_untrusted add $RUNDEPS_UNTRUSTED; \
+               apk --root /initfs add --initdb; \
+               ln -s /var/cache/apk/* /initfs/var/cache/apk/; \
+               apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /initfs --virtual .rundeps add $RUNDEPS; \
+               apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --root /initfs --allow-untrusted --virtual .rundeps_untrusted add $RUNDEPS_UNTRUSTED; \
             fi \
          && if [ -n "$CLONEGITSDIR" ]; \
             then \
@@ -151,32 +143,36 @@ ONBUILD RUN mkdir -p /imagefs \
          && for dir in $MAKEDIRS; \
             do \
                dir="$(eval "echo $dir")"; \
+               dir="${dir#/initfs}"; \
                dir="${dir#/buildfs}"; \
                dir="${dir#/imagefs}"; \
-               mkdir -p "$dir" "/buildfs$dir"; \
+               mkdir -p "$dir" "/initfs$dir"; \
             done \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
+               file="${file#/initfs}"; \
                file="${file#/buildfs}"; \
                file="${file#/imagefs}"; \
-               mkdir -p "$(dirname "$file")" "/buildfs$(dirname "$file")"; \
-               touch "$file" "/buildfs$file"; \
+               mkdir -p "$(dirname "$file")" "/initfs$(dirname "$file")"; \
+               touch "$file" "/initfs$file"; \
             done \
-         && cp -a /tmp/rootfs/* /buildfs/ || true \
-         && chmod -R o= /imagefs /buildfs \
+         && cp -a /tmp/rootfs/* /initfs/ || true \
+         && chmod -R o= /imagefs /buildfs /imagefs \
          && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
          && find "$CONTENTDESTINATION1" -type f -perm +010 -exec chmod g-x "{}" + \
          && find "$CONTENTDESTINATION2" -type f -perm +010 -exec chmod g-x "{}" + \
-         && chmod u=rx,go= /buildfs/usr/local/bin/* || true \
-         && cd /buildfs \
+         && chmod u=rx,go= /initfs/usr/local/bin/* || true \
+         && cd /initfs \
          && if [ -n "$INITCMDS" ]; \
             then \
                eval "$INITCMDS || exit 1"; \
             fi \
-         && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -p -m 750 "/imagefs/{}" + \
-         && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
-         && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/imagefs/"$1"\"")}' \
+         && rm -rf tmp/* var/cache/* \
+         && du -lx -d 1 | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -p -m 750 "{}" + \
+         && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
+         && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
@@ -228,7 +224,7 @@ ONBUILD RUN mkdir -p /imagefs \
                mkdir -p $DESTDIR; \
                eval "$BUILDCMDS || exit 1"; \
             fi \
-         && rm -rf /buildfs \
+         && rm -rf /initfs /buildfs \
          && if [ -n "$EXECUTABLES" ] || [ -n "$STARTUPEXECUTABLES" ]; \
             then \
                if [ -n "$EXECUTABLES" ] && [ -n "$STARTUPEXECUTABLES" ]; \
