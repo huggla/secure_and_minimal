@@ -176,6 +176,7 @@ ONBUILD RUN cd /buildfs \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
+         && cp -a /buildfs/* /imagefs/ \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
          && apk --virtual .builddeps add $BUILDDEPS \
