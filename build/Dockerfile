@@ -2,7 +2,8 @@ FROM huggla/alpine as image
 
 COPY ./rootfs /
 
-RUN chmod u+x /usr/sbin/relpath
+RUN chmod u+x /usr/sbin/relpath \
+ && apk add acl
 
 ONBUILD ARG CONTENTSOURCE1
 ONBUILD ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
@@ -54,7 +55,8 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN mkdir -p /excludefs /initfs /buildfs /imagefs \
+ONBUILD RUN getfacl -R /buildfs > /tmp/init-permissions.txt \
+         && mkdir -p /excludefs /initfs /buildfs /imagefs \
          && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
                DESTDIR="/imagefs$DESTDIR"; \
@@ -168,9 +170,9 @@ ONBUILD RUN mkdir -p /excludefs /initfs /buildfs /imagefs \
             then \
                eval "$INITCMDS || exit 1"; \
             fi \
-         && rm -rf tmp/* var/cache/* \
+         && rm -rf tmp var/cache/* \
          && du -lx -d 1 | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
-         && find * -type d ! -path 'tmp' ! -path 'var' ! -path 'run' ! -path 'var/tmp' ! -path 'var/run' -exec mkdir -p -m 750 "{}" + \
+         && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" + \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
@@ -328,6 +330,7 @@ ONBUILD RUN mkdir -p /excludefs /initfs /buildfs /imagefs \
                find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
             done \
          && set +f \
+         && rm -rf /imagefs/tmp /imagefs/var/cache/* \
          && ls -la /imagefs \
          && du -lx -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
          && ls -laR /imagefs \
@@ -346,10 +349,11 @@ ONBUILD RUN mkdir -p /excludefs /initfs /buildfs /imagefs \
          && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
          && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
          && cd /imagefs \
-         && (find * ! -type d ! -type c -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * ! -type d ! -type c ! -type l ! -path 'var/cache/*' ! -path 'tmp/*' -prune -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
+         && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' \
          && sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new \
          && rm -f /tmp/onbuild/exclude.filelist.* \
          && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
          && mv /environment /imagefs/ \
+         && setfacl --restore=/tmp/init-permissions.txt \
          && apk --purge del .builddeps .builddeps_untrusted
