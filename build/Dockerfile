@@ -55,7 +55,8 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN getfacl -R /buildfs > /tmp/init-permissions.txt \
+ONBUILD RUN cd /buildfs \
+         && getfacl -R . > /tmp/init-permissions.txt \
          && mkdir -p /excludefs /initfs /buildfs /imagefs \
          && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
             then \
