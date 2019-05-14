@@ -4,7 +4,7 @@ RUN mkdir -m 755 /imagefs \
  && mkdir -m 755 /imagefs/lib /imagefs/usr \
  && mkdir -m 755 /imagefs/usr/local /imagefs/usr/lib \
  && mkdir -m 755 /imagefs/usr/local/bin \
- && mkdir -m 700 /imagefs/bin /imagefs/sbin /imagefs/.dockerenv /imagefs/environment \
+ && mkdir -m 700 /imagefs/bin /imagefs/sbin /imagefs/environment \
  && mkdir -m 750 /imagefs/etc /imagefs/var /imagefs/run \
  && mkdir -m 770 /imagefs/tmp \
  && mkdir -m 700 /imagefs/usr/bin /imagefs/usr/sbin /tmp/onbuild \
@@ -30,7 +30,8 @@ RUN mkdir -m 755 /imagefs \
  && ln -sf ../run run \
  && /imagefs/bin/busybox rm -rf /home /usr /var /root /media /mnt /run /sbin /srv /etc /bin/* || /imagefs/bin/busybox true \
  && /imagefs/bin/busybox cp -a /imagefs/bin/* /bin/ \
- && /imagefs/bin/busybox find /imagefs -type l -exec /imagefs/bin/busybox sh -c 'for x; do [ -e "$x" ] || /imagefs/bin/busybox rm "$x"; done' _ {} + \
+ && /imagefs/bin/busybox chroot /imagefs /bin/busybox find . -type l -exec /bin/busybox test ! -e {} \; -delete \
+ && /imagefs/bin/busybox ls -lar /imagefs \
  && cd /imagefs \
  && (/imagefs/bin/busybox find * ! -type d ! -type c -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec echo -n "/{}>" \; -exec /imagefs/bin/busybox readlink "{}" \; && /imagefs/bin/busybox find * ! -type d ! -type c ! -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec /imagefs/bin/busybox md5sum "{}" \; | /imagefs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /imagefs/bin/busybox sed 's|^ |/|') | /imagefs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
  && /imagefs/bin/busybox tar -c -z -f /imagefs/environment/onbuild.tar.gz -C /tmp onbuild
