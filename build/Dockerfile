@@ -171,7 +171,6 @@ ONBUILD RUN getfacl -R /buildfs > /tmp/init-permissions.txt \
                eval "$INITCMDS || exit 1"; \
             fi \
          && rm -rf tmp var/cache/* \
-         && du -lx -d 1 | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
          && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" + \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
