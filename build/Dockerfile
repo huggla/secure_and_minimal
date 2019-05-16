@@ -161,7 +161,7 @@ ONBUILD RUN cd /buildfs \
                touch "$file" "/initfs$file"; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
-         && chmod -R o= /imagefs /buildfs /imagefs \
+         && chmod -R o= /initfs /buildfs /imagefs \
          && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
          && find "$CONTENTDESTINATION1" -type f -perm +010 -exec chmod g-x "{}" + \
          && find "$CONTENTDESTINATION2" -type f -perm +010 -exec chmod g-x "{}" + \
@@ -171,7 +171,8 @@ ONBUILD RUN cd /buildfs \
             then \
                eval "$INITCMDS || exit 1"; \
             fi \
-         && rm -rf tmp var/cache/* \
+         && rm -rf /initfs/tmp /initfs/var/cache/* \
+         && cd /initfs \
          && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" \; \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
@@ -322,13 +323,15 @@ ONBUILD RUN cd /buildfs \
          && for dir in $REMOVEDIRS; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
+               cd "/imagefs$(dirname "$dir")"; \
+               find * -name "$(basename "$dir")" -type d -maxdepth 1 -exec rm -rf "{}" +; \
             done \
          && set -f \
          && for file in $REMOVEFILES; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
+               cd "/imagefs$(dirname "$file")"; \
+               find * -name "$(basename "$file")" ! -type d ! -type c -maxdepth 1 -exec rm -f "{}" +; \
             done \
          && set +f \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
