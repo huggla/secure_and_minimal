@@ -172,7 +172,7 @@ ONBUILD RUN cd /buildfs \
                eval "$INITCMDS || exit 1"; \
             fi \
          && rm -rf tmp var/cache/* \
-         && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" + \
+         && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" \; \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
