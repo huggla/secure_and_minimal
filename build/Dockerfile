@@ -337,7 +337,8 @@ ONBUILD RUN cd /buildfs \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
   && ls -la /imagefs \
   && ls -la /imagefs/lib \
-         && du -lx -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         #&& du -lx -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
+         && du -lx -d 1 /imagefs | awk '{print $1 $2}' \
   && ls -la /imagefs \
   && ls -la /imagefs/lib \
          && cd /imagefs \
