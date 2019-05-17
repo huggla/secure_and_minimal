@@ -340,7 +340,10 @@ ONBUILD RUN cd /buildfs \
          && set +f \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
          && cd /imagefs \
-         && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - | xargs rm -rf \
+         #&& find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - | xargs rm -rf \
+         && find * -type d -maxdepth 0 \
+         && echo hej \
+         && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' \
          && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
