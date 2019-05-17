@@ -335,8 +335,8 @@ ONBUILD RUN cd /buildfs \
             done \
          && set +f \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
-         && du -l -d 1 /imagefs | awk '{system("[ "$1" == 4 ] && rm -rf "$2)}' \
          && cd /imagefs \
+         && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - | xargs rm -rf \
          && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
