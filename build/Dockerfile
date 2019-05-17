@@ -323,15 +323,19 @@ ONBUILD RUN cd /buildfs \
          && for dir in $REMOVEDIRS; \
             do \
                set +f; \
-               cd "/imagefs$(dirname "$dir")"; \
-               find * -name "$(basename "$dir")" -type d -maxdepth 0 -exec rm -rf "{}" +; \
+               if [ -d "$dir" ]; \
+               then \
+                  rm -rf "$dir"; \
+               fi; \
             done \
          && set -f \
          && for file in $REMOVEFILES; \
             do \
                set +f; \
-               cd "/imagefs$(dirname "$file")"; \
-               find * -name "$(basename "$file")" ! -type d ! -type c -maxdepth 0 -exec rm -f "{}" +; \
+               if [ -f "$file" ] || [ -l "$file" ]; \
+               then \
+                  rm -f "$file"; \
+               fi; \
             done \
          && set +f \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
