@@ -340,11 +340,9 @@ ONBUILD RUN cd /buildfs \
          && set +f \
          && rm -rf /imagefs/tmp /imagefs/var/cache/* \
          && cd /imagefs \
-         && topDirs="$(find * -type d -maxdepth 0 | sort -)" \
-         && usedTopDirs="$(find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u -)" \
-         && emptyTopDirs="$(comm -23 <(echo "$topDirs") <(echo "$usedTopDirs"))" \
-   && echo $emptyTopDirs \
-         && echo $emptyTopDirs | xargs rm -rf \
+         && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
+         && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
+         && comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf \
          && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
