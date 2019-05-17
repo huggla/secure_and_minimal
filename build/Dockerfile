@@ -319,26 +319,20 @@ ONBUILD RUN cd /buildfs \
          && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk; \
             find /imagefs/var/cache ! -type d ! -type c -delete; \
             find /imagefs/tmp ! -type d ! -type c -delete \
-         && set -f \
          && for dir in $REMOVEDIRS; \
             do \
-               set +f; \
                if [ -d "$dir" ]; \
                then \
                   rm -rf "$dir"; \
                fi; \
             done \
-         && set -f \
          && for file in $REMOVEFILES; \
             do \
-               set +f; \
                if [ -f "$file" ] || [ -l "$file" ]; \
                then \
                   rm -f "$file"; \
                fi; \
             done \
-         && set +f \
-         && rm -rf /imagefs/tmp /imagefs/var/cache/* \
          && cd /imagefs \
          && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
          && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
