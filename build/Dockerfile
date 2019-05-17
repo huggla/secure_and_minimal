@@ -321,6 +321,7 @@ ONBUILD RUN cd /buildfs \
             find /imagefs/tmp ! -type d ! -type c -delete \
          && for dir in $REMOVEDIRS; \
             do \
+               dir="$(eval "echo $dir")"; \
                if [ -d "$dir" ]; \
                then \
                   rm -rf "$dir"; \
@@ -328,6 +329,7 @@ ONBUILD RUN cd /buildfs \
             done \
          && for file in $REMOVEFILES; \
             do \
+               file="$(eval "echo $file")"; \
                if [ -f "$file" ] || [ -l "$file" ]; \
                then \
                   rm -f "$file"; \
