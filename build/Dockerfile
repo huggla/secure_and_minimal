@@ -322,6 +322,10 @@ ONBUILD RUN cd /buildfs \
          && for dir in $REMOVEDIRS; \
             do \
                dir="$(eval "echo $dir")"; \
+               dir="${dir#/initfs}"; \
+               dir="${dir#/buildfs}"; \
+               dir="${dir#/imagefs}"; \
+               dir="/imagefs$dir"; \
                if [ -d "$dir" ]; \
                then \
                   rm -rf "$dir"; \
@@ -330,6 +334,10 @@ ONBUILD RUN cd /buildfs \
          && for file in $REMOVEFILES; \
             do \
                file="$(eval "echo $file")"; \
+               file="${file#/initfs}"; \
+               file="${file#/buildfs}"; \
+               file="${file#/imagefs}"; \
+               file="/imagefs$dir"; \
                if [ -f "$file" ] || [ -l "$file" ]; \
                then \
                   rm -f "$file"; \
