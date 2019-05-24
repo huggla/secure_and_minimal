@@ -191,7 +191,7 @@ ONBUILD RUN cd /buildfs \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               for git in "$CLONEGITS"; \
+               for git in $CLONEGITS; \
                do \
                   cloneStr="git clone $(eval "echo $(echo $git)")"; \
                   eval "$cloneStr"; \
