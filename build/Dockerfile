@@ -55,16 +55,7 @@ ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
 ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
 ONBUILD COPY ./ /tmp/
 
-ONBUILD RUN cd /buildfs \
-         && getfacl -R . > /tmp/init-permissions.txt \
-         && mkdir -p /excludefs /initfs /buildfs /imagefs \
-         && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
-            then \
-               DESTDIR="/imagefs$DESTDIR"; \
-            fi \
-         && mv /buildfs/environment /environment \
-         && tar -x -f /environment/onbuild.tar.gz -C /tmp \
-         && if [ -n "$ADDREPOS" ]; \
+ONBUILD RUN if [ -n "$ADDREPOS" ]; \
             then \
                for repo in $ADDREPOS; \
                do \
@@ -73,6 +64,15 @@ ONBUILD RUN cd /buildfs \
             fi \
          && apk update \
          && apk upgrade \
+         && cd /buildfs \
+         && getfacl -R . > /tmp/init-permissions.txt \
+         && mkdir -p /excludefs /initfs /buildfs /imagefs \
+         && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
+            then \
+               DESTDIR="/imagefs$DESTDIR"; \
+            fi \
+         && mv /buildfs/environment /environment \
+         && tar -x -f /environment/onbuild.tar.gz -C /tmp \
          && if [ -n "$RUNDEPS" ]; \
             then \
                if [ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ]; \
