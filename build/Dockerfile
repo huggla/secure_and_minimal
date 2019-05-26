@@ -18,7 +18,7 @@ ONBUILD ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ONBUILD ARG CONTENTDESTINATION3
 ONBUILD ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/initfs/}"
 ONBUILD ARG DESTDIR
-ONBUILD ARG DESTDIR="${DESTDIR:-/imagefs/app}"
+ONBUILD ARG DESTDIR="${DESTDIR:-/finalfs/app}"
 ONBUILD ARG CLONEGITS
 ONBUILD ARG CLONEGITSDIR
 ONBUILD ARG CLONEGITSDIR="${CLONEGITSDIR:+/buildfs$CLONEGITSDIR}"
@@ -44,6 +44,7 @@ ONBUILD ARG EXECUTABLES
 ONBUILD ARG STARTUPEXECUTABLES
 ONBUILD ARG EXPOSEFUNCTIONS
 ONBUILD ARG BUILDCMDS
+ONBUILD ARG FINALCMDS
 ONBUILD ARG CPATH="$CPATH:/buildfs/usr/include:/buildfs/usr/local/include"
 ONBUILD ARG LIBRARY_PATH="$LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
 ONBUILD ARG LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/buildfs/lib:/buildfs/usr/lib:/buildfs/usr/local/lib"
@@ -66,10 +67,10 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && apk upgrade \
          && cd /buildfs \
          && getfacl -R . > /tmp/init-permissions.txt \
-         && mkdir -p /excludefs /initfs /buildfs /imagefs \
-         && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/imagefs" ]; \
+         && mkdir -p /excludefs /initfs /buildfs /finalfs \
+         && if [ "${DESTDIR::1}" == "/" ] && [ "${DESTDIR::8}" != "/buildfs" ] && [ "${DESTDIR::8}" != "/finalfs" ]; \
             then \
-               DESTDIR="/imagefs$DESTDIR"; \
+               DESTDIR="/finalfs$DESTDIR"; \
             fi \
          && mv /buildfs/environment /environment \
          && tar -x -f /environment/onbuild.tar.gz -C /tmp \
@@ -148,7 +149,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                dir="$(eval "echo $dir")"; \
                dir="${dir#/initfs}"; \
                dir="${dir#/buildfs}"; \
-               dir="${dir#/imagefs}"; \
+               dir="${dir#/finalfs}"; \
                mkdir -p "$dir" "/initfs$dir"; \
             done \
          && for file in $MAKEFILES; \
@@ -156,12 +157,12 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="$(eval "echo $file")"; \
                file="${file#/initfs}"; \
                file="${file#/buildfs}"; \
-               file="${file#/imagefs}"; \
+               file="${file#/finalfs}"; \
                mkdir -p "$(dirname "$file")" "/initfs$(dirname "$file")"; \
                touch "$file" "/initfs$file"; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
-         && chmod -R o= /initfs /buildfs /imagefs \
+         && chmod -R o= /initfs /buildfs /finalfs \
          && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
          && find "$CONTENTDESTINATION1" -type f -perm +010 -exec chmod g-x "{}" + \
          && find "$CONTENTDESTINATION2" -type f -perm +010 -exec chmod g-x "{}" + \
@@ -177,7 +178,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
-         && cp -a /buildfs/* /imagefs/ \
+         && cp -a /buildfs/* /finalfs/ \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
          && apk --virtual .builddeps add $BUILDDEPS \
@@ -229,6 +230,11 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                eval "$BUILDCMDS || exit 1"; \
             fi \
          && rm -rf /initfs /buildfs \
+         && if [ -n "$FINALCMDS" ]; \
+            then \
+               cd $finalfs; \
+               eval "$FINALCMDS || exit 1"; \
+            fi \
          && if [ -n "$EXECUTABLES" ] || [ -n "$STARTUPEXECUTABLES" ]; \
             then \
                if [ -n "$EXECUTABLES" ] && [ -n "$STARTUPEXECUTABLES" ]; \
@@ -240,29 +246,29 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                fi; \
                for exe in $EXECUTABLES; \
                do \
-                  exe="/imagefs$exe"; \
+                  exe="/finalfs$exe"; \
                   exeDir="$(dirname "$exe")"; \
                   exeName="$(basename "$exe")"; \
-                  if [ "$exeDir" != "/imagefs/usr/local/bin" ]; \
+                  if [ "$exeDir" != "/finalfs/usr/local/bin" ]; \
                   then \
-                     cp -a "$exe" "/imagefs/usr/local/bin/"; \
+                     cp -a "$exe" "/finalfs/usr/local/bin/"; \
                      cd "$exeDir"; \
-                     ln -sf "$(relpath "$exeDir" "/imagefs/usr/local/bin")/$exeName" "$exeName"; \
+                     ln -sf "$(relpath "$exeDir" "/finalfs/usr/local/bin")/$exeName" "$exeName"; \
                   fi; \
                   if [ "$exeName" == "sudo" ]; \
                   then \
-                     chmod ug=rx,o= "/imagefs/usr/local/bin/$exeName"; \
+                     chmod ug=rx,o= "/finalfs/usr/local/bin/$exeName"; \
                   else \
-                     chmod u=rx,go= "/imagefs/usr/local/bin/$exeName"; \
+                     chmod u=rx,go= "/finalfs/usr/local/bin/$exeName"; \
                   fi \
                done; \
             fi \
          && if [ -n "$EXPOSEFUNCTIONS" ]; \
             then \
-               mkdir -p /imagefs/usr/local/bin/functions; \
-               cd /imagefs/usr/local/bin; \
+               mkdir -p /finalfs/usr/local/bin/functions; \
+               cd /finalfs/usr/local/bin; \
                ln -s ../../../start/includeFunctions ./; \
-               cd /imagefs/usr/local/bin/functions; \
+               cd /finalfs/usr/local/bin/functions; \
                for func in $EXPOSEFUNCTIONS; \
                do \
                   ln -s ../../../../start/functions/$func ./; \
@@ -286,7 +292,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && while read file; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
+               find "/finalfs$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" +; \
             done </environment/gid0writables \
          && set -f \
          && for dir in $GID0WRITABLESRECURSIVE; \
@@ -299,7 +305,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && while read dir; \
             do \
                set +f; \
-               find "/imagefs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
+               find "/finalfs$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" +; \
             done </environment/gid0writablesrecursive \
          && set -f \
          && for file in $LINUXUSEROWNED; \
@@ -316,16 +322,16 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
             done \
          && sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive \
          && set +f \
-         && rm -rf /imagefs/sys /imagefs/dev /imagefs/proc /imagefs/lib/apk /imagefs/etc/apk; \
-            find /imagefs/var/cache ! -type d ! -type c -delete; \
-            find /imagefs/tmp ! -type d ! -type c -delete \
+         && rm -rf /finalfs/sys /finalfs/dev /finalfs/proc /finalfs/lib/apk /finalfs/etc/apk; \
+            find /finalfs/var/cache ! -type d ! -type c -delete; \
+            find /finalfs/tmp ! -type d ! -type c -delete \
          && for dir in $REMOVEDIRS; \
             do \
                dir="$(eval "echo $dir")"; \
                dir="${dir#/initfs}"; \
                dir="${dir#/buildfs}"; \
-               dir="${dir#/imagefs}"; \
-               dir="/imagefs$dir"; \
+               dir="${dir#/finalfs}"; \
+               dir="/finalfs$dir"; \
                if [ -d "$dir" ]; \
                then \
                   rm -rf "$dir"; \
@@ -336,8 +342,8 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="$(eval "echo $file")"; \
                file="${file#/initfs}"; \
                file="${file#/buildfs}"; \
-               file="${file#/imagefs}"; \
-               file="/imagefs$dir"; \
+               file="${file#/finalfs}"; \
+               file="/finalfs$dir"; \
                if [ -f "$file" ] || [ -l "$file" ]; \
                then \
                   rm -f "$file"; \
