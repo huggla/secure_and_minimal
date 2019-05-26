@@ -349,11 +349,11 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   rm -f "$file"; \
                fi; \
             done \
-         && cd /imagefs \
+         && cd /finalfs \
          && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
          && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
          && comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf \
-         && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/imagefs" ] && [ "${DESTDIR::8}" == "/imagefs" ]; \
+         && if [ -d "$DESTDIR" ] && [ "$DESTDIR" != "/finalfs" ] && [ "${DESTDIR::8}" == "/finalfs" ]; \
             then \
                if [ -n "$RUNDEPS" ]; \
                then \
@@ -361,20 +361,20 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                fi; \
                (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new; \
                comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'; \
-               if [ -s "$DESTDIR" ] && [ ! -e "/imagefs/start" ] && [ ! -e "/imagefs/stop" ]; \
+               if [ -s "$DESTDIR" ] && [ ! -e "/finalfs/start" ] && [ ! -e "/finalfs/stop" ]; \
                then \
-                  cp -a $DESTDIR*/* /imagefs/; \
+                  cp -a $DESTDIR*/* /finalfs/; \
                fi; \
             fi \
-         && rm -f /imagefs/RUNDEPS.txt \
+         && rm -f /finalfs/RUNDEPS.txt \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' \
          && sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new \
          && rm -f /tmp/onbuild/exclude.filelist.* \
          && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
-         && mv /environment /imagefs/ \
-         && chmod 755 /imagefs /imagefs/lib /imagefs/usr /imagefs/usr/lib /imagefs/usr/local /imagefs/usr/local/bin || true \
-         && chmod 700 /imagefs/bin /imagefs/sbin /imagefs/usr/bin /imagefs/usr/sbin || true \
-         && chmod 750 /imagefs/etc /imagefs/var /imagefs/run /imagefs/var/cache /imagefs/start /imagefs/stop || true \
+         && mv /environment /finalfs/ \
+         && chmod 755 /finalfs /finalfs/lib /finalfs/usr /finalfs/usr/lib /finalfs/usr/local /finalfs/usr/local/bin || true \
+         && chmod 700 /finalfs/bin /finalfs/sbin /finalfs/usr/bin /finalfs/usr/sbin || true \
+         && chmod 750 /finalfs/etc /finalfs/var /finalfs/run /finalfs/var/cache /finalfs/start /finalfs/stop || true \
          && setfacl --restore=/tmp/init-permissions.txt || true \
          && apk --purge del .builddeps .builddeps_untrusted
