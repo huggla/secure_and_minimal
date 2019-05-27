@@ -160,7 +160,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="${file#initfs/}"; \
                file="${file#buildfs/}"; \
                file="${file#finalfs/}"; \
-               mkdir -p "/$(dirname "$file")" "/initfs/$(dirname "$file")"; \
+               mkdir -p "$(dirname "/$file")" "/initfs$(dirname "/$file")"; \
                touch "/$file" "/initfs/$file"; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
@@ -181,13 +181,11 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
          && rm -f /tmp/onbuild/exclude.filelist.new \
          && cp -a /buildfs/* /finalfs/ \
-    && ls -la /finalfs/etc \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
          && apk --virtual .builddeps add $BUILDDEPS \
          && apk --allow-untrusted --virtual .builddeps_untrusted add $BUILDDEPS_UNTRUSTED \
          && buildDir="$(mktemp -d -p /buildfs/tmp)" \
-    && ls -la /finalfs/etc \
          && if [ -n "$CLONEGITS" ]; \
             then \
                apk add git; \
@@ -227,7 +225,6 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   done; \
                fi; \
             fi \
-    && ls -la /finalfs/etc \
          && if [ -n "$BUILDCMDS" ]; \
             then \
                cd $buildDir; \
@@ -235,10 +232,9 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                eval "$BUILDCMDS || exit 1"; \
             fi \
          && rm -rf /initfs /buildfs \
-     && ls -la /finalfs/etc \
          && if [ -n "$FINALCMDS" ]; \
             then \
-               cd $finalfs; \
+               cd /finalfs; \
                eval "$FINALCMDS || exit 1"; \
             fi \
          && if [ -n "$EXECUTABLES" ] || [ -n "$STARTUPEXECUTABLES" ]; \
