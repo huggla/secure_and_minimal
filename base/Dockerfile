@@ -16,10 +16,11 @@ ARG FINALCMDS=\
 "&& chmod u+x ./usr/bin/script "\
 "&& cd ./start "\
 "&& ln -s stage1 start "\
-"&& cd ./stop "\
+"&& cd ../stop "\
 "&& ln -s ../start/includeFunctions ./ "\
-"&& cd ./stop/functions "\
+"&& cd ./functions "\
 "&& ln -s ../../start/functions/readEnvironmentVars ../../start/functions/sourceDirs ./ "\
+"&& cd ../../ "\
 "&& chmod u=rx,g= ./start/stage1 ./start/stage2 ./start/delayedDisableStartupExecutables "\
 "&& chmod -R g=r ./stop "\
 "&& chmod g=rx ./stop ./stop/functions "\
