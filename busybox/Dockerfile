@@ -1,45 +1,45 @@
 FROM huggla/alpine as alpine
 
-RUN mkdir -m 755 /imagefs \
- && mkdir -m 755 /imagefs/lib /imagefs/usr \
- && mkdir -m 755 /imagefs/usr/local /imagefs/usr/lib \
- && mkdir -m 755 /imagefs/usr/local/bin \
- && mkdir -m 700 /imagefs/bin /imagefs/sbin /imagefs/environment \
- && mkdir -m 750 /imagefs/etc /imagefs/var /imagefs/run \
- && mkdir -m 770 /imagefs/tmp \
- && mkdir -m 700 /imagefs/usr/bin /imagefs/usr/sbin /tmp/onbuild \
- && mkdir -m 750 /imagefs/var/cache \
- && >/imagefs/environment/startupexecutables \
- && >/imagefs/environment/gid0writables \
- && >/imagefs/environment/gid0writablesrecursive \
- && >/imagefs/environment/linuxuserowned \
- && >/imagefs/environment/linuxuserownedrecursive \
- && cp -a /lib/libz.so* /lib/*musl* /imagefs/lib/ \
- && cp -a /bin/busybox /bin/sh /imagefs/bin/ \
- && cp -a $(find /bin/* -type l | xargs) /imagefs/bin/ \
- && cp -a $(find /sbin/* -type l | xargs) /imagefs/sbin/ \
- && cp -a $(find /usr/bin/* -type l | xargs) /imagefs/usr/bin/ \
- && cp -a $(find /usr/sbin/* -type l | xargs) /imagefs/usr/sbin/ \
- && echo 'root:x:0:0:root:/dev/null:/sbin/nologin' > /imagefs/etc/passwd \
- && echo 'root:x:0:' > /imagefs/etc/group \
- && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /imagefs/etc/passwd \
- && echo 'starter:x:101:' >> /imagefs/etc/group \
- && chmod 640 /imagefs/etc/passwd /imagefs/etc/group \
- && cd /imagefs/var \
+RUN mkdir -m 755 /finalfs \
+ && mkdir -m 755 /finalfs/lib /finalfs/usr \
+ && mkdir -m 755 /finalfs/usr/local /finalfs/usr/lib \
+ && mkdir -m 755 /finalfs/usr/local/bin \
+ && mkdir -m 700 /finalfs/bin /finalfs/sbin /finalfs/environment \
+ && mkdir -m 750 /finalfs/etc /finalfs/var /finalfs/run \
+ && mkdir -m 770 /finalfs/tmp \
+ && mkdir -m 700 /finalfs/usr/bin /finalfs/usr/sbin /tmp/onbuild \
+ && mkdir -m 750 /finalfs/var/cache \
+ && >/finalfs/environment/startupexecutables \
+ && >/finalfs/environment/gid0writables \
+ && >/finalfs/environment/gid0writablesrecursive \
+ && >/finalfs/environment/linuxuserowned \
+ && >/finalfs/environment/linuxuserownedrecursive \
+ && cp -a /lib/libz.so* /lib/*musl* /finalfs/lib/ \
+ && cp -a /bin/busybox /bin/sh /finalfs/bin/ \
+ && cp -a $(find /bin/* -type l | xargs) /finalfs/bin/ \
+ && cp -a $(find /sbin/* -type l | xargs) /finalfs/sbin/ \
+ && cp -a $(find /usr/bin/* -type l | xargs) /finalfs/usr/bin/ \
+ && cp -a $(find /usr/sbin/* -type l | xargs) /finalfs/usr/sbin/ \
+ && echo 'root:x:0:0:root:/dev/null:/sbin/nologin' > /finalfs/etc/passwd \
+ && echo 'root:x:0:' > /finalfs/etc/group \
+ && echo 'starter:x:101:101:starter:/dev/null:/sbin/nologin' >> /finalfs/etc/passwd \
+ && echo 'starter:x:101:' >> /finalfs/etc/group \
+ && chmod 640 /finalfs/etc/passwd /finalfs/etc/group \
+ && cd /finalfs/var \
  && ln -sf ../tmp tmp \
  && ln -sf ../run run \
- && /imagefs/bin/busybox rm -rf /home /usr /var /root /media /mnt /run /sbin /srv /etc /bin/* || /imagefs/bin/busybox true \
- && /imagefs/bin/busybox cp -a /imagefs/bin/* /bin/ \
- && /imagefs/bin/busybox chroot /imagefs /bin/busybox find . -type l -exec /bin/busybox test ! -e {} \; -delete \
- && cd /imagefs \
- && (/imagefs/bin/busybox find * ! -type d ! -type c -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec echo -n "/{}>" \; -exec /imagefs/bin/busybox readlink "{}" \; && /imagefs/bin/busybox find * ! -type d ! -type c ! -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec /imagefs/bin/busybox md5sum "{}" \; | /imagefs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /imagefs/bin/busybox sed 's|^ |/|') | /imagefs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
- && /imagefs/bin/busybox tar -c -z -f /imagefs/environment/onbuild.tar.gz -C /tmp onbuild \
+ && /finalfs/bin/busybox rm -rf /home /usr /var /root /media /mnt /run /sbin /srv /etc /bin/* || /finalfs/bin/busybox true \
+ && /finalfs/bin/busybox cp -a /finalfs/bin/* /bin/ \
+ && /finalfs/bin/busybox chroot /finalfs /bin/busybox find . -type l -exec /bin/busybox test ! -e {} \; -delete \
+ && cd /finalfs \
+ && (/finalfs/bin/busybox find * ! -type d ! -type c -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec echo -n "/{}>" \; -exec /finalfs/bin/busybox readlink "{}" \; && /finalfs/bin/busybox find * ! -type d ! -type c ! -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec /finalfs/bin/busybox md5sum "{}" \; | /finalfs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /finalfs/bin/busybox sed 's|^ |/|') | /finalfs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
+ && /finalfs/bin/busybox tar -c -z -f /finalfs/environment/onbuild.tar.gz -C /tmp onbuild \
  && echo '.' \
  && echo '**************** Image contents ****************' \
- && /imagefs/bin/busybox chroot /imagefs /bin/busybox ls -laR / \
+ && /finalfs/bin/busybox chroot /finalfs /bin/busybox ls -laR / \
  && echo '************************************************' \
  && echo '.'
 
-FROM scratch as image
+FROM scratch as final
 
-COPY --from=alpine /imagefs /
+COPY --from=alpine /finalfs /
