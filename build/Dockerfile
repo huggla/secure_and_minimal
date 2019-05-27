@@ -147,19 +147,21 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && for dir in $MAKEDIRS; \
             do \
                dir="$(eval "echo $dir")"; \
-               dir="${dir#/initfs}"; \
-               dir="${dir#/buildfs}"; \
-               dir="${dir#/finalfs}"; \
-               mkdir -p "$dir" "/initfs$dir"; \
+               dir="${dir#/}"; \
+               dir="${dir#initfs/}"; \
+               dir="${dir#buildfs/}"; \
+               dir="${dir#finalfs/}"; \
+               mkdir -p "/$dir" "/initfs/$dir"; \
             done \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
-               file="${file#/initfs}"; \
-               file="${file#/buildfs}"; \
-               file="${file#/finalfs}"; \
-               mkdir -p "$(dirname "$file")" "/initfs$(dirname "$file")"; \
-               touch "$file" "/initfs$file"; \
+               file="${file#/}";
+               file="${file#initfs/}"; \
+               file="${file#buildfs/}"; \
+               file="${file#finalfs/}"; \
+               mkdir -p "$(dirname "/$file")" "/initfs$(dirname "/$file")"; \
+               touch "/$file" "/initfs/$file"; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
          && chmod -R o= /initfs /buildfs /finalfs \
