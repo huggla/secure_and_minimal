@@ -153,7 +153,6 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                dir="${dir#finalfs/}"; \
                mkdir -p "/$dir" "/initfs/$dir"; \
             done \
-  && echo "$MAKEFILES" \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
@@ -161,9 +160,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="${file#initfs/}"; \
                file="${file#buildfs/}"; \
                file="${file#finalfs/}"; \
-   echo "$file"; \
                mkdir -p "/$(dirname "$file")" "/initfs/$(dirname "$file")"; \
-   ls -la /initfs; \
                touch "/$file" "/initfs/$file"; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
@@ -179,12 +176,9 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
             fi \
          && rm -rf /initfs/tmp /initfs/var/cache/* \
          && cd /initfs \
-    && ls -la /initfs/etc \
          && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" \; \
-    && ls -la /buildfs/etc \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
-    && ls -la /buildfs/etc \
          && rm -f /tmp/onbuild/exclude.filelist.new \
          && cp -a /buildfs/* /finalfs/ \
     && ls -la /finalfs/etc \
@@ -193,6 +187,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && apk --virtual .builddeps add $BUILDDEPS \
          && apk --allow-untrusted --virtual .builddeps_untrusted add $BUILDDEPS_UNTRUSTED \
          && buildDir="$(mktemp -d -p /buildfs/tmp)" \
+    && ls -la /finalfs/etc \
          && if [ -n "$CLONEGITS" ]; \
             then \
                apk add git; \
@@ -232,6 +227,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   done; \
                fi; \
             fi \
+    && ls -la /finalfs/etc \
          && if [ -n "$BUILDCMDS" ]; \
             then \
                cd $buildDir; \
