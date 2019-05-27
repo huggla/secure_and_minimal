@@ -5,8 +5,7 @@ ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
 ARG FINALCMDS=\
-"ls -la etc/ "\
-"&&   echo 'Defaults lecture=\"never\"' > ./etc/sudoers.d/docker1 "\
+"   echo 'Defaults lecture=\"never\"' > ./etc/sudoers.d/docker1 "\
 "&& echo 'Defaults secure_path=\"/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"' >> ./etc/sudoers.d/docker1 "\
 "&& echo 'Defaults env_keep = \"VAR_*\"' > ./etc/sudoers.d/docker2 "\
 "&& echo 'Defaults !root_sudo' >> ./etc/sudoers.d/docker2 "\
