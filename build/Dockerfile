@@ -156,7 +156,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
-               file="${file#/}";
+               file="${file#/}"; \
                file="${file#initfs/}"; \
                file="${file#buildfs/}"; \
                file="${file#finalfs/}"; \
