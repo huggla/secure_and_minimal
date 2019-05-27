@@ -40,6 +40,6 @@ RUN mkdir -m 755 /finalfs \
  && echo '************************************************' \
  && echo '.'
 
-FROM scratch as final
+FROM scratch as image
 
 COPY --from=alpine /finalfs /
