@@ -162,8 +162,10 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="${file#buildfs/}"; \
                file="${file#finalfs/}"; \
    echo "$file"; \
-               mkdir -p "$(dirname "/$file")" "/initfs$(dirname "/$file")"; \
+               mkdir -p "/$(dirname "$file")" "/initfs/$(dirname "$file")"; \
+   ls -la /initfs; \
                touch "/$file" "/initfs/$file"; \
+   ls -la /initfs/etc; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
          && chmod -R o= /initfs /buildfs /finalfs \
