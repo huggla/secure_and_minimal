@@ -165,7 +165,6 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                mkdir -p "/$(dirname "$file")" "/initfs/$(dirname "$file")"; \
    ls -la /initfs; \
                touch "/$file" "/initfs/$file"; \
-   ls -la /initfs/etc; \
             done \
          && cp -a /tmp/rootfs/* /initfs/ || true \
          && chmod -R o= /initfs /buildfs /finalfs \
@@ -180,11 +179,15 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
             fi \
          && rm -rf /initfs/tmp /initfs/var/cache/* \
          && cd /initfs \
+    && ls -la /initfs/etc \
          && find * -type d -exec mkdir -p -m 750 "/buildfs/{}" \; \
+    && ls -la /buildfs/etc \
          && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
          && comm -13 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("cp -a \"."$1"\" \"/buildfs/"$1"\"")}' \
+    && ls -la /buildfs/etc \
          && rm -f /tmp/onbuild/exclude.filelist.new \
          && cp -a /buildfs/* /finalfs/ \
+    && ls -la /finalfs/etc \
          && apk add --initdb \
          && cp -a /tmp/buildfs/* /buildfs/ || true \
          && apk --virtual .builddeps add $BUILDDEPS \
@@ -236,6 +239,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                eval "$BUILDCMDS || exit 1"; \
             fi \
          && rm -rf /initfs /buildfs \
+     && ls -la /finalfs/etc \
          && if [ -n "$FINALCMDS" ]; \
             then \
                cd $finalfs; \
