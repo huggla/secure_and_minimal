@@ -1,4 +1,4 @@
-FROM huggla/alpine as image
+FROM huggla/alpine as alpine
 
 COPY ./rootfs /
 
@@ -376,5 +376,8 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
          && chmod 755 /finalfs /finalfs/lib /finalfs/usr /finalfs/usr/lib /finalfs/usr/local /finalfs/usr/local/bin || true \
          && chmod 700 /finalfs/bin /finalfs/sbin /finalfs/usr/bin /finalfs/usr/sbin || true \
          && chmod 750 /finalfs/etc /finalfs/var /finalfs/run /finalfs/var/cache /finalfs/start /finalfs/stop || true \
-         && setfacl --restore=/tmp/init-permissions.txt || true \
-         && apk --purge del .builddeps .builddeps_untrusted
+         && setfacl --restore=/tmp/init-permissions.txt || true
+         
+FROM scratch as image
+
+COPY --from=alpine /finalfs /
