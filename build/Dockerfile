@@ -153,6 +153,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                dir="${dir#finalfs/}"; \
                mkdir -p "/$dir" "/initfs/$dir"; \
             done \
+  && echo "$MAKEFILES" \
          && for file in $MAKEFILES; \
             do \
                file="$(eval "echo $file")"; \
@@ -160,6 +161,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                file="${file#initfs/}"; \
                file="${file#buildfs/}"; \
                file="${file#finalfs/}"; \
+   echo "$file"; \
                mkdir -p "$(dirname "/$file")" "/initfs$(dirname "/$file")"; \
                touch "/$file" "/initfs/$file"; \
             done \
