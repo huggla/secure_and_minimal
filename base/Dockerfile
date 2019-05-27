@@ -5,25 +5,25 @@ ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
 ARG EXECUTABLES="/usr/bin/sudo /usr/bin/dash /usr/bin/argon2"
 ARG BUILDCMDS=\
-"   echo 'Defaults lecture=\"never\"' > /imagefs/etc/sudoers.d/docker1 "\
-"&& echo 'Defaults secure_path=\"/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"' >> /imagefs/etc/sudoers.d/docker1 "\
-"&& echo 'Defaults env_keep = \"VAR_*\"' > /imagefs/etc/sudoers.d/docker2 "\
-"&& echo 'Defaults !root_sudo' >> /imagefs/etc/sudoers.d/docker2 "\
-"&& echo 'starter ALL=(root) NOPASSWD: /start/start' >> /imagefs/etc/sudoers.d/docker2 "\
-"&& echo 'root ALL=(ALL) ALL' > /imagefs/etc/sudoers "\
-"&& echo '#includedir /etc/sudoers.d' >> /imagefs/etc/sudoers "\
-"&& echo 'exec /bin/sh' > /imagefs/usr/bin/script "\
-"&& chmod u+x /imagefs/usr/bin/script "\
-"&& cd /imagefs/start "\
+"   echo 'Defaults lecture=\"never\"' > /finalfs/etc/sudoers.d/docker1 "\
+"&& echo 'Defaults secure_path=\"/start:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"' >> /finalfs/etc/sudoers.d/docker1 "\
+"&& echo 'Defaults env_keep = \"VAR_*\"' > /finalfs/etc/sudoers.d/docker2 "\
+"&& echo 'Defaults !root_sudo' >> /finalfs/etc/sudoers.d/docker2 "\
+"&& echo 'starter ALL=(root) NOPASSWD: /start/start' >> /finalfs/etc/sudoers.d/docker2 "\
+"&& echo 'root ALL=(ALL) ALL' > /finalfs/etc/sudoers "\
+"&& echo '#includedir /etc/sudoers.d' >> /finalfs/etc/sudoers "\
+"&& echo 'exec /bin/sh' > /finalfs/usr/bin/script "\
+"&& chmod u+x /finalfs/usr/bin/script "\
+"&& cd /finalfs/start "\
 "&& ln -s stage1 start "\
-"&& cd /imagefs/stop "\
+"&& cd /finalfs/stop "\
 "&& ln -s ../start/includeFunctions ./ "\
-"&& cd /imagefs/stop/functions "\
+"&& cd /finalfs/stop/functions "\
 "&& ln -s ../../start/functions/readEnvironmentVars ../../start/functions/sourceDirs ./ "\
-"&& chmod u=rx,g= /imagefs/start/stage1 /imagefs/start/stage2 /imagefs/start/delayedDisableStartupExecutables "\
-"&& chmod -R g=r /imagefs/stop "\
-"&& chmod g=rx /imagefs/stop /imagefs/stop/functions "\
-"&& chmod u=rwx,g=rx /imagefs/stop/stage1"
+"&& chmod u=rx,g= /finalfs/start/stage1 /finalfs/start/stage2 /finalfs/start/delayedDisableStartupExecutables "\
+"&& chmod -R g=r /finalfs/stop "\
+"&& chmod g=rx /finalfs/stop /finalfs/stop/functions "\
+"&& chmod u=rwx,g=rx /finalfs/stop/stage1"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
@@ -31,7 +31,7 @@ FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${CONTENTIMAGE3:-scratch} as content3
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
 FROM ${BUILDIMAGE:-huggla/build} as build
-FROM ${BASEIMAGE:-huggla/base:$TAG} as image
+FROM ${BASEIMAGE:-huggla/base:$TAG} as final
 ARG CONTENTSOURCE1
 ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
 ARG CONTENTDESTINATION1
@@ -55,7 +55,7 @@ ARG GID0WRITABLES
 ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
 ARG LINUXUSEROWNEDRECURSIVE
-COPY --from=build /imagefs /
+COPY --from=build /finalfs /
 #---------------------------------------------
 
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
