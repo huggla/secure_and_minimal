@@ -194,10 +194,11 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               set -- $CLONEGITS; \
+               set -- "$CLONEGITS"; \
                while [ $# -gt 0 ]; \
                do \
-                  echo "cloneStr=$1"; \
+                  cloneStr="$1"; \
+                  echo "$cloneStr"; \
                   cloneStr="$(eval "echo $cloneStr")"; \
                   cloneStr="git clone $cloneStr"; \
                   echo "$cloneStr"; \
