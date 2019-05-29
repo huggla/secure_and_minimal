@@ -201,7 +201,8 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                for git in $CLONEGITS; \
                do \
                   echo "$git"; \
-                  git clone $(eval "echo $git"); \
+                  echo "git clone $(eval "echo $git")"; \
+                  eval "git clone $(eval "echo $git")"; \
                done; \
                IFS=$IFS_bak; \
             fi \
