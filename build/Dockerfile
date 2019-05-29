@@ -203,7 +203,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   echo "$cloneStr"; \
                   eval "$cloneStr"; \
                   shift; \
-               done;
+               done; \
             fi \
          && if [ -n "$DOWNLOADS" ]; \
             then \
