@@ -194,13 +194,16 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               for git in "$(echo "$CLONEGITS")"; \
+               arr=( $(echo "$CLONEGITS") ); \
+               while [ ${#arr[@]} -gt 0 ]; \
+#               for git in "$(echo "$CLONEGITS")"; \
                do \
-                  echo "$git"; \
-                  cloneStr="$(eval "echo $git")"; \
+                  echo "${arr[0]}"; \
+                  cloneStr="$(eval "echo ${arr[0]}")"; \
                   cloneStr="git clone $cloneStr"; \
                   echo "$cloneStr"; \
                   eval "$cloneStr"; \
+                  set -A arr -- ${arr[@]:1}; \
                done; \
             fi \
          && if [ -n "$DOWNLOADS" ]; \
