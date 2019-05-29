@@ -194,7 +194,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               for git in "$CLONEGITS"; \
+               for git in "$(echo "$CLONEGITS")"; \
                do \
                   echo "$git"; \
                   cloneStr="$(eval "echo $git")"; \
