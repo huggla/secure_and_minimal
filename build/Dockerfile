@@ -194,7 +194,7 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               CLONEGITS="$(echo "$CLONEGITS" | sed "s/' '/','/g")"; \
+               CLONEGITS="$(echo "$CLONEGITS" | sed "s/ '/,'/g" | sed "s/' /',/g")"; \
                IFS_bak=$IFS; \
                IFS="$(echo -en ",")"; \
                for git in $CLONEGITS; \
