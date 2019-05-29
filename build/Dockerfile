@@ -194,17 +194,15 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                   CLONEGITSDIR=$buildDir; \
                fi; \
                cd $CLONEGITSDIR; \
-               set -- "$CLONEGITS"; \
-               while [ $# -gt 0 ]; \
+               CLONEGITS="$(echo "$CLONEGITS" | sed "s/' '/','/g")"; \
+               IFS_bak=$IFS; \
+               IFS="$(echo -en ",")"; \
+               for git in $CLONEGITS; \
                do \
-                  cloneStr="$1"; \
-                  echo "$cloneStr"; \
-                  cloneStr="$(eval "echo $cloneStr")"; \
-                  cloneStr="git clone $cloneStr"; \
-                  echo "$cloneStr"; \
-                  eval "$cloneStr"; \
-                  shift; \
+                  echo "$git"; \
+                  git clone $(eval "echo '$git'"); \
                done; \
+               IFS=$IFS_bak; \
             fi \
          && if [ -n "$DOWNLOADS" ]; \
             then \
