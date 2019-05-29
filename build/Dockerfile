@@ -197,10 +197,11 @@ ONBUILD RUN if [ -n "$ADDREPOS" ]; \
                CLONEGITS="$(echo "$CLONEGITS" | sed "s/ '/,'/g" | sed "s/' /',/g")"; \
                IFS_bak=$IFS; \
                IFS="$(echo -en ",")"; \
+               echo "$CLONEGITS"; \
                for git in $CLONEGITS; \
                do \
                   echo "$git"; \
-                  git clone $(eval "echo '$git'"); \
+                  git clone $(eval "echo $git"); \
                done; \
                IFS=$IFS_bak; \
             fi \
