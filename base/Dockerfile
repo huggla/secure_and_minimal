@@ -1,5 +1,4 @@
 ARG TAG="20190716"
-ARG BUILDIMAGE="huggla/build:debug1"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
