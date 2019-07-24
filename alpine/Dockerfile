@@ -7,8 +7,8 @@ RUN mkdir -p /finalfs/etc \
        echo '#!/bin/sh' && \
        echo 'apk --no-cache --repositories-file /etc/repositories --keys-dir /etc/keys add --initdb alpine-base &&' && \
        echo 'rm -rf /etc/keys &&' && \
-       echo 'mv -f /etc/repositories /etc/apk/ &&' \
- && } > /finalfs/cmds.sh \
+       echo 'mv -f /etc/repositories /etc/apk/' || exit 1; \
+    } > /finalfs/cmds.sh && \
  && chmod +x /finalfs/cmds.sh \
  && chroot /finalfs ./cmds.sh
  
