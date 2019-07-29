@@ -1,16 +1,13 @@
 FROM alpine:edge as alpine
 
-RUN mkdir -p /finalfs/etc \
- && cp -a /etc/resolv.conf /etc/apk/repositories /etc/apk/keys /finalfs/etc/ \
- && apk --no-cache --root /finalfs --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys add --initdb alpine-base \
- && { \
-       echo '#!/bin/sh' && \
-       echo 'apk --no-cache --repositories-file /etc/repositories --keys-dir /etc/keys add --initdb alpine-base &&' && \
-       echo 'rm -rf /etc/keys &&' && \
-       echo 'mv -f /etc/repositories /etc/apk/' || exit 1; \
-    } > /finalfs/cmds.sh \
- && chmod +x /finalfs/cmds.sh \
- && chroot /finalfs ./cmds.sh
+RUN exec 2>&1 \
+ && set -x \
+ && echo "alpine-base" > /etc/apk/world \
+ && apk --no-cache --purge --force-overwrite --force-refresh fix -d -r -u -x --directory-permissions alpine-base \
+ && mkdir -p /finalfs/etc/apk \
+ && cp -a /etc/resolv.conf /finalfs/etc/ \
+ && cp -a /etc/apk/repositories /finalfs/etc/apk/ \
+ && apk --no-cache --root /finalfs --keys-dir /etc/apk/keys add --initdb alpine-base
  
 FROM scratch
 
