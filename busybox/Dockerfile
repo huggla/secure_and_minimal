@@ -1,6 +1,8 @@
 FROM huggla/alpine as alpine
 
-RUN mkdir -m 755 /finalfs \
+RUN exec 2>&1 \
+ && set -x \
+ && mkdir -m 755 /finalfs \
  && mkdir -m 755 /finalfs/lib /finalfs/usr \
  && mkdir -m 755 /finalfs/usr/local /finalfs/usr/lib \
  && mkdir -m 755 /finalfs/usr/local/bin \
