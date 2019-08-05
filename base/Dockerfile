@@ -74,4 +74,4 @@ USER starter
 ONBUILD USER root
 #---------------------------------------------
 
-CMD ["/usr/local/bin/sudo","start"]
+CMD ["sudo","start"]
