@@ -1,10 +1,5 @@
 #!/bin/sh
-set -e 
-set +a
-set +m
-set -f
-set +i
-set +s
+set -ef +am
 . /start/functions/fixConfigVars
 . /start/functions/writeEnvironmentVars
 . /start/functions/execCmd
