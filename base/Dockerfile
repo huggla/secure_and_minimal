@@ -1,4 +1,4 @@
-ARG TAG="20190802"
+ARG TAG="20190716"
 ARG BASEIMAGE="huggla/busybox:test"
 ARG BUILDIMAGE="huggla/build:apa"
 ARG RUNDEPS="sudo dash argon2 libcap"
