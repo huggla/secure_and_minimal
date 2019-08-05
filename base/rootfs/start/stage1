@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e +a +m +s +i -f
+set -e +a +m +i -f
 . /start/functions/fixConfigVars
 . /start/functions/writeEnvironmentVars
 . /start/functions/execCmd
