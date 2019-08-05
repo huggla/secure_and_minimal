@@ -62,16 +62,16 @@ COPY --from=build /finalfs /
 RUN chgrp -R 101 /usr/lib/sudo /usr/local/bin/sudo \
  && chmod u+s /usr/local/bin/sudo
 
+#--------Generic template (don't edit)--------
+USER starter
+ONBUILD USER root
+#---------------------------------------------
+
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/start" \
     VAR_LINUX_USER="root" \
     VAR_FINAL_COMMAND="pause" \
     VAR_ARGON2_PARAMS="-r" \
     VAR_SALT_FILE="/proc/sys/kernel/hostname" \
     HISTFILE="/dev/null"
-
-#--------Generic template (don't edit)--------
-USER starter
-ONBUILD USER root
-#---------------------------------------------
 
 CMD ["sudo","start"]
