@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e +a +m +s +i -f
+set -ef +am
 . /start/includeFunctions
 
 if [ -e "/environment/isFirstRun" ]
