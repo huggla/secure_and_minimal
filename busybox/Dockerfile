@@ -1,4 +1,4 @@
-FROM huggla/alpine as alpine
+FROM huggla/alpine:test as alpine
 
 RUN exec 2>&1 \
  && set -x \
