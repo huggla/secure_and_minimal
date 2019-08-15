@@ -33,6 +33,9 @@
 	ONBUILD ARG CONTENTIMAGE3
         ONBUILD ARG CONTENTSOURCE3
         ONBUILD ARG CONTENTDESTINATION3
+	ONBUILD ARG CONTENTIMAGE4
+        ONBUILD ARG CONTENTSOURCE4
+        ONBUILD ARG CONTENTDESTINATION4
         ONBUILD ARG ADDREPOS
         ONBUILD ARG RUNDEPS
         ONBUILD ARG RUNDEPS_UNTRUSTED
@@ -92,6 +95,9 @@
 	ONBUILD ENV CONTENTIMAGE3="$CONTENTIMAGE3"
         ONBUILD ENV CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
         ONBUILD ENV CONTENTDESTINATION3="${CONTENTDESTINATION3:-$BUILDDIR}"
+	ONBUILD ENV CONTENTIMAGE4="$CONTENTIMAGE4"
+        ONBUILD ENV CONTENTSOURCE4="${CONTENTSOURCE4:-/}"
+        ONBUILD ENV CONTENTDESTINATION4="${CONTENTDESTINATION4:-$BUILDDIR}"
         ONBUILD ENV ADDREPOS="${ADDREPOS}"
         ONBUILD ENV RUNDEPS="${RUNDEPS}"
         ONBUILD ENV RUNDEPS_UNTRUSTED="${RUNDEPS_UNTRUSTED}"
@@ -141,6 +147,7 @@
         ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
         ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
         ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
+	ONBUILD COPY --from=content4 "$CONTENTSOURCE4" "$CONTENTDESTINATION4"
         ONBUILD COPY ./ /tmp/
     # ---------------------------------------------------------------------
     # RUN
@@ -225,7 +232,7 @@
                  && find /tmp -path "/tmp/rootfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \; \
                  && chmod -R o= ./ \
                  && n="0" \
-                 && for contentimage in $CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3; \
+                 && for contentimage in $CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3 $CONTENTIMAGE4; \
                     do \
                        n="$(expr $n + 1)" && \
                        if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]; \
