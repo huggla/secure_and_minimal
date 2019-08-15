@@ -83,10 +83,13 @@
 	ONBUILD ENV HUBVERSION="${HUBVERSION}"
         ONBUILD ENV IMAGEID="${IMAGEID:-${HUBPROFILE:+$HUBPROFILE-}${HUBREPO:+$HUBREPO-}${HUBVERSION:+$HUBVERSION-}}"
         ONBUILD ENV BUILDDIR="${BUILDDIR:-/builddir}"
+	ONBUILD ENV CONTENTIMAGE1="$CONTENTIMAGE1"
         ONBUILD ENV CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
         ONBUILD ENV CONTENTDESTINATION1="${CONTENTDESTINATION1:-$BUILDDIR}"
+	ONBUILD ENV CONTENTIMAGE2="$CONTENTIMAGE2"
         ONBUILD ENV CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
         ONBUILD ENV CONTENTDESTINATION2="${CONTENTDESTINATION2:-$BUILDDIR}"
+	ONBUILD ENV CONTENTIMAGE3="$CONTENTIMAGE3"
         ONBUILD ENV CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
         ONBUILD ENV CONTENTDESTINATION3="${CONTENTDESTINATION3:-$BUILDDIR}"
         ONBUILD ENV ADDREPOS="${ADDREPOS}"
@@ -227,8 +230,8 @@
                        n="$(expr $n + 1)" && \
                        if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]; \
                        then \
-                          eval "find \"\$CONTENTDESTINATION$n\" -maxdepth 0 -exec chmod -R g-w,o= \"{}\" \\\;" && \
-                          eval "find \"\$CONTENTDESTINATION$n\" -type f -perm +010 -exec chmod g-x \"{}\" \\\;"; \
+                          eval "find \"\$CONTENTDESTINATION$n\" -maxdepth 0 -exec chmod -R g-w,o= \"{}\" \\\\\;" && \
+                          eval "find \"\$CONTENTDESTINATION$n\" -type f -perm +010 -exec chmod g-x \"{}\" \\\\\;"; \
                        fi; \
                     done \
                  && find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \; \
