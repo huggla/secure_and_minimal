@@ -225,7 +225,7 @@
                  && for contentimage in "$CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3"; \
                     do \
                        n="$(expr $n + 1)" && \
-                       if [ "${contentimage#huggla}" == "$contentimage" ]; \
+                       if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]; \
                        then \
                           eval "find \"\$CONTENTDESTINATION$n\" -maxdepth 0 -exec chmod -R g-w,o= \"{}\" \\\;" && \
                           eval "find \"\$CONTENTDESTINATION$n\" -type f -perm +010 -exec chmod g-x \"{}\" \\\;"; \
