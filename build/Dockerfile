@@ -218,9 +218,12 @@
                  && find /tmp -path "/tmp/buildfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \; \
                  && find /tmp -path "/tmp/rootfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \; \
                  && chmod -R o= ./ \
-                 && chmod -R g-w,o= "$CONTENTDESTINATION1" "$CONTENTDESTINATION2" \
+		 && find "$CONTENTDESTINATION1" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
+                 && find "$CONTENTDESTINATION2" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
+		 && find "$CONTENTDESTINATION3" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
                  && find "$CONTENTDESTINATION1" -type f -perm +010 -exec chmod g-x "{}" \; \
                  && find "$CONTENTDESTINATION2" -type f -perm +010 -exec chmod g-x "{}" \; \
+		 && find "$CONTENTDESTINATION3" -type f -perm +010 -exec chmod g-x "{}" \; \
                  && find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \; \
                  && find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \; \
                  && if [ -n "$INITCMDS" ]; \
