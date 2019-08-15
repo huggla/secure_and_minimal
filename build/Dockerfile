@@ -225,7 +225,7 @@
                  && find /tmp -path "/tmp/rootfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \; \
                  && chmod -R o= ./ \
                  && n="0" \
-                 && for contentimage in "$CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3"; \
+                 && for contentimage in $CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3; \
                     do \
                        n="$(expr $n + 1)" && \
                        if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]; \
