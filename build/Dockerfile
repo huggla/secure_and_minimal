@@ -24,10 +24,13 @@
 	ONBUILD ARG HUBREPO
 	ONBUILD ARG HUBVERSION
 	ONBUILD ARG IMAGEID
+	ONBUILD ARG CONTENTIMAGE1
         ONBUILD ARG CONTENTSOURCE1
         ONBUILD ARG CONTENTDESTINATION1
+	ONBUILD ARG CONTENTIMAGE2
         ONBUILD ARG CONTENTSOURCE2
         ONBUILD ARG CONTENTDESTINATION2
+	ONBUILD ARG CONTENTIMAGE3
         ONBUILD ARG CONTENTSOURCE3
         ONBUILD ARG CONTENTDESTINATION3
         ONBUILD ARG ADDREPOS
@@ -218,12 +221,16 @@
                  && find /tmp -path "/tmp/buildfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \; \
                  && find /tmp -path "/tmp/rootfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \; \
                  && chmod -R o= ./ \
-		 && find "$CONTENTDESTINATION1" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
-                 && find "$CONTENTDESTINATION2" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
-		 && find "$CONTENTDESTINATION3" -maxdepth 0 -exec chmod -R g-w,o= "{}" \; \
-                 && find "$CONTENTDESTINATION1" -type f -perm +010 -exec chmod g-x "{}" \; \
-                 && find "$CONTENTDESTINATION2" -type f -perm +010 -exec chmod g-x "{}" \; \
-		 && find "$CONTENTDESTINATION3" -type f -perm +010 -exec chmod g-x "{}" \; \
+                 && n="0" \
+                 && for contentimage in "$CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3"; \
+                    do \
+                       n="$(expr $n + 1)" && \
+                       if [ "${contentimage#huggla}" == "$contentimage" ]; \
+                       then \
+                          eval "find \"\$CONTENTDESTINATION$n\" -maxdepth 0 -exec chmod -R g-w,o= \"{}\" \\\;" && \
+                          eval "find \"\$CONTENTDESTINATION$n\" -type f -perm +010 -exec chmod g-x \"{}\" \\\;"; \
+                       fi; \
+                    done \
                  && find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \; \
                  && find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \; \
                  && if [ -n "$INITCMDS" ]; \
