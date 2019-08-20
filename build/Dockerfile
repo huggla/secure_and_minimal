@@ -263,7 +263,7 @@ ARG TAG="20190820"
                     then \
                        cd /finalfs && \
                        find * -type d -exec mkdir -p "/{}" \; && \
-                       find * -type f -o -type l -exec cp -a "{}" "/{}" \; ; \
+                       find * ! -path bin/sh -type f -o -type l -exec cp -a "{}" "/{}" \; ; \
                     fi \
                  && mkdir -p /root/.config "$BUILDDIR" "$CLONEGITSDIR" "$DOWNLOADSDIR" "/finalfs$DESTDIR" \
                  && if [ -n "$CLONEGITS" ]; \
