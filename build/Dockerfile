@@ -14,9 +14,7 @@ ARG TAG="20190820"
      && set -x \
      && chmod u+x /usr/sbin/relpath \
      && mkdir /excludefs /finalfs \
-     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git \
-     && cd /bin \
-     && ln -sf bash sh
+     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git
 # =========================================================================
 # ONBUILD - Executed/available when building the main Docker image
 # =========================================================================
@@ -263,7 +261,8 @@ ARG TAG="20190820"
                     then \
                        cd /finalfs && \
                        find * -type d -exec mkdir -p "/{}" \; && \
-                       find * ! -path bin/sh -type f -o -type l -exec cp -a "{}" "/{}" \; ; \
+                       find * -type f -o -type l -exec cp -a "{}" "/{}" \; && \
+		       ln -sf /bin/bash /bin/sh; \
                     fi \
                  && mkdir -p /root/.config "$BUILDDIR" "$CLONEGITSDIR" "$DOWNLOADSDIR" "/finalfs$DESTDIR" \
                  && if [ -n "$CLONEGITS" ]; \
