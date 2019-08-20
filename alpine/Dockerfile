@@ -13,4 +13,4 @@ FROM scratch
 
 COPY --from=alpine /finalfs /
 
-ONBUILD RUN apk --no-cache --purge upgrade
+ONBUILD RUN apk --no-cache --purge --initramfs-diskless-boot --clean-protected upgrade
