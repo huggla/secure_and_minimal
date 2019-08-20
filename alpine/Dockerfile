@@ -7,7 +7,7 @@ RUN exec 2>&1 \
  && mkdir -p /finalfs/etc/apk \
  && cp -a /etc/resolv.conf /finalfs/etc/ \
  && cp -a /etc/apk/repositories /finalfs/etc/apk/ \
- && apk --no-cache --root /finalfs --keys-dir /etc/apk/keys add --initdb alpine-base
+ && apk --no-cache --root /finalfs --keys-dir /etc/apk/keys --initramfs-diskless-boot --clean-protected add --initdb alpine-base
 
 FROM scratch
 
