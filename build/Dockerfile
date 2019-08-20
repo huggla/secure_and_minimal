@@ -13,7 +13,7 @@
      && set -x \
      && chmod u+x /usr/sbin/relpath \
      && mkdir /excludefs /finalfs \
-     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl
+     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash
 # =========================================================================
 # ONBUILD - Executed/available when building the main Docker image
 # =========================================================================
