@@ -2,7 +2,7 @@
 # Init
 # =========================================================================
 # ARGs (passed to Build) <BEGIN>
-ARG TAG="20190806"
+ARG TAG="20190820"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
@@ -43,7 +43,7 @@ FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
 # Build
 # =========================================================================
 # Generic template (don't edit) <BEGIN>
-FROM ${BUILDIMAGE:-huggla/build} as build
+FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as final
 COPY --from=build /finalfs /
 # Generic template (don't edit) </END>
