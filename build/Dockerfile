@@ -22,19 +22,19 @@ ARG TAG="20190820"
     # ARG - Set in main Docker image
     # ---------------------------------------------------------------------
         ONBUILD ARG HUBPROFILE
-	ONBUILD ARG HUBREPO
-	ONBUILD ARG HUBVERSION
-	ONBUILD ARG IMAGEID
-	ONBUILD ARG CONTENTIMAGE1
+        ONBUILD ARG HUBREPO
+        ONBUILD ARG HUBVERSION
+        ONBUILD ARG IMAGEID
+        ONBUILD ARG CONTENTIMAGE1
         ONBUILD ARG CONTENTSOURCE1
         ONBUILD ARG CONTENTDESTINATION1
-	ONBUILD ARG CONTENTIMAGE2
+        ONBUILD ARG CONTENTIMAGE2
         ONBUILD ARG CONTENTSOURCE2
         ONBUILD ARG CONTENTDESTINATION2
-	ONBUILD ARG CONTENTIMAGE3
+        ONBUILD ARG CONTENTIMAGE3
         ONBUILD ARG CONTENTSOURCE3
         ONBUILD ARG CONTENTDESTINATION3
-	ONBUILD ARG CONTENTIMAGE4
+        ONBUILD ARG CONTENTIMAGE4
         ONBUILD ARG CONTENTSOURCE4
         ONBUILD ARG CONTENTDESTINATION4
         ONBUILD ARG ADDREPOS
@@ -53,9 +53,9 @@ ARG TAG="20190820"
         ONBUILD ARG BUILDDEPS_UNTRUSTED
         ONBUILD ARG DESTDIR
         ONBUILD ARG CHARSET
-	ONBUILD ARG CC
-	ONBUILD ARG MPICC
-	ONBUILD ARG MPICXX
+        ONBUILD ARG CC
+        ONBUILD ARG MPICC
+        ONBUILD ARG MPICXX
         ONBUILD ARG ADDTO_CFLAGS
         ONBUILD ARG CFLAGS
         ONBUILD ARG ADDTO_PATH
@@ -86,17 +86,17 @@ ARG TAG="20190820"
     # ENV
     # ---------------------------------------------------------------------
         ONBUILD ENV HUBPROFILE="${HUBPROFILE}"
-	ONBUILD ENV HUBREPO="${HUBREPO}"
-	ONBUILD ENV HUBVERSION="${HUBVERSION}"
+        ONBUILD ENV HUBREPO="${HUBREPO}"
+        ONBUILD ENV HUBVERSION="${HUBVERSION}"
         ONBUILD ENV IMAGEID="${IMAGEID:-${HUBPROFILE:+$HUBPROFILE-}${HUBREPO:+$HUBREPO-}${HUBVERSION:+$HUBVERSION-}}"
         ONBUILD ENV BUILDDIR="${BUILDDIR:-/builddir}"
-	ONBUILD ENV CONTENTIMAGE1="$CONTENTIMAGE1"
+        ONBUILD ENV CONTENTIMAGE1="$CONTENTIMAGE1"
         ONBUILD ENV CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
         ONBUILD ENV CONTENTDESTINATION1="${CONTENTDESTINATION1:-$BUILDDIR}"
-	ONBUILD ENV CONTENTIMAGE2="$CONTENTIMAGE2"
+        ONBUILD ENV CONTENTIMAGE2="$CONTENTIMAGE2"
         ONBUILD ENV CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
         ONBUILD ENV CONTENTDESTINATION2="${CONTENTDESTINATION2:-$BUILDDIR}"
-	ONBUILD ENV CONTENTIMAGE3="$CONTENTIMAGE3"
+        ONBUILD ENV CONTENTIMAGE3="$CONTENTIMAGE3"
         ONBUILD ENV CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
         ONBUILD ENV CONTENTDESTINATION3="${CONTENTDESTINATION3:-$BUILDDIR}"
 	ONBUILD ENV CONTENTIMAGE4="$CONTENTIMAGE4"
@@ -117,9 +117,9 @@ ARG TAG="20190820"
         ONBUILD ENV BUILDDEPS_UNTRUSTED="${BUILDDEPS_UNTRUSTED}"
         ONBUILD ENV DESTDIR="${DESTDIR}"
         ONBUILD ENV CHARSET="${CHARSET:-UTF-8}"
-	ONBUILD ENV MPICC="${MPICC:-/usr/bin/mpicc}"
-	ONBUILD ENV MPICXX="${MPICXX:-/usr/bin/mpicxx}"
-	ONBUILD ENV CC="${CC}"
+        ONBUILD ENV MPICC="${MPICC:-/usr/bin/mpicc}"
+        ONBUILD ENV MPICXX="${MPICXX:-/usr/bin/mpicxx}"
+        ONBUILD ENV CC="${CC}"
         ONBUILD ENV ADDTO_CFLAGS="${ADDTO_CFLAGS}"
         ONBUILD ENV CFLAGS="${CFLAGS:--O2 -fomit-frame-pointer -march=native -fno-reorder-blocks -fno-reorder-functions ${ADDTO_CFLAGS}}"
         ONBUILD ENV ADDTO_PATH="${ADDTO_PATH}"
@@ -154,7 +154,7 @@ ARG TAG="20190820"
         ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
         ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
         ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
-	ONBUILD COPY --from=content4 "$CONTENTSOURCE4" "$CONTENTDESTINATION4"
+        ONBUILD COPY --from=content4 "$CONTENTSOURCE4" "$CONTENTDESTINATION4"
         ONBUILD COPY ./ /tmp/
     # ---------------------------------------------------------------------
     # RUN
@@ -268,7 +268,7 @@ ARG TAG="20190820"
                        cd /finalfs && \
                        find * -type d -exec mkdir -p "/{}" \; && \
                        find * -type f -o -type l -exec cp -a "{}" "/{}" \; && \
-		       ln -sf /bin/bash /bin/sh; \
+                       ln -sf /bin/bash /bin/sh; \
                     fi \
                  && mkdir -p /root/.config "$BUILDDIR" "$CLONEGITSDIR" "$DOWNLOADSDIR" "/finalfs$DESTDIR" \
                  && if [ -n "$CLONEGITS" ]; \
@@ -488,15 +488,15 @@ ARG TAG="20190820"
                        comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                        if [ ! -e "start" ] && [ ! -e "stop" ]; \
                        then \
-			  for dir in /finalfs$DESTDIR*; \
-			  do \
-			     cp -a $dir/* /finalfs/ && \
-			     cd "$dir" && \
-			     subdir="${dir#/finalfs$DESTDIR}" && \
-			     contentfile="$dir/${subdir:+$subdir.}${IMAGEID}content" && \
-			     find * > "$contentfile" && \
-			     gzip "$contentfile"; \
-			  done && \
+                          for dir in /finalfs$DESTDIR*; \
+                          do \
+                             cp -a $dir/* /finalfs/ && \
+                             cd "$dir" && \
+                             subdir="${dir#/finalfs$DESTDIR}" && \
+                             contentfile="$dir/${subdir:+$subdir.}${IMAGEID}content" && \
+                             find * > "$contentfile" && \
+                             gzip "$contentfile"; \
+                          done && \
                           subdests="dev doc static" && \
                           dev="/usr/lib/pkgconfig /usr/include" && \
                           doc="/usr/share/man /usr/share/doc" && \
@@ -516,7 +516,7 @@ ARG TAG="20190820"
                                 fi; \
                              done; \
                           done && \
-			  cd /finalfs; \
+                          cd /finalfs; \
                        fi; \
                     fi \
                  && rm -f RUNDEPS.txt \
@@ -527,14 +527,14 @@ ARG TAG="20190820"
                  && tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild \
                  && mv /environment ./ \
                  && ( \
-		       chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin; \
+                       chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin; \
                        chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin; \
                        chmod 750 ./etc ./var ./run ./var/cache ./start ./stop; \
                        setfacl --restore=/tmp/init-permissions.txt; \
-		       true; \
-		    ) \
+                       true; \
+                    ) \
                  ) || ( echo "BUILD FAILED!" && touch "/fail"; )
-	    ONBUILD RUN cat /build.log \
-	             && [ ! -e "/fail" ]
+            ONBUILD RUN cat /build.log \
+                     && [ ! -e "/fail" ]
     # ---------------------------------------------------------------------
 # =========================================================================
