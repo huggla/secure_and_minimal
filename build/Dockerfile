@@ -500,7 +500,7 @@ ARG TAG="20190820"
                           subdests="dev doc static" && \
                           dev="/usr/lib/pkgconfig /usr/include" && \
                           doc="/usr/share/man /usr/share/doc" && \
-                          static="/usr/lib/*.a" && \
+                          static="$(echo /usr/lib/*.a)" && \
                           for subdest in $subdests; \
                           do \
                              eval "files=\$$subdest" && \
