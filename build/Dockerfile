@@ -488,15 +488,6 @@ ARG TAG="20190820"
                        comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                        if [ ! -e "start" ] && [ ! -e "stop" ]; \
                        then \
-                          for dir in /finalfs$DESTDIR*; \
-                          do \
-                             cp -a $dir/* /finalfs/ && \
-                             cd "$dir" && \
-                             subdir="${dir#/finalfs$DESTDIR}" && \
-                             contentfile="$dir/${subdir:+$subdir.}${IMAGEID}content" && \
-                             find * > "$contentfile" && \
-                             gzip "$contentfile"; \
-                          done && \
                           subdests="dev doc static" && \
                           dev="/usr/lib/pkgconfig /usr/include" && \
                           doc="/usr/share/man /usr/share/doc" && \
@@ -515,6 +506,15 @@ ARG TAG="20190820"
                                    rm -r "$destfile"; \
                                 fi; \
                              done; \
+                          done && \
+                          for dir in /finalfs$DESTDIR*; \
+                          do \
+                             cp -a $dir/* /finalfs/ && \
+                             cd "$dir" && \
+                             subdir="${dir#/finalfs$DESTDIR}" && \
+                             contentfile="$dir/${subdir:+$subdir.}${IMAGEID}content" && \
+                             find * > "$contentfile" && \
+                             gzip "$contentfile"; \
                           done && \
                           cd /finalfs; \
                        fi; \
