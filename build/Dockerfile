@@ -14,7 +14,7 @@ ARG TAG="20190820"
      && set -x \
      && chmod u+x /usr/sbin/relpath \
      && mkdir /excludefs /finalfs \
-     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git
+     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git openmpi-dev
 # =========================================================================
 # ONBUILD - Executed/available when building the main Docker image
 # =========================================================================
@@ -53,6 +53,7 @@ ARG TAG="20190820"
         ONBUILD ARG BUILDDEPS_UNTRUSTED
         ONBUILD ARG DESTDIR
         ONBUILD ARG CHARSET
+	ONBUILD ARG CC
         ONBUILD ARG ADDTO_CFLAGS
         ONBUILD ARG CFLAGS
         ONBUILD ARG ADDTO_PATH
@@ -114,6 +115,7 @@ ARG TAG="20190820"
         ONBUILD ENV BUILDDEPS_UNTRUSTED="${BUILDDEPS_UNTRUSTED}"
         ONBUILD ENV DESTDIR="${DESTDIR}"
         ONBUILD ENV CHARSET="${CHARSET:-UTF-8}"
+	ONBUILD ENV CC="${CC:-/usr/local/mpi/bin/mpicc}"
         ONBUILD ENV ADDTO_CFLAGS="${ADDTO_CFLAGS}"
         ONBUILD ENV CFLAGS="${CFLAGS:--O2 -fomit-frame-pointer -march=native -fno-reorder-blocks -fno-reorder-functions ${ADDTO_CFLAGS}}"
         ONBUILD ENV ADDTO_PATH="${ADDTO_PATH}"
@@ -491,6 +493,25 @@ ARG TAG="20190820"
 			     find * > "$contentfile" && \
 			     gzip "$contentfile"; \
 			  done && \
+                          subdests="dev doc static" && \
+                          dev="/usr/lib/pkgconfig /usr/include" && \
+                          doc="/usr/share/man /usr/share/doc" && \
+                          static="/usr/lib/*.a" && \
+                          for subdest in $subdests; \
+                          do \
+                             eval "files=\$$subdest" && \
+                             for file in $files; \
+                             do \
+                                destfile="/finalfs$DESTDIR$file" && \
+                                if [ -e "$destfile" ]; \
+                                then \
+                                   subdestdir="/finalfs$DESTDIR-$subdest$(dirname $file)" && \
+                                   mkdir -p "$subdestdir" && \
+                                   cp -a "$destfile" "$subdestdir/" && \
+                                   rm -r "$destfile"; \
+                                fi; \
+                             done; \
+                          done && \
 			  cd /finalfs; \
                        fi; \
                     fi \
