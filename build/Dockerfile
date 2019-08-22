@@ -524,6 +524,7 @@ ARG TAG="20190822"
                              done; \
                           done; \
                        fi && \
+                       mv "$DESTDIR" "$DESTDIR-app" && \
                        for siblingdir in $DESTDIR*; \
                        do \
                           cp -a $siblingdir/* ./ && \
