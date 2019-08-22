@@ -529,7 +529,7 @@ ARG TAG="20190822"
                           cp -a $siblingdir/* ./ && \
                           sibling="${siblingdir#$DESTDIR}" && \
                           sibling="${sibling#-}" && \
-                          contentfile="${IMAGEID}${sibling:+.$sibling}" && \
+                          contentfile="${IMAGEID}${sibling:+-$sibling}" && \
                           cd "$siblingdir" && \
                           find * > "$contentfile" && \
                           gzip "$contentfile" && \
