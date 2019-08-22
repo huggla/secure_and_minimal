@@ -524,19 +524,16 @@ ARG TAG="20190822"
                              done; \
                           done; \
                        fi && \
-                       if [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
-                       then \
-                          for siblingdir in $DESTDIR*; \
-                          do \
-                             cp -a $siblingdir/* ./ && \
-                             sibling="${siblingdir#$DESTDIR}" && \
-                             contentfile="$siblingdir/${sibling:+$sibling.}${IMAGEID}content" && \
-                             cd "$siblingdir" && \
-                             find * > "$contentfile" && \
-                             gzip "$contentfile" && \
-                             cd ..; \
-                          done; \
-                       fi; \
+                       for siblingdir in $DESTDIR*; \
+                       do \
+                          cp -a $siblingdir/* ./ && \
+                          sibling="${siblingdir#$DESTDIR}" && \
+                          contentfile="$siblingdir/${sibling:+$sibling.}${IMAGEID}" && \
+                          cd "$siblingdir" && \
+                          find * > "$contentfile" && \
+                          gzip "$contentfile" && \
+                          cd ..; \
+                       done; \
                     fi \
                  && rm -f RUNDEPS.txt \
                  && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
