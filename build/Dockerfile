@@ -164,7 +164,10 @@ ARG TAG="20190822"
         ONBUILD RUN ( \
                     exec > /build.log 2>&1 \
                  && set -x \
-                 && if [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] && 
+                 && if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] && [ -z "$DESTDIR" ]; \
+                    then \
+                       DESTDIR="/content"; \
+                    fi \
                  && if [ -n "$ADDREPOS" ]; \
                     then \
                        for repo in $ADDREPOS; \
