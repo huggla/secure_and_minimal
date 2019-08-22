@@ -527,7 +527,8 @@ ARG TAG="20190822"
                        for siblingdir in $DESTDIR*; \
                        do \
                           cp -a $siblingdir/* ./ && \
-                          sibling="${${siblingdir#$DESTDIR}#-}" && \
+                          sibling="${siblingdir#$DESTDIR}" && \
+                          sibling="${sibling#-}" && \
                           contentfile="${sibling:+$sibling.}${IMAGEID}" && \
                           cd "$siblingdir" && \
                           find * > "$contentfile" && \
