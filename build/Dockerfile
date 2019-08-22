@@ -25,7 +25,7 @@ ARG TAG="20190820"
         ONBUILD ARG HUBREPO
         ONBUILD ARG HUBVERSION
         ONBUILD ARG IMAGEID
-	ONBUILD ARG IMAGETYPE
+        ONBUILD ARG IMAGETYPE
         ONBUILD ARG CONTENTIMAGE1
         ONBUILD ARG CONTENTSOURCE1
         ONBUILD ARG CONTENTDESTINATION1
@@ -90,7 +90,7 @@ ARG TAG="20190820"
         ONBUILD ENV HUBREPO="${HUBREPO}"
         ONBUILD ENV HUBVERSION="${HUBVERSION}"
         ONBUILD ENV IMAGEID="${IMAGEID:-${HUBPROFILE:+$HUBPROFILE-}${HUBREPO:+$HUBREPO-}${HUBVERSION:+$HUBVERSION-}}"
-	ONBUILD ENV IMAGETYPE="${IMAGETYPE:-application}"
+        ONBUILD ENV IMAGETYPE="${IMAGETYPE:-application}"
         ONBUILD ENV BUILDDIR="${BUILDDIR:-/builddir}"
         ONBUILD ENV CONTENTIMAGE1="$CONTENTIMAGE1"
         ONBUILD ENV CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
@@ -101,7 +101,7 @@ ARG TAG="20190820"
         ONBUILD ENV CONTENTIMAGE3="$CONTENTIMAGE3"
         ONBUILD ENV CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
         ONBUILD ENV CONTENTDESTINATION3="${CONTENTDESTINATION3:-$BUILDDIR}"
-	ONBUILD ENV CONTENTIMAGE4="$CONTENTIMAGE4"
+        ONBUILD ENV CONTENTIMAGE4="$CONTENTIMAGE4"
         ONBUILD ENV CONTENTSOURCE4="${CONTENTSOURCE4:-/}"
         ONBUILD ENV CONTENTDESTINATION4="${CONTENTDESTINATION4:-$BUILDDIR}"
         ONBUILD ENV ADDREPOS="${ADDREPOS}"
@@ -267,14 +267,22 @@ ARG TAG="20190820"
                     fi \
                  && if [ -n "$BUILDCMDS" ]; \
                     then \
+                       if [ -z "$DESTDIR" ]; \
+                       then \
+                          if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
+                          then \
+                             DESTDIR="content"; \
+                          fi; \
+                       fi && \
                        cd /finalfs && \
                        find * -type d -exec mkdir -p "/{}" \; && \
                        find * -type f -o -type l -exec cp -a "{}" "/{}" \; && \
+                       mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR" && \
                        ln -sf /bin/bash /bin/sh; \
                     fi \
-                 && mkdir -p /root/.config "$BUILDDIR" "$CLONEGITSDIR" "$DOWNLOADSDIR" "/finalfs$DESTDIR" \
                  && if [ -n "$CLONEGITS" ]; \
                     then \
+                       mkdir -p "$CLONEGITSDIR" && \
                        cd "$CLONEGITSDIR" && \
                        CLONEGITS="$(echo "$CLONEGITS" | sed "s/ '/,'/g" | sed "s/' /',/g")" && \
                        IFS="$(echo -en ",")" && \
@@ -296,6 +304,7 @@ ARG TAG="20190820"
                     fi \
                  && if [ -n "$DOWNLOADS" ]; \
                     then \
+                       mkdir -p "$DOWNLOADSDIR" && \
                        cd "$DOWNLOADSDIR" && \
                        set +x && \
                        echo '++++++++++++++++++++++++++++++++++' && \
