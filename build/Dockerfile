@@ -89,7 +89,7 @@ ARG TAG="20190822"
         ONBUILD ENV HUBPROFILE="${HUBPROFILE}"
         ONBUILD ENV HUBREPO="${HUBREPO}"
         ONBUILD ENV HUBVERSION="${HUBVERSION}"
-        ONBUILD ENV IMAGEID="${IMAGEID:-${HUBPROFILE:+$HUBPROFILE-}${HUBREPO:+$HUBREPO-}${HUBVERSION:+$HUBVERSION-}}"
+        ONBUILD ENV IMAGEID="${IMAGEID:-${HUBPROFILE:+$HUBPROFILE-}${HUBREPO:+$HUBREPO-}${HUBVERSION:+$HUBVERSION}}"
         ONBUILD ENV IMAGETYPE="${IMAGETYPE:-application}"
         ONBUILD ENV BUILDDIR="${BUILDDIR:-/builddir}"
         ONBUILD ENV CONTENTIMAGE1="$CONTENTIMAGE1"
@@ -528,7 +528,7 @@ ARG TAG="20190822"
                        do \
                           cp -a $siblingdir/* ./ && \
                           sibling="${siblingdir#$DESTDIR}" && \
-                          contentfile="$siblingdir/${sibling:+$sibling.}${IMAGEID}" && \
+                          contentfile="${sibling:+$sibling.}${IMAGEID}" && \
                           cd "$siblingdir" && \
                           find * > "$contentfile" && \
                           gzip "$contentfile" && \
