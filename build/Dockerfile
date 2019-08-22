@@ -164,6 +164,7 @@ ARG TAG="20190820"
         ONBUILD RUN ( \
                     exec > /build.log 2>&1 \
                  && set -x \
+                 && if [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] && 
                  && if [ -n "$ADDREPOS" ]; \
                     then \
                        for repo in $ADDREPOS; \
@@ -489,16 +490,17 @@ ARG TAG="20190820"
                  && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
                  && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
                  && comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf \
-                 && if [ "$DESTDIR" == "/app" ] && [ -n "$(ls -A "${DESTDIR#/}")" ]; \
+                 && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] ); \
                     then \
-                       if [ -n "$RUNDEPS" ]; \
+                       DESTDIR="${DESTDIR#/}" && \
+                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
                        then \
-                          echo "$RUNDEPS" >> "${DESTDIR#/}/RUNDEPS.txt"; \
-                       fi && \
-                       (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
-                       comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
-                       if [ ! -e "start" ] && [ ! -e "stop" ]; \
-                       then \
+                          if [ -n "$RUNDEPS" ]; \
+                          then \
+                             echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
+                          fi && \
+                          (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
+                          comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                           subdests="dev doc static" && \
                           dev="/usr/lib/pkgconfig /usr/include" && \
                           doc="/usr/share/man /usr/share/doc" && \
@@ -508,26 +510,29 @@ ARG TAG="20190820"
                              eval "files=\$$subdest" && \
                              for file in $files; \
                              do \
-                                destfile="/finalfs$DESTDIR$file" && \
+                                destfile="$DESTDIR$file" && \
                                 if [ -e "$destfile" ]; \
                                 then \
-                                   subdestdir="/finalfs$DESTDIR-$subdest$(dirname $file)" && \
+                                   subdestdir="$DESTDIR-$subdest$(dirname $file)" && \
                                    mkdir -p "$subdestdir" && \
                                    cp -a "$destfile" "$subdestdir/" && \
                                    rm -r "$destfile"; \
                                 fi; \
                              done; \
-                          done && \
-                          for dir in /finalfs$DESTDIR*; \
+                          done; \
+                       fi && \
+                       if [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
+                       then \
+                          for siblingdir in $DESTDIR*; \
                           do \
-                             cp -a $dir/* /finalfs/ && \
-                             cd "$dir" && \
-                             subdir="${dir#/finalfs$DESTDIR}" && \
-                             contentfile="$dir/${subdir:+$subdir.}${IMAGEID}content" && \
+                             cp -a $siblingdir/* ./ && \
+                             sibling="${siblingdir#$DESTDIR}" && \
+                             contentfile="$siblingdir/${sibling:+$sibling.}${IMAGEID}content" && \
+                             cd "$siblingdir" && \
                              find * > "$contentfile" && \
-                             gzip "$contentfile"; \
-                          done && \
-                          cd /finalfs; \
+                             gzip "$contentfile" && \
+                             cd ..; \
+                          done; \
                        fi; \
                     fi \
                  && rm -f RUNDEPS.txt \
