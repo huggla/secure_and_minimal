@@ -505,9 +505,9 @@ ARG TAG="20190822"
                           (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
                           comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                           subdests="dev doc static" && \
-                          dev="usr/lib/pkgconfig usr/include" && \
-                          doc="usr/share/man usr/share/doc" && \
-                          static="$(echo usr/lib/*.a)" && \
+                          dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
+                          doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
+                          static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)" && \
                           for subdest in $subdests; \
                           do \
                              eval "files=\$$subdest" && \
