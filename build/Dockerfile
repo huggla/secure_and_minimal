@@ -505,18 +505,18 @@ ARG TAG="20190822"
                           (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
                           comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                           subdests="dev doc static" && \
-                          dev="/usr/lib/pkgconfig /usr/include" && \
-                          doc="/usr/share/man /usr/share/doc" && \
-                          static="$(echo /usr/lib/*.a)" && \
+                          dev="usr/lib/pkgconfig usr/include" && \
+                          doc="usr/share/man usr/share/doc" && \
+                          static="$(echo usr/lib/*.a)" && \
                           for subdest in $subdests; \
                           do \
                              eval "files=\$$subdest" && \
                              for file in $files; \
                              do \
-                                destfile="$DESTDIR$file" && \
+                                destfile="$DESTDIR/$file" && \
                                 if [ -e "$destfile" ]; \
                                 then \
-                                   subdestdir="$DESTDIR-$subdest$(dirname $file)" && \
+                                   subdestdir="$DESTDIR-$subdest$(dirname "/$file")" && \
                                    mkdir -p "$subdestdir" && \
                                    cp -a "$destfile" "$subdestdir/" && \
                                    rm -r "$destfile"; \
