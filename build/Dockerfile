@@ -505,7 +505,10 @@ ARG TAG="20190822"
                        subdests="dev doc static" && \
                        dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
                        doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
-                       static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)" && \
+                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
+                       then \
+                          static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)"; \
+                       fi && \
                        for subdest in $subdests; \
                        do \
                           eval "files=\$$subdest" && \
@@ -521,21 +524,23 @@ ARG TAG="20190822"
                              fi; \
                           done; \
                        done && \
-                       mv "$DESTDIR" "$DESTDIR-app" && \
-                       for siblingdir in $DESTDIR*; \
-                       do \
-                          cp -a $siblingdir/* ./ && \
-                          sibling="${siblingdir#$DESTDIR}" && \
-                          sibling="${sibling#-}" && \
-                          contentfile="${IMAGEID}${sibling:+-$sibling}" && \
-                          cd "$siblingdir" && \
-                          find * > "$contentfile" && \
-                          gzip "$contentfile" && \
-                          cd ..; \
-                       done && \
                        if [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ]; \
                        then \
-                          find $DESTDIR-* -maxdepth 0 ! -name $DESTDIR-app -exec rm -rf "{}" \; ; \
+                          rm -rf "$DESTDIR-dev" "$DESTDIR-doc"; \
+                       elif [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
+                       then \
+                          mv "$DESTDIR" "$DESTDIR-app" && \
+                          for siblingdir in $DESTDIR*; \
+                          do \
+                             cp -a $siblingdir/* ./ && \
+                             sibling="${siblingdir#$DESTDIR}" && \
+                             sibling="${sibling#-}" && \
+                             contentfile="${IMAGEID}${sibling:+-$sibling}" && \
+                             cd "$siblingdir" && \
+                             find * > "$contentfile" && \
+                             gzip "$contentfile" && \
+                             cd ..; \
+                          done; \
                        fi; \
                     fi \
                  && rm -f RUNDEPS.txt \
