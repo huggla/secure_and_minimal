@@ -493,7 +493,7 @@ ARG TAG="20190902"
                  && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
                  && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
                  && comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf \
-                 && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ]; \
+                 && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] ); \
                     then \
                        DESTDIR="${DESTDIR#/}" && \
                        if [ -n "$RUNDEPS" ]; \
