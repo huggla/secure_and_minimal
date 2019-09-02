@@ -493,37 +493,34 @@ ARG TAG="20190822"
                  && find * -type d -maxdepth 0 | sort - > /tmp/topDirs \
                  && find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs \
                  && comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf \
-                 && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] ); \
+                 && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ]; \
                     then \
                        DESTDIR="${DESTDIR#/}" && \
-                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
+                       if [ -n "$RUNDEPS" ]; \
                        then \
-                          if [ -n "$RUNDEPS" ]; \
-                          then \
-                             echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
-                          fi && \
-                          (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
-                          comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
-                          subdests="dev doc static" && \
-                          dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
-                          doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
-                          static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)" && \
-                          for subdest in $subdests; \
-                          do \
-                             eval "files=\$$subdest" && \
-                             for file in $files; \
-                             do \
-                                destfile="$DESTDIR/$file" && \
-                                if [ -e "$destfile" ]; \
-                                then \
-                                   subdestdir="$DESTDIR-$subdest$(dirname "/$file")" && \
-                                   mkdir -p "$subdestdir" && \
-                                   cp -a "$destfile" "$subdestdir/" && \
-                                   rm -r "$destfile"; \
-                                fi; \
-                             done; \
-                          done; \
+                          echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
                        fi && \
+                       (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
+                       comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
+                       subdests="dev doc static" && \
+                       dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
+                       doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
+                       static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)" && \
+                       for subdest in $subdests; \
+                       do \
+                          eval "files=\$$subdest" && \
+                          for file in $files; \
+                          do \
+                             destfile="$DESTDIR/$file" && \
+                             if [ -e "$destfile" ]; \
+                             then \
+                                subdestdir="$DESTDIR-$subdest$(dirname "/$file")" && \
+                                mkdir -p "$subdestdir" && \
+                                cp -a "$destfile" "$subdestdir/" && \
+                                rm -r "$destfile"; \
+                             fi; \
+                          done; \
+                       done && \
                        mv "$DESTDIR" "$DESTDIR-app" && \
                        for siblingdir in $DESTDIR*; \
                        do \
@@ -535,7 +532,11 @@ ARG TAG="20190822"
                           find * > "$contentfile" && \
                           gzip "$contentfile" && \
                           cd ..; \
-                       done; \
+                       done && \
+                       if [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ]; \
+                       then \
+                          find $DESTDIR-* -maxdepth 0 ! -name $DESTDIR-app -exec rm -rf "{}" \; ; \
+                       fi; \
                     fi \
                  && rm -f RUNDEPS.txt \
                  && (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new \
