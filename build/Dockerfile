@@ -355,16 +355,15 @@ ARG TAG="20190902"
                        fi && \
                        tmpDESTDIR="$DESTDIR" && \
                        DESTDIR="/finalfs$DESTDIR" && \
-                       set -f && \
-                       buildstr="$(eval "echo \"$(eval 'echo $BUILDCMDS')\"")" && \
+                       buildstr="$(eval "set -f && echo \"$(eval 'set -f && echo $BUILDCMDS')\"")" && \
                        cd "$BUILDDIR" && \
                        set +x && \
                        echo '++++++++++++++++++++++++++++++++++' && \
                        echo '++++++++ BUILDCMDS <begin> +++++++' && \
                        echo '++++++++++++++++++++++++++++++++++' && \
                        set -x && \
-                       eval "set +f && $buildstr" && \
-                       set +x +f && \
+                       eval "$buildstr" && \
+                       set +x && \
                        echo '----------------------------------' && \
                        echo '-------- BUILDCMDS </end> --------' && \
                        echo '----------------------------------' && \
