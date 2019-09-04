@@ -1,7 +1,7 @@
 # =========================================================================
 # Init
 # =========================================================================
-# ARGs (passed to Build) <BEGIN>
+# ARGs (can be passed to Build/Final) <BEGIN>
 ARG TAG="20190902"
 ARG IMAGETYPE="secure_and_minimal"
 ARG BASEIMAGE="huggla/busybox:$TAG"
@@ -30,7 +30,7 @@ ARG FINALCMDS=\
 "&& chmod -R g=r ./stop "\
 "&& chmod g=rx ./stop ./stop/functions "\
 "&& chmod u=rwx,g=rx ./stop/stage1"
-# ARGs (passed to Build) </END>
+# ARGs (can be passed to Build/Final) </END>
 
 # Generic template (don't edit) <BEGIN>
 FROM ${CONTENTIMAGE1:-scratch} as content1
