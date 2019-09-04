@@ -1,5 +1,5 @@
 #!/usr/local/bin/dash
-set -e +a -m +s +i -f
+set -efm +a
 . /stop/includeFunctions
 
 for sig in 1 2 3 6 9 14 15
