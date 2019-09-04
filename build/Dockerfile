@@ -514,7 +514,9 @@ ARG TAG="20190902"
                           fi && \
                           if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
                           then \
-                             static="$(ls "${COMMON_CONFIGUREPREFIX#/}/lib" | grep -e "[.]a$" | xargs)"; \
+                          pwd; \
+                          ls; \
+                             static="$(ls "./${COMMON_CONFIGUREPREFIX#/}/lib" | grep -e "[.]a$" | xargs)"; \
                              for subdest in $subdests; \
                              do \
                                 eval "files=\$$subdest" && \
