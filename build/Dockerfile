@@ -497,51 +497,52 @@ ARG TAG="20190902"
                  && if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] ); \
                     then \
                        DESTDIR="${DESTDIR#/}" && \
-                       if [ -n "$RUNDEPS" ]; \
-                       then \
-                          echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
-                       fi && \
                        (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new && \
                        comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}' && \
                        subdests="dev doc static" && \
                        dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
                        doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
-                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
-                       then \
-                          static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)"; \
-                       fi && \
-                       for subdest in $subdests; \
-                       do \
-                          eval "files=\$$subdest" && \
-                          for file in $files; \
-                          do \
-                             destfile="$DESTDIR/$file" && \
-                             if [ -e "$destfile" ]; \
-                             then \
-                                subdestdir="$DESTDIR-$subdest$(dirname "/$file")" && \
-                                mkdir -p "$subdestdir" && \
-                                cp -a "$destfile" "$subdestdir/" && \
-                                rm -r "$destfile"; \
-                             fi; \
-                          done; \
-                       done && \
                        if [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ]; \
                        then \
                           rm -rf "$DESTDIR-dev" "$DESTDIR-doc"; \
-                       elif [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
+                       fi && \
+                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
                        then \
-                          mv "$DESTDIR" "$DESTDIR-app" && \
-                          for siblingdir in $DESTDIR*; \
-                          do \
-                             cp -a $siblingdir/* ./ && \
-                             sibling="${siblingdir#$DESTDIR}" && \
-                             sibling="${sibling#-}" && \
-                             contentfile="${IMAGEID}${sibling:+-$sibling}" && \
-                             cd "$siblingdir" && \
-                             find * > "$contentfile" && \
-                             gzip "$contentfile" && \
-                             cd ..; \
-                          done; \
+                          if [ -n "$RUNDEPS" ]; \
+                          then \
+                             echo "$RUNDEPS" >> "$DESTDIR/RUNDEPS.txt"; \
+                          fi && \
+                          if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
+                          then \
+                             static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)"; \
+                             for subdest in $subdests; \
+                             do \
+                                eval "files=\$$subdest" && \
+                                for file in $files; \
+                                do \
+                                   destfile="$DESTDIR/$file" && \
+                                   if [ -e "$destfile" ]; \
+                                   then \
+                                      subdestdir="$DESTDIR-$subdest$(dirname "/$file")" && \
+                                      mkdir -p "$subdestdir" && \
+                                      cp -a "$destfile" "$subdestdir/" && \
+                                      rm -r "$destfile"; \
+                                   fi; \
+                                done; \
+                             done && \
+                             mv "$DESTDIR" "$DESTDIR-app" && \
+                             for siblingdir in $DESTDIR*; \
+                             do \
+                                cp -a $siblingdir/* ./ && \
+                                sibling="${siblingdir#$DESTDIR}" && \
+                                sibling="${sibling#-}" && \
+                                contentfile="${IMAGEID}${sibling:+-$sibling}" && \
+                                cd "$siblingdir" && \
+                                find * > "$contentfile" && \
+                                gzip "$contentfile" && \
+                                cd ..; \
+                             done; \
+                          fi; \
                        fi; \
                     fi \
                  && rm -f RUNDEPS.txt \
