@@ -506,7 +506,7 @@ ARG TAG="20190902"
                        subdests="dev doc static" && \
                        dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include" && \
                        doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc" && \
-                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
+                       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
                        then \
                           static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)"; \
                        fi && \
@@ -528,7 +528,7 @@ ARG TAG="20190902"
                        if [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ]; \
                        then \
                           rm -rf "$DESTDIR-dev" "$DESTDIR-doc"; \
-                       elif [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ]; \
+                       elif [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
                        then \
                           mv "$DESTDIR" "$DESTDIR-app" && \
                           for siblingdir in $DESTDIR*; \
