@@ -1,5 +1,5 @@
 #!/bin/sh
-set -ef +am
+set -f +am
 
 /bin/sleep 10
 while read executable
