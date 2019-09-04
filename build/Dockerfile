@@ -514,7 +514,7 @@ ARG TAG="20190902"
                           fi && \
                           if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]; \
                           then \
-                             static="$(echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a)"; \
+                             static="$(eval "echo ${COMMON_CONFIGUREPREFIX#/}/lib/*.a")"; \
                              for subdest in $subdests; \
                              do \
                                 eval "files=\$$subdest" && \
