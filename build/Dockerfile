@@ -57,6 +57,7 @@ ARG TAG="20190902"
         ONBUILD ARG CC
         ONBUILD ARG MPICC
         ONBUILD ARG MPICXX
+        ONBUILD ARG JAVA_HOME
         ONBUILD ARG ADDTO_CFLAGS
         ONBUILD ARG CFLAGS
         ONBUILD ARG ADDTO_PATH
@@ -122,6 +123,7 @@ ARG TAG="20190902"
         ONBUILD ENV MPICC="${MPICC:-/usr/bin/mpicc}"
         ONBUILD ENV MPICXX="${MPICXX:-/usr/bin/mpicxx}"
         ONBUILD ENV CC="${CC}"
+        ONBUILD ENV JAVA_HOME="${JAVA_HOME}"
         ONBUILD ENV ADDTO_CFLAGS="${ADDTO_CFLAGS}"
         ONBUILD ENV CFLAGS="${CFLAGS:--O2 -fomit-frame-pointer -march=native -fno-reorder-blocks -fno-reorder-functions ${ADDTO_CFLAGS}}"
         ONBUILD ENV ADDTO_PATH="${ADDTO_PATH}"
