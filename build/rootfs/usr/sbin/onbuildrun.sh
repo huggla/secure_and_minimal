@@ -88,8 +88,9 @@ do
    n="$(expr $n + 1)"
    if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]
    then
-      eval "find \"\$CONTENTDESTINATION$n\" -maxdepth 0 -exec chmod -R g-w,o= \"{}\" \\\\\;"
-      eval "find \"\$CONTENTDESTINATION$n\" -type f -perm +010 -exec chmod g-x \"{}\" \\\\\;"
+      eval "contentdest=\$CONTENTDESTINATION$n" 
+      find "$contentdest" -maxdepth 0 -exec chmod -R g-w,o= "{}" \;
+      find "$contentdest" -type f -perm +010 -exec chmod g-x "{}" \;
    fi
 done
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
