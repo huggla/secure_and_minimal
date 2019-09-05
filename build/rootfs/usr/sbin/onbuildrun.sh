@@ -88,7 +88,7 @@ do
    n="$(expr $n + 1)"
    if [ "${contentimage#huggla}" == "$contentimage" ] && [ "$contentimage" != "scratch" ]
    then
-      eval "contentdest=\$CONTENTDESTINATION$n" 
+      eval "contentdest=\"\$CONTENTDESTINATION$n\"" 
       find "$contentdest" -maxdepth 0 -exec chmod -R g-w,o= "{}" \;
       find "$contentdest" -type f -perm +010 -exec chmod g-x "{}" \;
    fi
