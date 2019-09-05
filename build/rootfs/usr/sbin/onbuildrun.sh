@@ -217,7 +217,7 @@ then
    echo '++++++++ FINALCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
    set -x
-   chroot /finalfs sh -c "FINALCMDS=\"$FINALCMDS\" set -x && eval \"\$FINALCMDS\""
+   chroot /finalfs sh -c "set -x && eval \"\$FINALCMDS\""
    set +x
    echo '----------------------------------'
    echo '-------- FINALCMDS </end> --------'
