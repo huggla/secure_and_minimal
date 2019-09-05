@@ -1,7 +1,7 @@
 #!/bin/sh
 exec > /build.log 2>&1
-set -ex +fam
 
+set -ex +fam
 if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] && [ -z "$DESTDIR" ]
 then
    DESTDIR="/content"
@@ -390,10 +390,8 @@ sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbu
 rm -f /tmp/onbuild/exclude.filelist.*
 tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild
 mv /environment ./
-(
-   chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
-   chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
-   chmod 750 ./etc ./var ./run ./var/cache ./start ./stop
-   setfacl --restore=/tmp/init-permissions.txt
-   true
-)
+set +e
+chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
+chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
+chmod 750 ./etc ./var ./run ./var/cache ./start ./stop
+setfacl --restore=/tmp/init-permissions.txt
