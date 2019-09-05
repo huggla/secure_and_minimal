@@ -101,7 +101,9 @@ then
    echo '++++++++++++++++++++++++++++++++++'
    echo '+++++++++ INITCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
-   eval "set -x && $INITCMDS"
+   set -x
+   eval "$INITCMDS"
+   set +x
    echo '----------------------------------'
    echo '--------- INITCMDS </end> --------'
    echo '----------------------------------'
@@ -214,7 +216,9 @@ then
    echo '++++++++++++++++++++++++++++++++++'
    echo '++++++++ FINALCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
-   chroot /finalfs sh -c "set -x && $FINALCMDS"
+   set -x
+   chroot /finalfs sh -c "FINALCMDS=\"$FINALCMDS\" set -x && eval \"\$FINALCMDS\""
+   set +x
    echo '----------------------------------'
    echo '-------- FINALCMDS </end> --------'
    echo '----------------------------------'
