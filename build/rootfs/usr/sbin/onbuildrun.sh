@@ -218,7 +218,7 @@ then
    echo '++++++++ FINALCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
    set -x
-   chroot /finalfs sh -c "exec > /build.log 2>&1 && set -ex +fam && eval \"\$FINALCMDS\""
+   chroot /finalfs /bin/sh -c "set -ex +fam && eval \"\$FINALCMDS\""
    set +x
    echo '----------------------------------'
    echo '-------- FINALCMDS </end> --------'
