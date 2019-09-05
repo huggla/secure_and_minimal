@@ -399,3 +399,4 @@ chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
 chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
 chmod 750 ./etc ./var ./run ./var/cache ./start ./stop
 setfacl --restore=/tmp/init-permissions.txt
+exit 0
