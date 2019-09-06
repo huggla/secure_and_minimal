@@ -1,6 +1,7 @@
 replaceDirWithLink() {
    local dir=$1
    local link=$2
+   local ignore=$3
    if [ -d "$link" ]
    then
       if [ "$link" != "$dir" ]
@@ -8,7 +9,7 @@ replaceDirWithLink() {
          if [ -d "$dir" ] && [ -n "$(ls -A "$dir")" ]
          then
             linkContents="$(ls -A "$link")"
-            if [ -n "$linkContents" ] && [ "$linkContents" != ".snapshot" ]
+            if [ -n "$linkContents" ] && [ "$linkContents" != ".snapshot" ] && [ "$linkContents" != "$ignore" ]
             then
                echo "$link has contents"
             else
