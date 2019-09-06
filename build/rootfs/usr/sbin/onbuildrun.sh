@@ -81,6 +81,7 @@ do
 done
 find /tmp -path "/tmp/buildfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
 find /tmp -path "/tmp/rootfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \;
+find /tmp -path "/tmp/finalfs/*"  -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \;
 chmod -R o= ./
 n="0"
 for contentimage in $CONTENTIMAGE1 $CONTENTIMAGE2 $CONTENTIMAGE3 $CONTENTIMAGE4
