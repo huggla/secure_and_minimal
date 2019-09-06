@@ -8,8 +8,8 @@ replaceDirWithLink() {
       then
          if [ -d "$dir" ] && [ -n "$(ls -A "$dir")" ]
          then
-            linkContents="$(ls -A "$link")"
-            if [ -n "$linkContents" ] && [ "$linkContents" != ".snapshot" ] && [ "$linkContents" != "$ignore" ]
+            linkContents="$(ls -A "$link" | sed 's/\<.snapshot\>//' | sed "s/\<$ignore\>//" | xargs)"
+            if [ -n "$linkContents" ]
             then
                echo "$link has contents"
             else
