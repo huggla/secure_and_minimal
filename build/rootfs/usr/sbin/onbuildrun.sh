@@ -243,8 +243,11 @@ then
       exeName="$(basename "$exe")"
       if [ "$exeDir" != "usr/local/bin" ]
       then
-         cp -a "$exe" "usr/local/bin/"
-         ln -sf "usr/local/bin/$exeName" "$exe"
+         relDir="$(relpath "/$exeDir" "/usr/local/bin")"
+         cd "$exeDir"
+         cp -a "./$exeName" "$relDir/"
+         ln -sf "$relDir/$exeName" ./
+         cd /finalfs
       fi
       if [ "$exeName" == "sudo" ]
       then
