@@ -4,7 +4,7 @@ RUN exec 2>&1 \
  && set -x \
  && echo "alpine-base" > /etc/apk/world \
  && apk --no-cache --purge --force-overwrite --force-refresh fix -d -r -u -x --directory-permissions alpine-base \
- && mkdir -p /finalfs/etc/apk \
+ && mkdir -p /finalfs/etc/apk /finalfs/environment \
  && cp -a /etc/resolv.conf /finalfs/etc/ \
  && cp -a /etc/apk/repositories /finalfs/etc/apk/ \
  && apk --no-cache --root /finalfs --keys-dir /etc/apk/keys --initramfs-diskless-boot --clean-protected add --initdb alpine-base
