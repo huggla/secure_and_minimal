@@ -14,7 +14,7 @@ ARG TAG="20190911"
      && set -x \
      && chmod u+x /usr/sbin/relpath /usr/sbin/onbuildrun.sh \
      && mkdir /excludefs /finalfs \
-     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git
+     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git libcurl
 # =========================================================================
 # ONBUILD - Executed/available when building the main Docker image
 # =========================================================================
