@@ -1,4 +1,4 @@
-ARG TAG="20190911"
+ARG TAG="20190917"
 FROM huggla/alpine:$TAG as alpine
 
 RUN exec 2>&1 \
@@ -11,7 +11,7 @@ RUN exec 2>&1 \
  && mkdir -m 750 /finalfs/etc /finalfs/var /finalfs/run \
  && mkdir -m 770 /finalfs/tmp \
  && mkdir -m 700 /finalfs/usr/bin /finalfs/usr/sbin /tmp/onbuild \
- && mkdir -m 750 /finalfs/var/cache \
+ && mkdir -m 750 /finalfs/var/cache /finalfs/var/log \
  && >/finalfs/environment/startupexecutables \
  && >/finalfs/environment/gid0writables \
  && >/finalfs/environment/gid0writablesrecursive \
