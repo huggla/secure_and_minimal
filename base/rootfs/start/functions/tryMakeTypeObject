@@ -3,13 +3,14 @@ tryMakeTypeObject(){
    local -
    if [ ! -e "$obj" ]
    then
-      tryMakeDir "$(/usr/bin/dirname "$obj")" $3
       set +e
       if [ "$1" == "dir" ]
       then
+         tryMakeDir "$(/usr/bin/dirname "$obj")"
          /bin/mkdir "$obj"
       elif [ "$1" == "file" ]
       then
+         tryMakeDir "$(/usr/bin/dirname "$obj")" $3
          >"$obj"
       fi
       set -e
