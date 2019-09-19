@@ -360,9 +360,6 @@ done
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
    DESTDIR="${DESTDIR#/}"
-   
-   sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"'
-   
    (find . -type l -exec sh -c 'echo -n "$(echo "{}" | cut -c 2-)>"' \; -exec readlink "{}" \; && find . -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ [.]||') | sort -u - > /tmp/onbuild/exclude.filelist.new
    comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
    subdests="dev doc static"
@@ -406,7 +403,7 @@ then
             sibling="${sibling#-}"
             contentfile="${IMAGEID}${sibling:+-$sibling}"
             cd "$siblingdir"
-            find * > "$contentfile"
+            find . -mindepth 1 | cut -c 2- > "$contentfile"
             gzip "$contentfile"
             cd ..
          done
@@ -414,7 +411,7 @@ then
    fi
 fi
 rm -f RUNDEPS.txt
-(find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new
+(find . -type l -exec sh -c 'echo -n "$(echo "{}" | cut -c 2-)>"' \; -exec readlink "{}" \; && find . -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ [.]||') | sort -u - > /tmp/onbuild/exclude.filelist.new
 comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
 sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new
 rm -f /tmp/onbuild/exclude.filelist.*
