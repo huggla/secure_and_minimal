@@ -122,8 +122,8 @@ then
    fi
    cd /finalfs
    find * -type d -exec mkdir -p "/{}" \;
-   find * -type f -exec cp -a "{}" "/{}" \;
-   find * -type l -exec cp -a "{}" "/{}" \;
+   find * -type f -exec cp -au "{}" "/{}" \;
+   find * -type l -exec cp -au "{}" "/{}" \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
