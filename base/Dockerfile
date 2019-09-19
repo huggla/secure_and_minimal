@@ -2,7 +2,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG TAG="20190917"
+ARG TAG="20190919"
 ARG IMAGETYPE="secure_and_minimal"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
