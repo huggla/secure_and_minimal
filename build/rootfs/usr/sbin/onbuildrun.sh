@@ -2,15 +2,16 @@
 
 removeEmptyDirs(){
    local dir="$1"
-   local itemCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
-   if [ "$itemCount" == "0" ]
+   local childCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
+   if [ "$childCount" == "0" ]
    then
       rm -rf "$dir"
    else
       local subdirs="$(find "$dir" -maxdepth 1 -mindepth 1 -type d)"
-      for dir in $subdirs
+      local subdir=""
+      for subdir in $subdirs
       do
-         removeEmptyDirs "$dir"
+         removeEmptyDirs "$subdir"
       done
    fi
 }
@@ -137,9 +138,8 @@ then
       fi
    fi
    cd /finalfs
-   find * -type d -exec mkdir -p "/{}" \;
-   find * -type f -exec cp -au "{}" "/{}" \;
-   find * -type l -exec cp -au "{}" "/{}" \;
+   find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
+   find . -type f -o -type l -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
@@ -185,8 +185,8 @@ then
    set -x
    if [ "$DOWNLOADSDIR" == "$BUILDDIR" ]
    then
-      find * -type f \( -name "*.tar" -o -name "*.tar.*" \) -maxdepth 0 -exec tar -xp -f "{}" \;
-      find * -type f -name "*.zip" -maxdepth 0 -exec unzip -o -d ./ "{}" \;
+      find . -maxdepth 1 -type f -name "*.tar" -o -name "*.tar.*" -exec tar -xpf "{}" \;
+      find . -maxdepth 1 -type f -name "*.zip" -exec unzip -o -d ./ "{}" \;
    fi
 fi
 if [ -n "$BUILDCMDS" ]
@@ -331,8 +331,8 @@ do
 done
 sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive
 set +f
-find * -xdev \( -path "var/cache/*" -o -path "tmp/*" -o -path "sys/*" -o -path "proc/*" -o -path "dev/*" -o -path "lib/apk/*" -o -path "etc/apk/*" \) \( -type f -o -type l \) -perm +0200 -delete
-find * -depth -xdev \( -path "var/cache/*" -o -path "tmp/*" -o -path "sys/*" -o -path "proc/*" -o -path "dev/*" -o -path "lib/apk/*" -o -path "etc/apk/*" \) -type d -perm +0200 -exec [ -z "\$(ls -A "{}")" ] \&\& rm -r "{}" \;
+find . -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) \( -type f -o -type l \) -perm +0200 -delete
+find . -depth -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) -type d -perm +0200 -exec sh -c '[ -z "$(ls -A "{}")" ] && rm -r "{}"' \;
 for dir in $REMOVEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -360,7 +360,10 @@ done
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
    DESTDIR="${DESTDIR#/}"
-   (find * -type l -exec echo -n "/{}>" \; -exec readlink "{}" \; && find * -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|') | sort -u - > /tmp/onbuild/exclude.filelist.new
+   
+   sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"'
+   
+   (find . -type l -exec sh -c 'echo -n "$(echo "{}" | cut -c 2-)>"' \; -exec readlink "{}" \; && find . -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ [.]||') | sort -u - > /tmp/onbuild/exclude.filelist.new
    comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
    subdests="dev doc static"
    dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include"
