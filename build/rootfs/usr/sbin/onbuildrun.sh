@@ -1,4 +1,20 @@
 #!/bin/sh
+
+removeEmptyDirs(){
+   local dir="$1"
+   local itemCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
+   if [ "$itemCount" == "0" ]
+   then
+      rm -rf "$dir"
+   else
+      local subdirs="$(find "$dir" -maxdepth 1 -mindepth 1 -type d)"
+      for dir in $subdirs
+      do
+         removeEmptyDirs "$dir"
+      done
+   fi
+}
+
 exec > /build.log 2>&1
 
 set -ex +fam
@@ -337,9 +353,10 @@ do
       rm -f "$file"
    fi
 done
-find * -type d -maxdepth 0 | sort - > /tmp/topDirs
-find * -type d -maxdepth 0 | awk '{system("find \""$1"\" -type f -exec find \""$1"\" -maxdepth 0 \\;")}' | sort -u - > /tmp/usedTopDirs
-comm -23 /tmp/topDirs /tmp/usedTopDirs | xargs rm -rf
+for dir in $(find . -maxdepth 1 -mindepth 1 -type d)
+do
+   removeEmptyDirs "$dir"
+done
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
    DESTDIR="${DESTDIR#/}"
