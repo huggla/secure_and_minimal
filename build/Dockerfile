@@ -83,6 +83,7 @@ ARG TAG="20190919"
         ONBUILD ARG REMOVEFILES
         ONBUILD ARG INITCMDS
         ONBUILD ARG BUILDCMDS
+        ONBUILD ARG LEAVEEMPTYDIRS
         ONBUILD ARG FINALCMDS
     # ---------------------------------------------------------------------
     # ENV
@@ -149,6 +150,7 @@ ARG TAG="20190919"
         ONBUILD ENV REMOVEFILES="${REMOVEFILES}"
         ONBUILD ENV INITCMDS="${INITCMDS}"
         ONBUILD ENV BUILDCMDS="${BUILDCMDS}"
+        ONBUILD ENV LEAVEEMPTYDIRS="${LEAVEEMPTYDIRS:-no}"
         ONBUILD ENV FINALCMDS="${FINALCMDS}"
     # ---------------------------------------------------------------------
     # COPY
