@@ -139,7 +139,7 @@ then
    fi
    cd /finalfs
    find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
-   find . -type f -o -type l -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
+   find . \( -type f -o -type l \) -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
@@ -185,7 +185,7 @@ then
    set -x
    if [ "$DOWNLOADSDIR" == "$BUILDDIR" ]
    then
-      find . -maxdepth 1 -type f -name "*.tar" -o -name "*.tar.*" -exec tar -xpf "{}" \;
+      find . -maxdepth 1 -type f \( -name "*.tar" -o -name "*.tar.*" \) -exec tar -xpf "{}" \;
       find . -maxdepth 1 -type f -name "*.zip" -exec unzip -o -d ./ "{}" \;
    fi
 fi
