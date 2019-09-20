@@ -228,6 +228,7 @@ then
    DESTDIR="$tmpDESTDIR"
 fi
 cd /
+rm -f /finalfs/etc/passwd /finalfs/etc/passwd- /finalfs/etc/group /finalfs/etc/group-
 if [ -n "$FINALCMDS" ]
 then
    set +x
