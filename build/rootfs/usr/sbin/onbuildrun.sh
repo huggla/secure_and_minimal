@@ -355,7 +355,7 @@ do
 done
 if [ "$LEAVEEMPTYDIRS" == "no" ]
 then
-   removeEmptyDirs "/"
+   removeEmptyDirs "/finalfs"
 fi
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
