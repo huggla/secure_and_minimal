@@ -2,17 +2,16 @@
 
 removeEmptyDirs(){
    local dir="$1"
+   local subdirs="$(find "$dir" -maxdepth 1 -mindepth 1 -type d)"
+   local subdir=""
+   for subdir in $subdirs
+   do
+      removeEmptyDirs "$subdir"
+   done
    local childCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
-   if [ "$childCount" == "0" ]
+   if [ "$dir" != "/" ] && [ "$childCount" == "0" ]
    then
       rm -rf "$dir"
-   else
-      local subdirs="$(find "$dir" -maxdepth 1 -mindepth 1 -type d)"
-      local subdir=""
-      for subdir in $subdirs
-      do
-         removeEmptyDirs "$subdir"
-      done
    fi
 }
 
@@ -353,10 +352,10 @@ do
       rm -f "$file"
    fi
 done
-for dir in $(find . -maxdepth 1 -mindepth 1 -type d)
-do
-   removeEmptyDirs "$dir"
-done
+if [ "$LEAVEEMPTYDIRS" == "no" ]
+then
+   removeEmptyDirs "/"
+fi
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
    DESTDIR="${DESTDIR#/}"
