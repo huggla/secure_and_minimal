@@ -4,7 +4,9 @@ fileWithNlEnding(){
    then
       file="$(/bin/mktemp -d)/$(/usr/bin/basename "$file")"
       /bin/cp -p "$1" "$file"
+      /bin/chmod u+w "$file"
       echo >> "$file"
+      /bin/chmod u-w "$file"
    fi
    echo "$file"
 }
