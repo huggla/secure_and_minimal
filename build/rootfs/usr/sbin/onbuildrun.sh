@@ -353,7 +353,7 @@ do
       rm -f "$file"
    fi
 done
-if [ "$LEAVEEMPTYDIRS" == "no" ]
+if [ "$KEEPEMPTYDIRS" == "no" ]
 then
    removeEmptyDirs "/finalfs"
 fi
