@@ -9,7 +9,7 @@ removeEmptyDirs(){
       removeEmptyDirs "$subdir"
    done
    local childCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
-   if [ "$dir" != "/" ] && [ "$childCount" == "0" ] && ! (echo "$MAKEDIRS" | grep -q "$dir")
+   if [ "$dir" != "/" ] && [ "$childCount" == "0" ] && ! (echo "$MAKEDIRS " | grep -qe "^$dir ")
    then
       rm -rf "$dir"
    fi
