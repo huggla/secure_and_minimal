@@ -403,7 +403,7 @@ then
             sibling="${sibling#-}"
             contentfile="${IMAGEID}${sibling:+-$sibling}"
             cd "$siblingdir"
-            find . -mindepth 1 | cut -c 2- > "$contentfile"
+            find . -mindepth 1 ! -name "$contentfile" | cut -c 2- > "$contentfile"
             gzip "$contentfile"
             cd ..
          done
