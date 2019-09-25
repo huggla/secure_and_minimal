@@ -398,17 +398,6 @@ then
          mkdir -p "$DESTDIR-app"
          cp -a $DESTDIR/* "$DESTDIR-app/"
          rm -rf "$DESTDIR"
-         for siblingdir in $DESTDIR*
-         do
-            cp -a $siblingdir/* ./
-            sibling="${siblingdir#$DESTDIR}"
-            sibling="${sibling#-}"
-            contentfile="${IMAGEID}${sibling:+-$sibling}"
-            cd "$siblingdir"
-            find . -mindepth 1 ! -name "$contentfile" | cut -c 2- > "$contentfile"
-            gzip "$contentfile"
-            cd ..
-         done
       fi
    fi
 fi
@@ -419,6 +408,20 @@ sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbu
 rm -f /tmp/onbuild/exclude.filelist.*
 tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild
 mv /environment ./
+if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]
+then
+   for siblingdir in $DESTDIR*
+   do
+      cp -a $siblingdir/* ./
+      sibling="${siblingdir#$DESTDIR}"
+      sibling="${sibling#-}"
+      contentfile="${IMAGEID}${sibling:+-$sibling}"
+      cd "$siblingdir"
+      find . -mindepth 1 ! -name "$contentfile" | cut -c 2- > "$contentfile"
+      gzip "$contentfile"
+      cd ..
+   done
+fi
 set +e
 chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
 chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
