@@ -395,8 +395,14 @@ then
                fi
             done
          done
-         cp -a "$DESTDIR" "$DESTDIR-app"
+         ls -la "./"
+         ls -la "./$DESTDIR"
+         ls -la "./$DESTDIR-app"
+         cp -a "./$DESTDIR" "./$DESTDIR-app"
+          ls -la "./$DESTDIR"
          rm -rf "$DESTDIR"
+                  ls -la "./"
+         ls -la "./$DESTDIR-app"
          for siblingdir in $DESTDIR*
          do
             cp -a $siblingdir/* ./
