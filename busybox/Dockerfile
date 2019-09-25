@@ -1,4 +1,4 @@
-ARG TAG="20190919"
+ARG TAG="20190925"
 FROM huggla/alpine:$TAG as alpine
 
 RUN exec 2>&1 \
