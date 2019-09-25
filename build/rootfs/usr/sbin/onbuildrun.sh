@@ -395,7 +395,8 @@ then
                fi
             done
          done
-         mv "$DESTDIR" "$DESTDIR-app"
+         cp -a "$DESTDIR" "$DESTDIR-app"
+         rm -rf "$DESTDIR"
          for siblingdir in $DESTDIR*
          do
             cp -a $siblingdir/* ./
