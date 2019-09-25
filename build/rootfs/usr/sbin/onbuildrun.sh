@@ -363,8 +363,8 @@ then
    (find . -type l -exec sh -c 'echo -n "$(echo "{}" | cut -c 2-)>"' \; -exec readlink "{}" \; && find . -type f -exec md5sum "{}" \; | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ [.]||') | sort -u - > /tmp/onbuild/exclude.filelist.new
    comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
    subdests="dev doc static"
-   dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig usr/include"
-   doc="${COMMON_CONFIGUREPREFIX#/}/share/man usr/share/doc"
+   dev="${COMMON_CONFIGUREPREFIX#/}/lib/pkgconfig ${COMMON_CONFIGUREPREFIX#/}/include"
+   doc="${COMMON_CONFIGUREPREFIX#/}/share/man ${COMMON_CONFIGUREPREFIX#/}/share/doc"
    if [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ]
    then
       rm -rf "$DESTDIR-dev" "$DESTDIR-doc"
@@ -378,7 +378,7 @@ then
       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]
       then
          cd "$DESTDIR"
-         static="$(find ${COMMON_CONFIGUREPREFIX#/}/lib/*.a | xargs)"
+         static="$(find ${COMMON_CONFIGUREPREFIX#/}/lib/*.a -maxdepth 0 \( -type f -o -type l \) | xargs)"
          cd /finalfs
          for subdest in $subdests
          do
@@ -391,7 +391,7 @@ then
                   subdestdir="$DESTDIR-$subdest$(dirname "/$file")"
                   mkdir -p "$subdestdir"
                   cp -a "$destfile" "$subdestdir/"
-                  rm -r "$destfile"
+                  rm -rf "$destfile"
                fi
             done
          done
