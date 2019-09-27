@@ -3,9 +3,9 @@
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
 ARG SaM_VERSION="1.0"
-ARG TAG="20190925"
+ARG TAG="20190927"
 ARG IMAGETYPE="secure_and_minimal"
-ARG BASEIMAGE="huggla/busybox:$TAG"
+ARG BASEIMAGE="huggla/busybox:$SaM_VERSION-$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
 ARG MAKEFILES="/etc/sudoers.d/docker1 /etc/sudoers.d/docker2"
 ARG REMOVEFILES="/usr/sbin/visudo /usr/bin/sudoreplay /usr/bin/cvtsudoers /usr/bin/sudoedit"
