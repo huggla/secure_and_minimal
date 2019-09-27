@@ -2,6 +2,15 @@ createLinuxUser(){
    local user="${1:-$VAR_LINUX_USER}"
    local uid=${2:-102}
    local gid=$3
+   if [ -z "$VAR_HOME_DIR" ]
+   then
+      if [ -n "$VAR_CONFIG_DIR" ]
+      then
+         VAR_HOME_DIR="$VAR_CONFIG_DIR"
+      else
+         VAR_HOME_DIR="/dev/null"
+      fi
+   fi
    if ! /usr/bin/id $user > /dev/null 2>&1
    then
       if [ -z "$gid" ]
@@ -16,7 +25,7 @@ createLinuxUser(){
             gid=$uid
          fi
       done
-      echo "$user:x:$uid:$gid:$user:/dev/null:/sbin/nologin" >> /etc/passwd
+      echo "$user:x:$uid:$gid:$user:$VAR_HOME_DIR:/sbin/nologin" >> /etc/passwd
       if ! /bin/grep -q "x:$gid" /etc/group
       then
          echo "$user:x:$gid:$user" >> /etc/group
