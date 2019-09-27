@@ -28,7 +28,7 @@ makeAllFromList(){
          if $(echo $match | /bin/grep -qiE "(pass|pw|sec|salt|key)[^=]*=")
          then
             p2="secret"
-         elif $(echo $match | /bin/grep -qiE "(conf|sock|storage|data|logfile|logdir|_log_|_logs_|temp|tmp|_work_)[^=]*=") || $(echo $match | /bin/grep -q "$VAR_CONFIG_DIR")
+         elif $(echo $match | /bin/grep -qiE "(conf|sock|storage|data|logfile|logdir|_log_|_logs_|temp|tmp|home|_work_)[^=]*=") || $(echo $match | /bin/grep -q "$VAR_CONFIG_DIR")
          then
             p2="write"
          fi
