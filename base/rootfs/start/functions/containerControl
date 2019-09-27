@@ -10,16 +10,10 @@ containerControl(){
       fixHosts
       makeAllFromList "$(allVars)"
       local finalCmdString="$(echo "$VAR_FINAL_COMMAND &" | sed 's/\"/\\042/g')"
+   fi
+   . /start/stage3
       sourceDirs /start/stage3
       setLinuxUserAsOwner
-      {
-         eval "echo -e \"$finalCmdString\""
-         echo 'PID=$!'
-         echo 'wait $PID'
-         echo 'for sig in 1 2 3 6 9 14 15; do trap - $sig; done'
-         echo 'wait $PID'
-         echo 'EXIT_STATUS=$?'
-      } >> /stop/stage1
       writeEnvironmentVars
    else
       sourceDirs /start/stage3
@@ -28,5 +22,5 @@ containerControl(){
    then
       /usr/bin/env -i /start/delayedDisableStartupExecutables &
    fi
-   execCmdAsUser /stop/stage1 $finalUser
+   execCmdAsUser /start/stage4 "$finalUser" "$finalCmdString"
 }
