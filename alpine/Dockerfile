@@ -1,5 +1,3 @@
-ARG SaM_VERSION="1.0"
-
 FROM alpine:edge as alpine
 
 RUN exec 2>&1 \
