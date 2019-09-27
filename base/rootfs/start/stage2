@@ -4,8 +4,17 @@ set -ef +am
 
 if [ -e "/environment/isFirstRun" ]
 then
+   isFirstRun="true"
    /bin/rm -f /environment/isFirstRun
-   containerControl true
-else
-   containerControl
 fi
+readEnvironmentVars
+finalUser=$VAR_LINUX_USER
+find /usr/local/bin -type f -exec /bin/chmod g=rx "{}" +
+if [ "$isFirstRun" == "true" ]
+   createLinuxUser "$VAR_LINUX_USER" 102 0
+   updateSudoersConf
+   fixHosts
+   makeAllFromList "$(allVars)"
+   local finalCmdString="$(echo "$VAR_FINAL_COMMAND &" | sed 's/\"/\\042/g')"
+fi
+. /start/stage3
