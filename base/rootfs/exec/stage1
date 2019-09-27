@@ -1,0 +1,19 @@
+#!/usr/local/bin/dash
+set -efm +a
+. /exec/includeFunctions
+
+for sig in 1 2 3 6 9 14 15
+do
+   trap ". /stop/stage1" $sig
+done
+set +e
+sourceDirs /exec/stage2
+. /exec/stage3
+PID=$!
+wait $PID
+for sig in 1 2 3 6 9 14 15
+do
+   trap - $sig
+done
+wait $PID
+EXIT_STATUS=$?
