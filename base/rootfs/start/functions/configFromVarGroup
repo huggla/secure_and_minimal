@@ -13,9 +13,10 @@ configFromVarGroup(){
    eval "local end=\"$(echo \"\${${group}_end-}\")\""
    for var in $groupVars
    do
-      var=${var#VAR_$group*_}
+      var="${var#VAR_$group*_}"
       varName="$(echo ${var%%=*} | sed "s/__/$dblUScore/g" | sed "s/_/$uScore/g")"
-      varValue="$(eval "echo \"$(eval "echo ${var#*=}")\"")"
+      eval "varValue=\"${var#*=}\""
+      eval "varValue=\"$varValue\""
       var="$varName $begin $varValue $end"
       vars="$vars$delimiter$var"
       delimiter=$'\n'
