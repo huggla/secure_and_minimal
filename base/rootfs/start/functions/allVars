@@ -1,3 +1,60 @@
 allVars(){
-   set | grep -E "^VAR_"
+   local IFS=$(echo -en "\n\b")
+   local sortedVars="$(set | grep -E "^VAR_")"
+   local var=""
+   local nestedVars1=""
+   local delimiter1=""
+   local delimiter2=""
+   
+   local orderedVars=""
+   
+   
+   
+   
+   for var in $sortedVars
+   do
+      if echo "$var" | grep -q '$VAR_'
+      then
+         nestedVars1="$nestedVars1$delimiter1$var"
+         delimiter1=$'\n'
+      else
+         orderedVars="$orderedVars$delimiter2$var"
+         delimiter2=$'\n'
+      fi
+   done
+
+   echo "$orderedVars"$'\n'"$nestedVars"
+   set | grep -E "^VAR_" | awk '{system("[ echo "$0" | grep -q \"$VAR_\" ] && nestedVars=\"$nestedVars$\n"$0"\" || vars=\"vars$\n"$0"\";")}'
 }
+
+orderNestedVars(){
+   local nestedVars1="$1"
+   local nestedVars2=""
+   local delimiter3=""
+   local nested=""
+   local var=""
+   local nvar=""
+   local varIsset=""
+   for var in $nestedVars1
+   do
+      varIsset="true"
+      nested="$(echo "$var" | grep -oE "$VAR_[[:alnum:] ]+" | sed 's/$//g')"
+      for nvar in $nested
+      do
+         IFS=""
+         if [ "${orderedVars#*$nvar}" == "$orderedVars" ]
+         then
+            nestedVars2="$nestedVars2$delimiter3$var"
+            delimiter3=$'\n'
+            varIsset="false"
+            IFS=$(echo -en "\n\b")
+            break
+         else
+            IFS=$(echo -en "\n\b")
+         fi
+      done
+      if [ "$varIsset" == "true" ]
+      then
+         orderedVars="$orderedVars$delimiter2$var"
+      fi
+   done
