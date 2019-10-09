@@ -2,7 +2,7 @@ configFromVarGroup(){
    local IFS="$(echo -en "\n\b")"
    local group="$1"
    local var=""
-   local groupVars="$(set | /bin/grep -E "^VAR_$group[0-9]*_")"
+   local groupVars="$(set | /bin/grep "^VAR_$group[0-9]*_")"
    local vars=""
    local delimiter=""
    local varName=""
