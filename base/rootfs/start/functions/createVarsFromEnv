@@ -54,11 +54,9 @@ createVarsFromEnv(){
                   varIsset="false"
                   IFS=$(echo -en "\n\b")
                   break
-               else
-                  
-            else
-               IFS=$(echo -en "\n\b")
+               fi
             fi
+            IFS=$(echo -en "\n\b")
          done
          if [ "$varIsset" == "true" ]
          then
