@@ -1,4 +1,4 @@
-[ $(type -t allVars) ] || . /start/functions/allVars
+[ $(type -t allVars) ] || . /start/functions/createVarsFromEnv
 
 writeEnvironmentVars(){
    createVarsFromEnv | sed 's/\\/\\\\/g' > "/environment/vars"
