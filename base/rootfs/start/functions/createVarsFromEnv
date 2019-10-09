@@ -10,7 +10,7 @@ createVarsFromEnv(){
    then      
       local orderedDelimiter=""
       local orderedVars=""
-      local vars="$(set | grep "^VAR_")
+      local vars="$(set | grep "^VAR_")"
       nested="$(echo "$vars" | grep -o '$VAR_[[:alnum:] ]*' | sed 's/\$//g')"
       for var in $vars
       do
