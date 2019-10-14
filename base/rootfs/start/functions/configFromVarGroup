@@ -15,7 +15,7 @@ configFromVarGroup(){
    do
       var="${var#VAR_$group*_}"
       varName="$(echo "${var%%=*}" | sed "s/__/$dblUScore/g" | sed "s/_/$uScore/g")"
-      eval "varValue=\"$(echo -en ${var#*=})\""
+      eval "varValue=${var#*=}"
       var="$varName $begin $varValue $end"
       vars="$vars$delimiter$var"
       delimiter=$'\n'
