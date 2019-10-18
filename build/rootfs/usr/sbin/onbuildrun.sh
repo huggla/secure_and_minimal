@@ -292,14 +292,20 @@ do
    set +f
    echo "$exe" >> /environment/startupexecutables
 done
-sort -u -o /environment/startupexecutables /environment/startupexecutables
+if [ -s "/environment/startupexecutables" ]
+then
+   sort -u -o /environment/startupexecutables /environment/startupexecutables
+fi
 set -f
 for file in $GID0WRITABLES
 do
    set +f
    echo "$file" >> /environment/gid0writables
 done
-sort -u -o /environment/gid0writables /environment/gid0writables
+if [ -s "/environment/gid0writables" ]
+then
+   sort -u -o /environment/gid0writables /environment/gid0writables
+fi
 set -f
 while read file
 do
@@ -312,7 +318,10 @@ do
    set +f
    echo "$dir" >> /environment/gid0writablesrecursive
 done
-sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive
+if [ -s "/environment/gid0writablesrecursive" ]
+then
+   sort -u -o /environment/gid0writablesrecursive /environment/gid0writablesrecursive
+fi
 set -f
 while read dir
 do
@@ -325,14 +334,20 @@ do
    set +f
    echo "$file" >> /environment/linuxuserowned
 done
-sort -u -o /environment/linuxuserowned /environment/linuxuserowned
+if [ -s "/environment/linuxuserowned" ]
+then
+   sort -u -o /environment/linuxuserowned /environment/linuxuserowned
+fi
 set -f
 for dir in $LINUXUSEROWNEDRECURSIVE
 do
    set +f
    echo "$dir" >> /environment/linuxuserownedrecursive
 done
-sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive
+if [ -s "/environment/linuxuserownedrecursive" ]
+then
+   sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive
+fi
 set +f
 find . -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) \( -type f -o -type l \) -perm +0200 -delete
 find . -depth -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) -type d -perm +0200 -exec sh -c '[ -z "$(ls -A "{}")" ] && rm -r "{}"' \;
