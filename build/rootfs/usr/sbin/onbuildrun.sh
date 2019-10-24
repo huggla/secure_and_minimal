@@ -33,35 +33,34 @@ cd /finalfs
 rm -rf environment
 getfacl -R . > /tmp/init-permissions.txt
 tar -xp -f /environment/onbuild.tar.gz -C /tmp
-if [ -n "$RUNDEPS" ]
+if [ -n "$RUNDEPS" ] && ([ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ])
 then
-   if [ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ]
+   cd /excludefs
+   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /excludefs add --quiet --initdb $EXCLUDEDEPS $EXCLUDEAPKS
+   if [ -n "$EXCLUDEDEPS" ]
    then
-      cd /excludefs
-      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /excludefs add --quiet --initdb $EXCLUDEDEPS $EXCLUDEAPKS
-      if [ -n "$EXCLUDEDEPS" ]
-      then
-         excludeFilesDeps="$(apk --no-cache --quiet --root /excludefs info --depends $EXCLUDEDEPS | xargs apk --no-cache --quiet --root /excludefs info --contents)"
-      fi
-      excludeFilesApks="$(apk --no-cache --quiet --root /excludefs info --contents $EXCLUDEAPKS)"
-      excludeFiles="$(echo ${excludeFilesDeps}${excludeFilesApks} | grep -v '^$' | sort -u -)"
-      for file in $excludeFiles
-      do
-         if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .
-         then
-            if [ -L "$file" ]
-            then
-               (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist
-            elif [ -f "$file" ]
-            then
-               md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist || exit 1
-            fi
-         fi
-      done
-      rm -rf /excludefs
-      sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
+      excludeFilesDeps="$(apk --no-cache --quiet --root /excludefs info --depends $EXCLUDEDEPS | xargs apk --no-cache --quiet --root /excludefs info --contents)"
    fi
-   cd /
+   excludeFilesApks="$(apk --no-cache --quiet --root /excludefs info --contents $EXCLUDEAPKS)"
+   excludeFiles="$(echo ${excludeFilesDeps}${excludeFilesApks} | grep -v '^$' | sort -u -)"
+   for file in $excludeFiles
+   do
+      if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .
+      then
+         if [ -L "$file" ]
+         then
+            (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist
+         elif [ -f "$file" ]
+         then
+            md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist || exit 1
+         fi
+      fi
+   done
+   rm -rf /excludefs
+   sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
+   cd /finalfs
+fi
+   
    if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
    then
       apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
