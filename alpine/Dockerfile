@@ -1,7 +1,6 @@
-ARG SaM_VERSION="1.1"
-ARG ALPINE_VERSION="edge"
+ARG SaM_VERSION="1.1-edge"
 
-FROM alpine:$ALPINE_VERSION as alpine
+FROM alpine:edge as alpine
 
 RUN exec 2>&1 \
  && set -x \
