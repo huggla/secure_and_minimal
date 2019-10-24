@@ -32,70 +32,59 @@ cd /finalfs
 rm -rf environment
 getfacl -R . > /tmp/init-permissions.txt
 tar -xp -f /environment/onbuild.tar.gz -C /tmp
-if ([ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]) && ([ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ])
+if [ -n "$RUNDEPS" ]
 then
-   cd /excludefs
-   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /excludefs add --quiet --initdb $EXCLUDEDEPS $EXCLUDEAPKS
-   if [ -n "$EXCLUDEDEPS" ]
+   if [ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ]
    then
-      excludeFilesDeps="$(apk --no-cache --quiet --root /excludefs info --depends $EXCLUDEDEPS | xargs apk --no-cache --quiet --root /excludefs info --contents)"
-   fi
-   excludeFilesApks="$(apk --no-cache --quiet --root /excludefs info --contents $EXCLUDEAPKS)"
-   excludeFiles="$(echo ${excludeFilesDeps}${excludeFilesApks} | grep -v '^$' | sort -u -)"
-   for file in $excludeFiles
-   do
-      if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .
+      cd /excludefs
+      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /excludefs add --quiet --initdb $EXCLUDEDEPS $EXCLUDEAPKS
+      if [ -n "$EXCLUDEDEPS" ]
       then
-         if [ -L "$file" ]
-         then
-            (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist
-         elif [ -f "$file" ]
-         then
-            md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist || exit 1
-         fi
+         excludeFilesDeps="$(apk --no-cache --quiet --root /excludefs info --depends $EXCLUDEDEPS | xargs apk --no-cache --quiet --root /excludefs info --contents)"
       fi
-   done
-   rm -rf /excludefs
-   sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
-   cd /finalfs
-fi
-find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
-if [ -n "$INITCMDS" ]
-then
-   set +x
-   echo '++++++++++++++++++++++++++++++++++'
-   echo '+++++++++ INITCMDS <begin> +++++++'
-   echo '++++++++++++++++++++++++++++++++++'
-   set -x
-   eval "$INITCMDS"
-   set +x
-   echo '----------------------------------'
-   echo '--------- INITCMDS </end> --------'
-   echo '----------------------------------'
-   set -x
-fi
-if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
-then
-   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
-   set +x
-   echo '++++++++++++++++++++++++++++++++++'
-   echo '+++++++++ RUNDEPS <begin> ++++++++'
-   echo '++++++++++++++++++++++++++++++++++'
-   set -x
-   if [ -n "$RUNDEPS" ]
-   then
-      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
+      excludeFilesApks="$(apk --no-cache --quiet --root /excludefs info --contents $EXCLUDEAPKS)"
+      excludeFiles="$(echo ${excludeFilesDeps}${excludeFilesApks} | grep -v '^$' | sort -u -)"
+      for file in $excludeFiles
+      do
+         if find "$file" -maxdepth 0 ! -path 'var/cache/*' ! -path 'tmp/*' | grep -q -e .
+         then
+            if [ -L "$file" ]
+            then
+               (echo -n "/$file>" && readlink "$file") >> /tmp/onbuild/exclude.filelist
+            elif [ -f "$file" ]
+            then
+               md5sum "$file" | awk '{first=$1; $1=""; print $0">"first}' | sed 's|^ |/|' >> /tmp/onbuild/exclude.filelist || exit 1
+            fi
+         fi
+      done
+      rm -rf /excludefs
+      sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
    fi
-   if [ -n "$RUNDEPS_UNTRUSTED" ]
+   cd /
+   if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
    then
-      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --allow-untrusted add $RUNDEPS_UNTRUSTED
+      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
+      set +x
+      echo '++++++++++++++++++++++++++++++++++'
+      echo '+++++++++ RUNDEPS <begin> ++++++++'
+      echo '++++++++++++++++++++++++++++++++++'
+      set -x
+      if [ -n "$RUNDEPS" ]
+      then
+         apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
+      fi
+      if [ -n "$RUNDEPS_UNTRUSTED" ]
+      then
+         apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --allow-untrusted add $RUNDEPS_UNTRUSTED
+      fi
+      set +x
+      echo '----------------------------------'
+      echo '---------- RUNDEPS </end> --------'
+      echo '----------------------------------'
+      set -x
    fi
-   set +x
-   echo '----------------------------------'
-   echo '---------- RUNDEPS </end> --------'
-   echo '----------------------------------'
-   set -x
 fi
+cd /finalfs
 for dir in $MAKEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -125,6 +114,21 @@ do
 done
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
 find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \;
+if [ -n "$INITCMDS" ]
+then
+   cd /
+   set +x
+   echo '++++++++++++++++++++++++++++++++++'
+   echo '+++++++++ INITCMDS <begin> +++++++'
+   echo '++++++++++++++++++++++++++++++++++'
+   set -x
+   eval "$INITCMDS"
+   set +x
+   echo '----------------------------------'
+   echo '--------- INITCMDS </end> --------'
+   echo '----------------------------------'
+   set -x
+fi
 if [ -n "$BUILDCMDS" ]
 then
    if [ -z "$DESTDIR" ]
@@ -134,6 +138,7 @@ then
          DESTDIR="content"
       fi
    fi
+   cd /finalfs
    find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
    find . \( -type f -o -type l \) -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
