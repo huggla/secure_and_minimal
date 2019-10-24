@@ -16,7 +16,6 @@ removeEmptyDirs(){
 }
 
 exec > /build.log 2>&1
-
 set -ex +fam
 if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] && [ -z "$DESTDIR" ]
 then
@@ -33,7 +32,7 @@ cd /finalfs
 rm -rf environment
 getfacl -R . > /tmp/init-permissions.txt
 tar -xp -f /environment/onbuild.tar.gz -C /tmp
-if [ -n "$RUNDEPS" ] && ([ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ])
+if ([ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]) && ([ -n "$EXCLUDEDEPS" ] || [ -n "$EXCLUDEAPKS" ])
 then
    cd /excludefs
    apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /excludefs add --quiet --initdb $EXCLUDEDEPS $EXCLUDEAPKS
@@ -60,31 +59,43 @@ then
    sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
    cd /finalfs
 fi
-   
-   if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
-   then
-      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
-      set +x
-      echo '++++++++++++++++++++++++++++++++++'
-      echo '+++++++++ RUNDEPS <begin> ++++++++'
-      echo '++++++++++++++++++++++++++++++++++'
-      set -x
-      if [ -n "$RUNDEPS" ]
-      then
-         apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
-      fi
-      if [ -n "$RUNDEPS_UNTRUSTED" ]
-      then
-         apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --allow-untrusted add $RUNDEPS_UNTRUSTED
-      fi
-      set +x
-      echo '----------------------------------'
-      echo '---------- RUNDEPS </end> --------'
-      echo '----------------------------------'
-      set -x
-   fi
+find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
+if [ -n "$INITCMDS" ]
+then
+   set +x
+   echo '++++++++++++++++++++++++++++++++++'
+   echo '+++++++++ INITCMDS <begin> +++++++'
+   echo '++++++++++++++++++++++++++++++++++'
+   set -x
+   eval "$INITCMDS"
+   set +x
+   echo '----------------------------------'
+   echo '--------- INITCMDS </end> --------'
+   echo '----------------------------------'
+   set -x
 fi
-cd /finalfs
+if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
+then
+   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
+   set +x
+   echo '++++++++++++++++++++++++++++++++++'
+   echo '+++++++++ RUNDEPS <begin> ++++++++'
+   echo '++++++++++++++++++++++++++++++++++'
+   set -x
+   if [ -n "$RUNDEPS" ]
+   then
+      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
+   fi
+   if [ -n "$RUNDEPS_UNTRUSTED" ]
+   then
+      apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --allow-untrusted add $RUNDEPS_UNTRUSTED
+   fi
+   set +x
+   echo '----------------------------------'
+   echo '---------- RUNDEPS </end> --------'
+   echo '----------------------------------'
+   set -x
+fi
 for dir in $MAKEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -114,21 +125,6 @@ do
 done
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
 find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \;
-if [ -n "$INITCMDS" ]
-then
-   cd /
-   set +x
-   echo '++++++++++++++++++++++++++++++++++'
-   echo '+++++++++ INITCMDS <begin> +++++++'
-   echo '++++++++++++++++++++++++++++++++++'
-   set -x
-   eval "$INITCMDS"
-   set +x
-   echo '----------------------------------'
-   echo '--------- INITCMDS </end> --------'
-   echo '----------------------------------'
-   set -x
-fi
 if [ -n "$BUILDCMDS" ]
 then
    if [ -z "$DESTDIR" ]
