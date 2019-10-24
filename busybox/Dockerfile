@@ -1,6 +1,6 @@
 ARG SaM_VERSION="1.1"
 ARG TAG="20191018"
-FROM huggla/alpine:$SaM_VERSION-$TAG as alpine
+FROM huggla/sam-$SaM_VERSION:alpine-edge-$TAG as alpine
 
 RUN exec 2>&1 \
  && set -x \
