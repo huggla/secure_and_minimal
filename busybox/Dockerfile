@@ -1,4 +1,4 @@
-ARG SaM_VERSION="1.0"
+ARG SaM_VERSION="1.1"
 ARG TAG="20191018"
 FROM huggla/alpine:$SaM_VERSION-$TAG as alpine
 
