@@ -210,6 +210,15 @@ then
    fi
    tmpDESTDIR="$DESTDIR"
    DESTDIR="/finalfs$DESTDIR"
+   buildVars="LIBRARY_PATH LD_LIBRARY_PATH JRE_HOME CFLAGS MPICXX JAVA_HOME MPICC CC CPATH"
+   for var in $buildVars
+   do
+      eval "varValue=\$$var"
+      if [ -z "$varValue" ]
+      then
+         unset $var
+      fi
+   done
    cd "$BUILDDIR"
    set +x
    echo '++++++++++++++++++++++++++++++++++'
