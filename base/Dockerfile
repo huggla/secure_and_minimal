@@ -3,7 +3,7 @@
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
 ARG SaM_VERSION="1.1-edge"
-ARG TAG="20191024"
+ARG TAG="20191112"
 ARG IMAGETYPE="SaM"
 ARG BASEIMAGE="huggla/sam_$SaM_VERSION:busybox-$TAG"
 ARG RUNDEPS="sudo dash argon2 libcap"
