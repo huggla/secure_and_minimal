@@ -283,11 +283,14 @@ fi
 if [ -n "$EXPOSEFUNCTIONS" ]
 then
    mkdir -p usr/local/bin/functions
-   ln -s start/includeFunctions usr/local/bin/
+   cd usr/local/bin
+   ln -s ../../../start/includeFunctions ./
+   cd functions
    for func in $EXPOSEFUNCTIONS
    do
-      ln -s start/functions/$func usr/local/bin/functions/
+      ln -s ../../../../start/functions/$func ./
    done
+   cd /finalfs
 fi
 set -f
 for exe in $STARTUPEXECUTABLES
