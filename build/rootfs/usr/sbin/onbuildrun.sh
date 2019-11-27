@@ -86,7 +86,7 @@ then
    then
    apk info
       apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
- apk info
+ 
  fi
    if [ -n "$RUNDEPS_UNTRUSTED" ]
    then
@@ -98,6 +98,7 @@ then
    echo '----------------------------------'
    set -x
 fi
+apk info
 for dir in $MAKEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -125,6 +126,7 @@ do
       find "$contentdest" -type f -perm +010 -exec chmod g-x "{}" \;
    fi
 done
+apk info
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
 find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \;
 if [ -n "$BUILDCMDS" ]
@@ -141,6 +143,7 @@ then
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
+apk info
 if [ -n "$CLONEGITS" ]
 then
    mkdir -p "$CLONEGITSDIR"
@@ -163,6 +166,7 @@ then
    set -x
    unset IFS
 fi
+apk info
 if [ -n "$DOWNLOADS" ]
 then
    mkdir -p "$DOWNLOADSDIR"
@@ -187,6 +191,7 @@ then
       find . -maxdepth 1 -type f -name "*.zip" -exec unzip -o -d ./ "{}" \;
    fi
 fi
+apk info
 if [ -n "$BUILDCMDS" ]
 then
    if [ -n "${BUILDDEPS}" ] || [ -n "${BUILDDEPS_UNTRUSTED}" ]
