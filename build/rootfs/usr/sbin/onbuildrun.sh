@@ -72,7 +72,9 @@ then
       set -x
       if [ -n "$RUNDEPS" ]
       then
+      apk info
          apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
+      apk info
       fi
       if [ -n "$RUNDEPS_UNTRUSTED" ]
       then
@@ -202,7 +204,9 @@ then
       set -x
       if [ -n "${BUILDDEPS}" ]
       then
-         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot add $BUILDDEPS
+      apk info
+         apk --no-cache --purge --force-overwrite --clean-protected --initramfs-diskless-boot add $BUILDDEPS
+      apk info
       fi
       if [ -n "${BUILDDEPS_UNTRUSTED}" ]
       then
