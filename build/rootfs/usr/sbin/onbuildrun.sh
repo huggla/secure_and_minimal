@@ -196,11 +196,11 @@ then
       set -x
       if [ -n "${BUILDDEPS}" ]
       then
-         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot add $BUILDDEPS
+         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot --root / add $BUILDDEPS
       fi
       if [ -n "${BUILDDEPS_UNTRUSTED}" ]
       then
-         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot allow-untrusted add $BUILDDEPS_UNTRUSTED
+         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot allow-untrusted --root / add $BUILDDEPS_UNTRUSTED
       fi
       set +x
       echo '----------------------------------'
