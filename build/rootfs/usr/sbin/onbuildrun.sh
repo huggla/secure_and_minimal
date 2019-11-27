@@ -144,6 +144,8 @@ then
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
+ls -la /usr/bin
+ls -la /usr/local/bin
 apk info
 if [ -n "$CLONEGITS" ]
 then
@@ -204,14 +206,20 @@ then
       set -x
       if [ -n "${BUILDDEPS}" ]
       then
+      ls -la /usr/bin
+ls -la /usr/local/bin
       apk info
          apk --no-cache --purge --force-overwrite --clean-protected --initramfs-diskless-boot --root / add $BUILDDEPS
    apk info
+   ls -la /usr/bin
+ls -la /usr/local/bin
    fi
       if [ -n "${BUILDDEPS_UNTRUSTED}" ]
       then
          apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot allow-untrusted --root / add $BUILDDEPS_UNTRUSTED
       fi
+      ls -la /usr/bin
+ls -la /usr/local/bin
       set +x
       echo '----------------------------------'
       echo '-------- BUILDDEPS </end> --------'
@@ -235,6 +243,10 @@ then
    echo '++++++++ BUILDCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
    set -x
+   ls -la /usr/bin
+ls -la /usr/local/bin
+ls -la /finalfs/usr/bin
+ls -la /finalfs/usr/local/bin
    eval "$BUILDCMDS"
    set +x
    echo '----------------------------------'
