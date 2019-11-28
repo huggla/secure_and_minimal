@@ -134,6 +134,10 @@ then
          DESTDIR="content"
       fi
    fi
+   if [ -s "/finalfs/etc/apk/world" ]
+   then
+      sort -u -o /etc/apk/world /etc/apk/world /finalfs/etc/apk/world
+   fi
    find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
    find . \( -type f -o -type l \) ! -path "*/apk/*" -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
