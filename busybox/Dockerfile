@@ -18,6 +18,8 @@ RUN exec 2>&1 \
  && >/finalfs/environment/gid0writablesrecursive \
  && >/finalfs/environment/linuxuserowned \
  && >/finalfs/environment/linuxuserownedrecursive \
+ && echo "musl" > /tmp/onbuild/apk.world \
+ && echo "busybox" > /tmp/onbuild/apk.world \
  && cp -a /lib/libz.so* /lib/*musl* /finalfs/lib/ \
  && cp -a /bin/busybox /bin/sh /finalfs/bin/ \
  && cp -a $(find /bin/* -type l | xargs) /finalfs/bin/ \
