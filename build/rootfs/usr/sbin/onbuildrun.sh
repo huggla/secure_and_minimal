@@ -135,7 +135,7 @@ then
       fi
    fi
    find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
-   find . \( -type f -o -type l \) -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
+   find . \( -type f -o -type l \) ! -path "*/apk/*" -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
