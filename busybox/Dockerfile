@@ -36,7 +36,7 @@ RUN exec 2>&1 \
  && /finalfs/bin/busybox cp -a /finalfs/bin/* /bin/ \
  && /finalfs/bin/busybox chroot /finalfs /bin/busybox find . -type l -exec /bin/busybox test ! -e {} \; -delete \
  && cd /finalfs \
- && (/finalfs/bin/busybox find * ! -type d ! -type c -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec echo -n "/{}>" \; -exec /finalfs/bin/busybox readlink "{}" \; && /finalfs/bin/busybox find * ! -type d ! -type c ! -type l ! -path 'tmp/*' ! -path 'var/cache/*' -exec /finalfs/bin/busybox md5sum "{}" \; | /finalfs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /finalfs/bin/busybox sed 's|^ |/|') | /finalfs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
+ && (/finalfs/bin/busybox find . ! -type d ! -type c -type l ! -path '/tmp/*' ! -path '/var/cache/*' -exec echo -n "{}>" \; -exec /finalfs/bin/busybox readlink "{}" \; && /finalfs/bin/busybox find . ! -type d ! -type c ! -type l ! -path '/tmp/*' ! -path '/var/cache/*' -exec /finalfs/bin/busybox md5sum "{}" \; | /finalfs/bin/busybox awk '{first=$1; $1=""; print $0">"first}' | /finalfs/bin/busybox sed 's|^ |/|') | /finalfs/bin/busybox sort -u - > /tmp/onbuild/exclude.filelist \
  && /finalfs/bin/busybox tar -c -z -f /finalfs/environment/onbuild.tar.gz -C /tmp onbuild \
  && echo '.' \
  && echo '**************** Image contents ****************' \
