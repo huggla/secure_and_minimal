@@ -84,10 +84,8 @@ then
    set -x
    if [ -n "$RUNDEPS" ]
    then
-   apk info
       apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add $RUNDEPS
- 
- fi
+   fi
    if [ -n "$RUNDEPS_UNTRUSTED" ]
    then
       apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --allow-untrusted add $RUNDEPS_UNTRUSTED
@@ -98,7 +96,6 @@ then
    echo '----------------------------------'
    set -x
 fi
-apk info
 for dir in $MAKEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -126,10 +123,8 @@ do
       find "$contentdest" -type f -perm +010 -exec chmod g-x "{}" \;
    fi
 done
-apk info
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
 find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \;
-apk info
 if [ -n "$BUILDCMDS" ]
 then
    if [ -z "$DESTDIR" ]
@@ -140,13 +135,10 @@ then
       fi
    fi
    find . -mindepth 1 -type d -exec sh -c 'mkdir -p "$(echo "{}" | cut -c 2-)"' \;
-   find . \( -type f -o -type l \) ! -path "*/apk/*" -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
+   find . \( -type f -o -type l \) -exec sh -c 'cp -au "{}" "$(echo "{}" | cut -c 2-)"' \;
    mkdir -p "/root/.config" "$BUILDDIR" "/finalfs$DESTDIR"
    ln -sf /bin/bash /bin/sh
 fi
-ls -la /usr/bin
-ls -la /usr/local/bin
-apk info
 if [ -n "$CLONEGITS" ]
 then
    mkdir -p "$CLONEGITSDIR"
@@ -169,7 +161,6 @@ then
    set -x
    unset IFS
 fi
-apk info
 if [ -n "$DOWNLOADS" ]
 then
    mkdir -p "$DOWNLOADSDIR"
@@ -194,7 +185,6 @@ then
       find . -maxdepth 1 -type f -name "*.zip" -exec unzip -o -d ./ "{}" \;
    fi
 fi
-apk info
 if [ -n "$BUILDCMDS" ]
 then
    if [ -n "${BUILDDEPS}" ] || [ -n "${BUILDDEPS_UNTRUSTED}" ]
@@ -206,20 +196,12 @@ then
       set -x
       if [ -n "${BUILDDEPS}" ]
       then
-      ls -la /usr/bin
-ls -la /usr/local/bin
-      apk info
-         apk --no-cache --purge --force-overwrite --clean-protected --initramfs-diskless-boot --root / add $BUILDDEPS
-   apk info
-   ls -la /usr/bin
-ls -la /usr/local/bin
-   fi
+         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot add $BUILDDEPS
+      fi
       if [ -n "${BUILDDEPS_UNTRUSTED}" ]
       then
-         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot allow-untrusted --root / add $BUILDDEPS_UNTRUSTED
+         apk --no-cache --purge --force-overwrite --force-refresh --clean-protected --initramfs-diskless-boot allow-untrusted add $BUILDDEPS_UNTRUSTED
       fi
-      ls -la /usr/bin
-ls -la /usr/local/bin
       set +x
       echo '----------------------------------'
       echo '-------- BUILDDEPS </end> --------'
@@ -243,10 +225,6 @@ ls -la /usr/local/bin
    echo '++++++++ BUILDCMDS <begin> +++++++'
    echo '++++++++++++++++++++++++++++++++++'
    set -x
-   ls -la /usr/bin
-ls -la /usr/local/bin
-ls -la /finalfs/usr/bin
-ls -la /finalfs/usr/local/bin
    eval "$BUILDCMDS"
    set +x
    echo '----------------------------------'
