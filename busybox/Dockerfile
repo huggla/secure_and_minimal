@@ -11,15 +11,15 @@ RUN exec 2>&1 \
  && mkdir -m 700 /finalfs/bin /finalfs/sbin /finalfs/environment \
  && mkdir -m 750 /finalfs/etc /finalfs/var /finalfs/run \
  && mkdir -m 770 /finalfs/tmp \
- && mkdir -m 700 /finalfs/usr/bin /finalfs/usr/sbin /tmp/onbuild \
+ && mkdir -m 700 /finalfs/usr/bin /finalfs/usr/sbin /tmp/onbuild /finalfs/etc/apk \
  && mkdir -m 750 /finalfs/var/cache /finalfs/var/log \
  && >/finalfs/environment/startupexecutables \
  && >/finalfs/environment/gid0writables \
  && >/finalfs/environment/gid0writablesrecursive \
  && >/finalfs/environment/linuxuserowned \
  && >/finalfs/environment/linuxuserownedrecursive \
- && echo "musl" > /tmp/onbuild/apk.world \
- && echo "busybox" > /tmp/onbuild/apk.world \
+ && echo "musl" > /finalfs/etc/apk/world \
+ && echo "busybox" >> /finalfs/etc/apk/world \
  && cp -a /lib/libz.so* /lib/*musl* /finalfs/lib/ \
  && cp -a /bin/busybox /bin/sh /finalfs/bin/ \
  && cp -a $(find /bin/* -type l | xargs) /finalfs/bin/ \
