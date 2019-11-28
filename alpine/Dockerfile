@@ -1,4 +1,4 @@
-ARG SaM_VERSION="1.1-edge"
+ARG SaM_VERSION="1.2-edge"
 
 FROM alpine:edge as alpine
 
