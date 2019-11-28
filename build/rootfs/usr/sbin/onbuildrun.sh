@@ -74,9 +74,10 @@ then
    echo '----------------------------------'
    set -x
 fi
+apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --force-broken-world --force-non-repository --force-old-apk --root /finalfs --quiet fix --depends --upgrade --xattr
 if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
 then
-   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs add --quiet --initdb
+   apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --quiet add --initdb
    set +x
    echo '++++++++++++++++++++++++++++++++++'
    echo '+++++++++ RUNDEPS <begin> ++++++++'
