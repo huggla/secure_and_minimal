@@ -1,22 +1,17 @@
-ARG SaM_VERSION="1.2-edge"
-ARG TAG="20191128"
-# =========================================================================
-# FROM
-# =========================================================================
-    FROM huggla/sam_$SaM_VERSION:alpine-$TAG as image
-# =========================================================================
-# COPY
-# =========================================================================
-    COPY ./rootfs /
-# =========================================================================
-# RUN
-# =========================================================================
-    RUN exec 2>&1 \
-     && set -x \
-     && chmod u+x /usr/sbin/relpath /usr/sbin/onbuildrun.sh \
-     && mkdir /excludefs /finalfs \
-     && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git libcurl \
-     && apk info
+# Secure and Minimal
+# https://hub.docker.com/repository/docker/huggla/secure_and_minimal
+
+ARG SaM_IMAGE="build"
+ARG SaM_VERSION="dev"
+
+FROM huggla/secure_and_minimal:$SaM_VERSION-alpine as image
+COPY ./rootfs /
+RUN exec 2>&1 \
+ && set -x \
+ && chmod u+x /usr/sbin/relpath /usr/sbin/onbuildrun.sh \
+ && mkdir /excludefs /finalfs \
+ && apk --no-cache --initramfs-diskless-boot --clean-protected add acl bash build-base libtool cmake automake autoconf linux-headers git libcurl \
+ && apk info
 # =========================================================================
 # ONBUILD - Executed/available when building the main Docker image
 # =========================================================================
