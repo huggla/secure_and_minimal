@@ -1,4 +1,4 @@
-# SaM-version: 1.2
+# SaM-version: dev
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 FROM alpine:edge as alpine
