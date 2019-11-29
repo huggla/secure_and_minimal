@@ -1,5 +1,8 @@
-ARG SaM_VERSION="1.2-edge"
-ARG TAG="20191128"
+# SaM-image: alpine
+# https://hub.docker.com/repository/docker/huggla/secure_and_minimal
+
+ARG SaM_VERSION="dev"
+
 FROM huggla/sam_$SaM_VERSION:alpine-$TAG as alpine
 
 RUN exec 2>&1 \
