@@ -1,10 +1,10 @@
 # Secure and Minimal
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
-ARG SaM_IMAGE="alpine"
+ARG SaM_IMAGE="busybox"
 ARG SaM_VERSION="dev"
 
-FROM huggla/sam_$SaM_VERSION:alpine-$TAG as alpine
+FROM huggla/secure_and_minimal:$SaM_VERSION-alpine as alpine
 
 RUN exec 2>&1 \
  && set -x \
