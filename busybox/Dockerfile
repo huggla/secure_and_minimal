@@ -1,6 +1,7 @@
-# SaM-image: alpine
+# Secure and Minimal
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
+ARG SaM_IMAGE="alpine"
 ARG SaM_VERSION="dev"
 
 FROM huggla/sam_$SaM_VERSION:alpine-$TAG as alpine
