@@ -445,7 +445,7 @@ then
       cp -a $siblingdir/* ./
       sibling="${siblingdir#$DESTDIR}"
       sibling="${sibling#-}"
-      contentfile="${IMAGEID}${sibling:+-$sibling}"
+      contentfile="${IMAGEID:-imageid}${sibling:+-$sibling}"
       cd "$siblingdir"
       find . -mindepth 1 ! -name "$contentfile" | cut -c 2- > "$contentfile"
       gzip "$contentfile"
