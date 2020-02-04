@@ -377,7 +377,7 @@ for file in $REMOVEFILES
 do
    file="$(eval "echo $file")"
    file="${file#/finalfs}"
-   file="/finalfs$dir"
+   file="/finalfs$file"
    if [ -f "$file" ] || [ -l "$file" ]
    then
       rm -f "$file"
