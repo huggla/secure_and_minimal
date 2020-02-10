@@ -2,7 +2,7 @@
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 ARG SaM_IMAGE="alpine"
-ARG SaM_VERSION="2.0"
+ARG SaM_VERSION="2.0.0"
 
 FROM alpine:edge as alpine
 
