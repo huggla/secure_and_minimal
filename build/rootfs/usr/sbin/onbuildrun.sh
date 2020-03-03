@@ -1,6 +1,8 @@
 #!/bin/sh
 
 removeEmptyDirs(){
+   local -
+   set +x
    local dir="$1"
    local subdirs="$(find "$dir" -maxdepth 1 -mindepth 1 -type d)"
    local subdir=""
@@ -11,6 +13,7 @@ removeEmptyDirs(){
    local childCount="$(find "$dir" -maxdepth 1 -mindepth 1 | wc -l)"
    if [ "$dir" != "/" ] && [ "$childCount" == "0" ] && ! (echo " $MAKEDIRS " | grep -q " ${dir#/finalfs} ")
    then
+      set -x
       rm -rf "$dir"
    fi
 }
