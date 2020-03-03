@@ -371,26 +371,31 @@ echo '++++++++++++++++++++++++++++++++++'
 echo '++++ REMOVE DIRS/FILES <begin> +++'
 echo '++++++++++++++++++++++++++++++++++'
 set -x
+set -f
 for dir in $REMOVEDIRS
 do
    dir="$(eval "echo $dir")"
    dir="${dir#/finalfs}"
    dir="/finalfs$dir"
+   set +f
    if [ -d "$dir" ]
    then
       rm -rf "$dir"
    fi
 done
+set -f
 for file in $REMOVEFILES
 do
    file="$(eval "echo $file")"
    file="${file#/finalfs}"
    file="/finalfs$file"
+   set +f
    if [ -f "$file" ] || [ -l "$file" ]
    then
       rm -f "$file"
    fi
 done
+set +f
 if [ "$KEEPEMPTYDIRS" == "no" ]
 then
    removeEmptyDirs "/finalfs"
