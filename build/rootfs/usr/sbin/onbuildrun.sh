@@ -391,7 +391,7 @@ then
       file="$(eval "echo $file")"
       file="${file#/finalfs}"
       file="/finalfs$file"
-      if [ -f "$file" ] || [ -h "$file" ]
+      if [ -f "$file" ] || [ -L "$file" ]
       then
          rm -f "$file"
       fi
