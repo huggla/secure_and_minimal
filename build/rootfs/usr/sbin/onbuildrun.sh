@@ -363,6 +363,11 @@ fi
 set +f
 find . -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) \( -type f -o -type l \) ! -path ./etc/apk/world -perm +0200 -delete
 find . -depth -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) -type d -perm +0200 -exec sh -c '[ -z "$(ls -A "{}")" ] && rm -r "{}"' \;
+set +x
+echo '++++++++++++++++++++++++++++++++++'
+echo '++++ REMOVE DIRS/FILES <begin> +++'
+echo '++++++++++++++++++++++++++++++++++'
+set -x
 for dir in $REMOVEDIRS
 do
    dir="$(eval "echo $dir")"
@@ -387,6 +392,11 @@ if [ "$KEEPEMPTYDIRS" == "no" ]
 then
    removeEmptyDirs "/finalfs"
 fi
+set +x
+echo '----------------------------------'
+echo '---- REMOVE DIRS/FILES </end> ----'
+echo '----------------------------------'
+set -x
 if [ -n "${DESTDIR#/}" ] && [ -n "$(ls -A "${DESTDIR#/}")" ] && ( [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*base}" != "$IMAGETYPE" ] || [ "${IMAGETYPE#*application}" != "$IMAGETYPE" ] )
 then
    DESTDIR="${DESTDIR#/}"
