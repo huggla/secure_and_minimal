@@ -2,7 +2,7 @@
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 ARG SaM_IMAGE="build"
-ARG SaM_VERSION="2.0.0"
+ARG SaM_VERSION="2.0.1"
 
 FROM huggla/secure_and_minimal:$SaM_VERSION-alpine as image
 COPY ./rootfs /
