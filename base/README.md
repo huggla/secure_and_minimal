@@ -1,7 +1,5 @@
-# huggla/base
+# secure_and_minimal:x-base
 Baseimage based on Alpine, with sudo, argon2 and custom scripts for improved security.
-
-Latest: Alpine Edge.
 
 ## Environment variables
 ### pre-set runtime variables.
