@@ -373,28 +373,34 @@ echo '++++++++++++++++++++++++++++++++++'
 set -x
 if [ -n "$REMOVEDIRS" ]
 then
-   for dir in $REMOVEDIRS
+   for dirlistitem in $REMOVEDIRS
    do
-      dir="$(eval "echo $dir")"
-      dir="${dir#/finalfs}"
-      dir="/finalfs$dir"
-      if [ -d "$dir" ]
-      then
-         rm -rf "$dir"
-      fi
+      for dir in $dirlistitem
+      do
+         dir="$(eval "echo $dir")"
+         dir="${dir#/finalfs}"
+         dir="/finalfs$dir"
+         if [ -d "$dir" ]
+         then
+            rm -rf "$dir"
+         fi
+      done
    done
 fi
 if [ -n "$REMOVEFILES" ]
 then
-   for file in $REMOVEFILES
+   for filelistitem in $REMOVEFILES
    do
-      file="$(eval "echo $file")"
-      file="${file#/finalfs}"
-      file="/finalfs$file"
-      if [ -f "$file" ] || [ -L "$file" ]
-      then
-         rm -f "$file"
-      fi
+      for file in $filelistitem
+      do
+         file="$(eval "echo $file")"
+         file="${file#/finalfs}"
+         file="/finalfs$file"
+         if [ -f "$file" ] || [ -L "$file" ]
+         then
+            rm -f "$file"
+         fi
+      done
    done
 fi
 if [ "$KEEPEMPTYDIRS" == "no" ]
