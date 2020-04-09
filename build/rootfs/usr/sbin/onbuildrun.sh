@@ -364,8 +364,8 @@ then
    sort -u -o /environment/linuxuserownedrecursive /environment/linuxuserownedrecursive
 fi
 set +f
-find . -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) \( -type f -o -type l \) ! -path ./etc/apk/world -perm +0200 -delete
-find . -depth -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) -type d -perm +0200 -exec sh -c '[ -z "$(ls -A "{}")" ] && rm -r "{}"' \;
+find . -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) \( -type f -o -type l \) ! -path ./etc/apk/world -perm +200 -delete
+find . -depth -xdev \( -path "./var/cache/*" -o -path "./tmp/*" -o -path "./sys/*" -o -path "./proc/*" -o -path "./dev/*" -o -path "./lib/apk/*" -o -path "./etc/apk/*" \) -type d -perm +200 -exec sh -c '[ -z "$(ls -A "{}")" ] && rm -r "{}"' \;
 set +x
 echo '++++++++++++++++++++++++++++++++++'
 echo '++++ REMOVE DIRS/FILES <begin> +++'
