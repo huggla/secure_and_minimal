@@ -461,22 +461,6 @@ then
          mkdir -p "$DESTDIR-app"
          cp -a $DESTDIR/* "$DESTDIR-app/"
          rm -rf "$DESTDIR"
-         if [ -n "$CONTENTCMDS" ]
-         then
-            cd /
-            set +x
-            echo '++++++++++++++++++++++++++++++++++'
-            echo '++++++++ CONTENTCMDS <begin> +++++++'
-            echo '++++++++++++++++++++++++++++++++++'
-            set -x
-            chroot /finalfs /bin/sh -c "set -ex +fam && eval \"\$CONTENTSCMDS\""
-            set +x
-            echo '----------------------------------'
-            echo '-------- CONTENTCMDS </end> --------'
-            echo '----------------------------------'
-            set -x
-            cd /finalfs
-         fi
       fi
    fi
 fi
