@@ -441,6 +441,7 @@ then
       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]
       then
          cd "$DESTDIR"
+         rm -rf tmp
          static="$(find ${COMMON_CONFIGUREPREFIX#/}/lib/*.a -maxdepth 0 \( -type f -o -type l \) | xargs)"
          cd /finalfs
          for subdest in $subdests
