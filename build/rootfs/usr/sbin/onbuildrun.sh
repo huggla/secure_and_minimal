@@ -470,7 +470,10 @@ rm -f RUNDEPS.txt
 comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
 sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new
 rm -f /tmp/onbuild/exclude.filelist.*
-tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild
+if [ -e /environment/onbuild.tar.gz ]
+then
+   tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild
+fi
 mv /environment ./
 if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]
 then
