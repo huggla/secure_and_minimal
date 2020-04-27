@@ -34,7 +34,7 @@ fi
 cd /finalfs
 rm -rf environment
 getfacl -R . > /tmp/init-permissions.txt
-if [ -e "/environment/onbuild.tar.gz" ]
+if [ -s "/environment/onbuild.tar.gz" ]
 then
    tar -xp -f /environment/onbuild.tar.gz -C /tmp
 fi
@@ -473,7 +473,7 @@ rm -f RUNDEPS.txt
 comm -12 /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new | awk -F '>' '{system("rm -f \"."$1"\"")}'
 sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist.new
 rm -f /tmp/onbuild/exclude.filelist.*
-if [ -e "/environment/onbuild.tar.gz" ]
+if [ -s "/environment/onbuild.tar.gz" ]
 then
    tar -c -z -f /environment/onbuild.tar.gz -C /tmp onbuild
 fi
