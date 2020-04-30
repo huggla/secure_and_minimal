@@ -443,6 +443,7 @@ then
       fi
       if [ "${IMAGETYPE#*content}" != "$IMAGETYPE" ]
       then
+         rm -rf tmp
          cd "$DESTDIR"
          static="$(find ${COMMON_CONFIGUREPREFIX#/}/lib/*.a -maxdepth 0 \( -type f -o -type l \) | xargs)"
          cd /finalfs
@@ -488,15 +489,12 @@ then
       cd "$siblingdir"
       find . -mindepth 1 ! -name "$contentfile" | cut -c 2- > "$contentfile"
       gzip "$contentfile"
-      cp -a /tmp /usr/bin/setfacl ./
       set +e
       chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
       chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
       chmod 750 ./etc ./var ./run ./var/cache ./start ./stop
-      cd ..
-      chroot $siblingdir ./setfacl --restore=/tmp/init-permissions.txt
       set -e
-      rm -rf "$siblingdir/tmp" "$siblingdir/setfacl"
+      cd ..
    done
 fi
 set +e
