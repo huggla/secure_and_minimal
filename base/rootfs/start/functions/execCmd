@@ -37,7 +37,7 @@ execCmd(){
          command="/usr/sbin/capsh --drop=$delcaps --caps=$delcaps-e -- -c $command"
       fi
       command="$(eval "echo $command")"
-      exec /usr/bin/env -i $command
+      exec /usr/bin/env -i PATH=$PATH $command
    else
       echo 'execCmd: Nothing to do!'
    fi
