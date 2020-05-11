@@ -1,17 +1,15 @@
 #!/bin/sh
 set -ef +am
-. /start/functions/fixConfigVars
-. /start/functions/writeEnvironmentVars
-. /start/functions/execCmd
 
 if [ ! -e "/environment/vars" ]
 then
    /bin/touch /environment/isFirstRun
-   cd /bin
-   ln -sf busybox sh
-   cd /
+   . /start/functions/fixConfigVars
+   . /start/functions/writeEnvironmentVars
    fixConfigVars
    writeEnvironmentVars
+else
+   ln -sf /bin/busybox /bin/sh
 fi
-
+. /start/functions/execCmd
 execCmd "/start/stage2"
