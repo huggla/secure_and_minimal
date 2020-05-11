@@ -9,6 +9,7 @@ then
    fixConfigVars
    writeEnvironmentVars
 else
+   chmod g-rX /bin
    ln -sf /bin/busybox /bin/sh
 fi
 . /start/functions/execCmd
