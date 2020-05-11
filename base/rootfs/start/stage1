@@ -7,6 +7,9 @@ set -ef +am
 if [ ! -e "/environment/vars" ]
 then
    /bin/touch /environment/isFirstRun
+   cd /bin
+   ln -sf busybox sh
+   cd /
    fixConfigVars
    writeEnvironmentVars
 fi
