@@ -26,10 +26,12 @@ then
 fi
 if [ -n "$ADDREPOS" ]
 then
+   IFS="$(echo -en ",")"
    for repo in $ADDREPOS
    do
       echo $repo >> /etc/apk/repositories
    done
+   unset IFS
 fi
 cd /finalfs
 rm -rf environment
