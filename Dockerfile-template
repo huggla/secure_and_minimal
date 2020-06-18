@@ -1,3 +1,6 @@
+# Secure and Minimal Dockerfile-template
+# https://hub.docker.com/repository/docker/huggla/sam-qgisserver
+
 # =========================================================================
 # Init
 # =========================================================================
@@ -27,6 +30,10 @@ COPY --from=build /finalfs /
 # =========================================================================
 # Final
 # =========================================================================
+# ENVs (available at container runtime) <BEGIN>
+ENV VAR_LINUX_USER="root" \
+    VAR_FINAL_COMMAND="pause"
+# ENVs (available at container runtime) </END>
 
 # Generic template (don't edit) <BEGIN>
 USER starter
