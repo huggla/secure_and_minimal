@@ -1,5 +1,5 @@
 # Secure and Minimal Dockerfile-template
-# https://hub.docker.com/repository/docker/huggla/sam-qgisserver
+# https://github.com/huggla/secure_and_minimal/blob/master/Dockerfile-template
 
 # =========================================================================
 # Init
