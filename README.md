@@ -2,21 +2,20 @@
 A simple framework for creating minimal and secure Docker images based on Alpine. It consist of a Dockerfile-template, a number of standardized constants, a few helper-images, and structured shell scripts.
 
 ## The Dockerfile-template
-The Dockerfile-template is divided into seven blocks, of which three are mandatory, and two are static: 
-* TAG-block <- mandatory!
-* ARG-block
-* Static-block-1 <- mandatory!
-* RUN-block
-* ENV-block
-* Static-block-2 <- mandatory!
-* End-block
+The Dockerfile-template is divided into three main blocks: Init, Build, and Final. All three main blocks contain sub-blocks with generic code that must remain untouched for the framework to work properly.
 
-### The TAG-block
-This block contains only the TAG-constant, defined in an ARG statement. If the content-, base- or helper-images, used during the build process, are based on different Alpine builds, then there is a risc of mismatching system libraries. The TAG-constant makes sure all stage images are based on the same Alpine base image.
+### The Init-block
+This block contains all variables and commands used during the build process. For this, we use a set of standard ARGs. These ARGs might also (explicitly) be passed on to the Final-block. All standard build ARGs, and their use, are listed later in this documentation.
 
-### The ARG-block
-This block contains ARG statements, setting any of the following constants (defaults in paranthesis):
+The generic code block loads an initial image (INITIMAGE)and makes additional data available for use in the Build-block.
 
+### The Build-block
+This block is normally left as it is, but in some special cases you might want to add a RUN-statement right before the generic code block to create a missing file or directory.
+
+The generic code block loads a helper image (BUILDIMAGE) in which the building takes place. The result of the building process is then copied to a set base image (BASEIMAGE). The exact building process is described later in this documentation.
+
+### The Final-block
+This block contains 
 *CONTENTIMAGE1*
 
 An image containing additional files, that should be added to the "build"-stage.
