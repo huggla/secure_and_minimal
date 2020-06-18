@@ -7,7 +7,7 @@ The Dockerfile-template is divided into three main blocks: Init, Build, and Fina
 ### The Init-block
 This block contains all variables and commands used during the build process. For this, we use a set of standard ARGs. These ARGs might also (explicitly) be passed on to the Final-block. All standard build ARGs, and their use, are listed later in this documentation.
 
-The generic code block loads an initial image (INITIMAGE)and makes additional data available for use in the Build-block.
+The generic code block loads an initial image (INITIMAGE) and makes additional data from "content-images" available for use in the Build-block.
 
 ### The Build-block
 This block is normally left as it is, but in some special cases you might want to add a RUN-statement right before the generic code block to create a missing file or directory.
@@ -15,7 +15,16 @@ This block is normally left as it is, but in some special cases you might want t
 The generic code block loads a helper image (BUILDIMAGE) in which the building takes place. The result of the building process is then copied to a set base image (BASEIMAGE). The exact building process is described later in this documentation.
 
 ### The Final-block
-This block contains 
+This block contains the runtime ENV-vars used in the final image.
+
+The generic block sets the secure sturtup USER for the container.
+
+
+DOCUMENTATION IN PROGRESS!!!
+...
+
+
+
 *CONTENTIMAGE1*
 
 An image containing additional files, that should be added to the "build"-stage.
