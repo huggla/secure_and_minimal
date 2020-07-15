@@ -47,7 +47,7 @@ A docker image to pull content from.
 A file or directory to copy from the corresponding content image.
 
 ### CONTENTDESTINATION[1-5]
-The destination where content from the corresponding content image are copied to. The destination is relative to the build root, to copy directly to the final image prepend /finalfs.
+The destination where content from the corresponding content image are copied to. The destination is relative to the build root, to copy directly to the final image, prepend /finalfs.
 
 ### ADDREPOS
 Space-separated list of additional Alpine package repositories to use during the build process.
@@ -70,8 +70,20 @@ Space-separated list of Alpine packages needed during the build process. The fol
 ### BUILDDEPS_UNTRUSTED
 Same as BUILDDEPS but allows untrusted repositories.
 
+### BUILDDIR (/builddir)
+Working directory for BUILDCMDS. 
 
+### CLONEGITS
+Comma-separated list of git repositories to clone to the build environment. Clone parameters may be included.
 
+### CLONEGITSDIR (BUILDDIR)
+Working directory for CLONEGITS. To clone directly to the final image, prepend /finalfs.
+
+### DOWNLOADS
+Space-separated list of urls to download to the build environment.
+
+### DOWNLOADSDIR (BUILDDIR)
+Working directory for DOWNLOADS. To download directly to the final image, prepend /finalfs.
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
