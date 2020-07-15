@@ -19,6 +19,16 @@ This block contains the runtime ENV-vars used in the final image.
 
 The generic block sets the secure sturtup USER for the container.
 
+## Standard ARGs
+Below follows a list of standard ARGs that can be set in the Init-block and serve as parameters in the build process. Default values in paranthesis.
+
+### SaM_VERSION
+Mandatory! Defines which version of Secure and Minimal that is to be used.
+
+### IMAGETYPE (application)
+Modifies the build process to produce an image formatted to set purpose. Available values are application, base, content.
+
+
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
