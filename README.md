@@ -38,9 +38,16 @@ Dockerhub repository name of created image. Only used for content images and if 
 Dockerhub image version of created image. Only used for content images and if IMAGEID is undefined. See IMAGEID.
 
 ### IMAGEID
-Used to name the content-list file in content images. Is created from HUBPROFILE,HUBREPO and HUBVERSION if not set directly.
+Used to name the content-list file in content images. Is created from HUBPROFILE, HUBREPO and HUBVERSION if not set directly.
 
+### CONTENTIMAGE[1-5]
+A docker image to pull content from.
 
+### CONTENTSOURCE[1-5]
+A file or directory to copy from the corresponding content image.
+
+### CONTENTDESTINATION[1-5]
+The destination where content from the corresponding content image are copied to. The destination is relative to the build root, to copy directly to the final image prepend /finalfs.
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
