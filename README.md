@@ -52,11 +52,24 @@ The destination where content from the corresponding content image are copied to
 ### ADDREPOS
 Space-separated list of additional Alpine package repositories to use during the build process.
 
+### EXCLUDEAPKS
+Space-separated list of Alpine packages that should NOT be included in the final image.
+
+### EXCLUDEDEPS
+Space-separated list of Alpine packages which dependencies should be excluded from the final image. The listed packages are NOT excluded themselves.
+
 ### RUNDEPS
 Space-separated list of Alpine packages that should be included in the final image.
 
 ### RUNDEPS_UNTRUSTED
 Same as RUNDEPS but allows untrusted repositories.
+
+### BUILDDEPS
+Space-separated list of Alpine packages needed during the build process. The following packages is already installed and doesn't need to be added: acl bash build-base libtool cmake automake autoconf linux-headers git libcurl.
+
+### BUILDDEPS_UNTRUSTED
+Same as BUILDDEPS but allows untrusted repositories.
+
 
 
 
