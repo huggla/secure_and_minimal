@@ -85,6 +85,15 @@ Space-separated list of urls to download to the build environment.
 ### DOWNLOADSDIR (BUILDDIR)
 Working directory for DOWNLOADS. To download directly to the final image, prepend /finalfs.
 
+### MAKEDIRS
+Space-separated list of directories to create in the final image.
+
+### MAKEFILES
+Space-separated list of empty files to create in the final image.
+
+### INITCMDS
+String of shell commands to be run in the build environment, prior to installing any packages.
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
