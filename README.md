@@ -49,6 +49,17 @@ A file or directory to copy from the corresponding content image.
 ### CONTENTDESTINATION[1-5]
 The destination where content from the corresponding content image are copied to. The destination is relative to the build root, to copy directly to the final image prepend /finalfs.
 
+### ADDREPOS
+Space-separated list of additional Alpine package repositories to use during the build process.
+
+### RUNDEPS
+Space-separated list of Alpine packages that should be included in the final image.
+
+### RUNDEPS_UNTRUSTED
+Same as RUNDEPS but allows untrusted repositories.
+
+
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
