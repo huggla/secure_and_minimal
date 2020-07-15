@@ -28,6 +28,18 @@ Mandatory! Defines which version of Secure and Minimal that is to be used.
 ### IMAGETYPE (application)
 Modifies the build process to produce an image formatted to set purpose. Available values are application, base, content.
 
+### HUBPROFILE
+Dockerhub profile name of created image. Only used for content images and if IMAGEID is undefined. See IMAGEID.
+
+### HUBREPO
+Dockerhub repository name of created image. Only used for content images and if IMAGEID is undefined. See IMAGEID.
+
+### HUBVERSION
+Dockerhub image version of created image. Only used for content images and if IMAGEID is undefined. See IMAGEID.
+
+### IMAGEID
+Used to name the content-list file in content images. Is created from HUBPROFILE,HUBREPO and HUBVERSION if not set directly.
+
 
 
 # DOCUMENTATION IN PROGRESS!!!
