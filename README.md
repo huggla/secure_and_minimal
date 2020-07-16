@@ -182,6 +182,15 @@ Convenience-variable (pass to eval in BUILDCMDS.)
 ### COMMON_INSTALLSRC ($COMMON_CONFIGURECMD && $COMMON_MAKECMDS)
 Convenience-variable (pass to eval in BUILDCMDS.)
 
+### INITIMAGE (BASEIMAGE)
+Initial image to load prior to building (seldomly used).
+
+### BASEIMAGE (huggla/secure_and_minimal:$SaM_VERSION-base)
+Baseimage which is extended with new contents. Needs to be an image created with Secure and Minimal.
+
+### BUILDIMAGE (huggla/secure_and_minimal:$SaM_VERSION-build)
+Helper-image where the building process takes place (don't touch!).
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
