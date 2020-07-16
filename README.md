@@ -112,6 +112,15 @@ Space-separated list of directories that should be removed (with contents) from 
 ### REMOVEFILES
 Space-separated list of files that should be removed from the final image.
 
+### KEEPEMPTYDIRS (no)
+Whether empty directories should be preserved in the final image. If no, all non-essential empty directories, that is not listed in MAKEDIRS, is removed. 
+
+### GID0WRITABLES
+Space-separated list of files and directories (non-recursive) that should be writable by GID 0 (primary group for VAR_LINUX_USER).
+
+### GID0WRITABLESRECURSIVE
+Space-separated list of directories that should be recursively writable by GID 0 (primary group for VAR_LINUX_USER).
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
