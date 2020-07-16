@@ -116,10 +116,16 @@ Space-separated list of files that should be removed from the final image.
 Whether empty directories should be preserved in the final image. If no, all non-essential empty directories, that is not listed in MAKEDIRS, is removed. 
 
 ### GID0WRITABLES
-Space-separated list of files and directories (non-recursive) that should be writable by GID 0 (primary group for VAR_LINUX_USER).
+Space-separated list of files and directories (non-recursive) that should be writable by GID 0 (primary group for VAR_LINUX_USER) in the final image.
 
 ### GID0WRITABLESRECURSIVE
-Space-separated list of directories that should be recursively writable by GID 0 (primary group for VAR_LINUX_USER).
+Space-separated list of directories that should be recursively writable by GID 0 (primary group for VAR_LINUX_USER) in the final image.
+
+### EXECUTABLES
+Space-separated list of files that should be persistently executable by VAR_LINUX_USER in the final image.
+
+### STARTUPEXECUTABLES
+Space-separated list of files that should be executable by VAR_LINUX_USER, but only during container startup.
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
