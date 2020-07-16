@@ -127,6 +127,9 @@ Space-separated list of files that should be persistently executable by VAR_LINU
 ### STARTUPEXECUTABLES
 Space-separated list of files that should be executable by VAR_LINUX_USER, but only during container startup.
 
+### EXPOSEFUNCTIONS
+Space-separated list of Secure and Minimal-functions that should be executable by VAR_LINUX_USER in the final image.
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
