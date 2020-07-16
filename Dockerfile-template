@@ -6,7 +6,6 @@
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
 ARG SaM_VERSION=""
-ARG IMAGETYPE=""
 # ARGs (can be passed to Build/Final) </END>
 
 # Generic template (don't edit) <BEGIN>
