@@ -160,6 +160,28 @@ Additional LIBRARY_PATH-string that is appended to LIBRARY_PATH.
 ### ADDTO_LD_LIBRARY_PATH
 Additional LD_LIBRARY_PATH-string that is appended to LD_LIBRARY_PATH.
 
+### LANG (C.UTF-8)
+
+### CHARSET (UTF-8)
+
+### MPICC (/usr/bin/mpicc)
+
+### MPICXX (/usr/bin/mpicxx)
+
+### COMMON_CONFIGUREPREFIX (/usr)
+
+### COMMON_CONFIGURECMD (./configure --prefix=${COMMON_CONFIGUREPREFIX})
+Convenience-variable (pass to eval in BUILDCMDS.)
+
+### COMMON_CMAKECMD (cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_C_FLAGS=\"${CFLAGS}\")
+Convenience-variable (pass to eval in BUILDCMDS.)
+
+### COMMON_MAKECMDS (make -s && make -s install)
+Convenience-variable (pass to eval in BUILDCMDS.)
+
+### COMMON_INSTALLSRC ($COMMON_CONFIGURECMD && $COMMON_MAKECMDS)
+Convenience-variable (pass to eval in BUILDCMDS.)
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
