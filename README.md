@@ -133,6 +133,33 @@ Space-separated list of Secure and Minimal-functions that should be executable b
 ### DESTDIR
 Base directory, in the final image, where the build process should install files. Defaults to /content-x in content images. 
 
+### CFLAGS (--O2 -fomit-frame-pointer -fno-reorder-blocks -fno-reorder-functions -mcmodel=large)
+C build flags in the build environment.
+
+### ADDTO_CFLAGS
+Additional C build flags that is appended to CFLAGS.
+
+### PATH (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin::)
+PATH environment variable in the build environment.
+
+### ADDTO_PATH
+Additional PATH-string that is appended to PATH.
+
+### CPATH
+
+### ADDTO_CPATH
+Additional CPATH-string that is appended to CPATH.
+
+### LIBRARY_PATH
+
+### ADDTO_LIBRARY_PATH
+Additional LIBRARY_PATH-string that is appended to LIBRARY_PATH.
+
+### LD_LIBRARY_PATH (LIBRARY_PATH)
+
+### ADDTO_LD_LIBRARY_PATH
+Additional LD_LIBRARY_PATH-string that is appended to LD_LIBRARY_PATH.
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
