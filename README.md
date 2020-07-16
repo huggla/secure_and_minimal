@@ -92,7 +92,25 @@ Space-separated list of directories to create in the final image.
 Space-separated list of empty files to create in the final image.
 
 ### INITCMDS
-String of shell commands to be run in the build environment, prior to installing any packages.
+String of shell commands to be executed in the initial build environment, prior to the installation of BUILDDEPS.
+
+### BUILDCMDS
+String of shell commands to be executed in the complete build environment. The final image filesystem is located in /finalfs.
+
+### FINALCMDS
+String of shell commands to be executed in the final image filesystem, after the execution of BUILDCMDS has finished.
+
+### LINUXUSEROWNED
+Space-separated list of files and directories (non-recursive) that should be owned by VAR_LINUX_USER in the final image.
+
+### LINUXUSEROWNEDRECURSIVE
+Space-separated list of directories that should be recursively owned by VAR_LINUX_USER in the final image.
+
+### REMOVEDIRS
+Space-separated list of directories that should be removed (with contents) from the final image.
+
+### REMOVEFILES
+Space-separated list of files that should be removed from the final image.
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
