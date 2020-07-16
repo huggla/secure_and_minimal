@@ -130,6 +130,9 @@ Space-separated list of files that should be executable by VAR_LINUX_USER, but o
 ### EXPOSEFUNCTIONS
 Space-separated list of Secure and Minimal-functions that should be executable by VAR_LINUX_USER in the final image.
 
+### DESTDIR
+Base directory, in the final image, where the build process should install files. Defaults to /content-x in content images. 
+
 # DOCUMENTATION IN PROGRESS!!!
 ...
 
