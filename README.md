@@ -1,20 +1,20 @@
 # secure-and-minimal
 A simple framework for creating minimal and secure Docker images based on Alpine. It consist of a Dockerfile-template, a number of standardized constants, a few helper-images, and structured shell scripts.
 
-## The Dockerfile-template
+# The Dockerfile-template
 The Dockerfile-template is divided into three main blocks: Init, Build, and Final. All three main blocks contain sub-blocks with generic code that must remain untouched for the framework to work properly.
 
-### The Init-block
+## The Init-block
 This block contains all variables and commands used during the build process. For this, we use a set of standard ARGs. These ARGs might also (explicitly) be passed on to the Final-block. All standard build ARGs, and their use, are listed later in this documentation.
 
 The generic code block loads an initial image (INITIMAGE) and makes additional data from "content-images" available for use in the Build-block.
 
-### The Build-block
+## The Build-block
 This block is normally left as it is, but in some special cases you might want to add a RUN-statement right before the generic code block to create a missing file or directory.
 
 The generic code block loads a helper image (BUILDIMAGE) in which the building takes place. The result of the building process is then copied to a set base image (BASEIMAGE). The exact building process is described later in this documentation.
 
-### The Final-block
+## The Final-block
 This block contains the runtime ENV-vars used in the final image.
 
 The generic block sets the secure sturtup USER for the container.
@@ -190,6 +190,9 @@ Baseimage which is extended with new contents. Needs to be an image created with
 
 ### BUILDIMAGE (huggla/secure_and_minimal:$SaM_VERSION-build)
 Helper-image where the building process takes place (don't touch!).
+
+# The container startup process
+During the startup process the Secure and Minimal framework secures and prepares the container according to the given VAR-parameters. A VAR-parameter is an ENV-variable whos name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. 
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
