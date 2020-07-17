@@ -191,8 +191,11 @@ Baseimage which is extended with new contents. Needs to be an image created with
 ### BUILDIMAGE (huggla/secure_and_minimal:$SaM_VERSION-build)
 Helper-image where the building process takes place (don't touch!).
 
-# The container startup process
-During the startup process the Secure and Minimal framework secures and prepares the container according to the given VAR-parameters. A VAR-parameter is an ENV-variable whos name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. 
+# The container start process
+During the start process the Secure and Minimal framework secures and prepares the container according to the given VAR-parameters. The start process can also be tailored for each SaM-image during the build process by adding shell scripts in standardized folders along with the Dockerfile. All commands in the start process, except the final one, is executed by the root user, but with reduced capabilities. The final command (VAR_FINAL_COMMAND) is normally executed as a non-privileged user (VAR_LINUX_USER). 
+
+## VAR-parameters
+A VAR-parameter is an ENV-variable whos name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. 
 
 # DOCUMENTATION IN PROGRESS!!!
 ...
