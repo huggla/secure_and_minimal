@@ -19,6 +19,9 @@ This block contains the runtime ENV-vars used in the final image.
 
 The generic block sets the secure sturtup USER for the container.
 
+# The build process
+The build process starts by preparing the standard ARGs, giving some of them their default values. Then are the files from INITIMAGE, CONTENTIMAGEs and files provided along with the Dockerfile copied to their correct locations. Then, based on the standard ARGs, init-commands are executed, empty files and directories are created, gits are cloned, files and packages are downloaded, build and final-commands are executed, file permissions are set, files and directories are deleted (mainly in this order).
+
 ## Standard ARGs
 Below follows a list of standard ARGs that can be set in the Init-block and serve as parameters in the build process. Default values in paranthesis.
 
@@ -183,7 +186,7 @@ Convenience-variable (pass to eval in BUILDCMDS.)
 Convenience-variable (pass to eval in BUILDCMDS.)
 
 ### INITIMAGE (BASEIMAGE)
-Initial image to load prior to building (seldomly used).
+All files in this image are copied to /finalfs prior to the build process (seldomly used).
 
 ### BASEIMAGE (huggla/secure_and_minimal:$SaM_VERSION-base)
 Baseimage which is extended with new contents. Needs to be an image created with Secure and Minimal.
