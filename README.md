@@ -195,7 +195,7 @@ Baseimage which is extended with new contents. Needs to be an image created with
 Helper-image where the building process takes place (don't touch!).
 
 # The container start process
-During the start process the Secure and Minimal framework secures and prepares the container according to the given VAR-parameters. The start process is divided into "stages". Each stage consists of a shell script or directory of shell scripts inside the /start directory. Stage1 and stage2 are common for all SaM-images. Stage3 are optional, and used to tailor the individual SaM-image during the build process. Stage2 and up are executed by the root user, but with reduced capabilities. The final command (VAR_FINAL_COMMAND) is automatically executed, in most cases as a non-privileged user (VAR_LINUX_USER), at the end of the start process. Secure and Minimal provides a number of shell script functions, organized in files located in /start/functions. These functions can used during the start process and, if exposed with EXPOSEFUNCTIONS, even within the running container. To add a stage3 to a SaM-image all you have to do is, together with the Dockerfile, put one or more shell scripts in /finalfs/start/stage3. The scripts will be executed in alphanumerical order so it is wise to choose filenames beginning with a three digit number. It is also possible to put shell functions in /finalfs/start/functions. 
+During the start process the Secure and Minimal framework secures and prepares the container according to the given VAR-parameters. The start process is divided into "stages". Each stage consists of a shell script or directory of shell scripts inside the /start directory. Stage1 and stage2 are common for all SaM-images. Stage3 are optional, and used to tailor the individual SaM-image during the build process. Stage2 and up are executed by the root user, but with reduced capabilities (only setpcap, setgid and setuid). If additional capabilities are needed during startup, then you must set the, comma-separated, VAR_INIT_CAPS parameter in the Final-block (f ex: VAR_INIT_CAPS="cap_chown,cap_fowner"). The final command (VAR_FINAL_COMMAND) is automatically executed, in most cases as a non-privileged user (VAR_LINUX_USER), without ANY capabilities, at the end of the start process. If VAR_FINAL_COMMAND needs to be run with capabilities enabled, then you must set the, comma-separated, VAR_KEEP_CAPS parameter in the Final-block (f ex: VAR_KEEP_CAPS="cap_chown,cap_fowner"). Secure and Minimal provides a number of shell script functions, organized in files located in /start/functions. These functions can used during the start process and, if exposed with EXPOSEFUNCTIONS, even within the running container. To add a stage3 to a SaM-image all you have to do is, together with the Dockerfile, put one or more shell scripts in /finalfs/start/stage3. The scripts will be executed in alphanumerical order so it is wise to choose filenames beginning with a three digit number. It is also possible to put shell functions in /finalfs/start/functions. 
 
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
@@ -206,10 +206,13 @@ The name of the user executing VAR_FINAL_COMMAND. Can be set to root but should 
 ### VAR_FINAL_COMMAND
 Shell command executed by VAR_LINUX_USER at the end of the startup process. Files that should be executed must be included in the EXECUTABLES or STARTUPEXECUTABLES ARG of the image or its BASEIMAGE.
 
-# Examples
-Below follows a few basic examples of SaM-images.
+### VAR_INIT_CAPS
+Additional capabilities, besides setpcap, setgid and setuid, that is needed during the startup process. Capabilities listed in VAR_KEEP_CAPS doesn't need to be listed in VAR_INIT_CAPS too.
 
-## Dropbear SSH server
+### VAR_KEEP_CAPS
+Capabilities needed by VAR_FINAL_COMMAND.
+
+# A basic example - Dropbear SSH server
 It is very easy to create a SaM-image with Dropbear server, all you need to do is add a few ARGs and ENVs to the SaM Dockerfile template. 
 
 * Download and open the SaM Dockerfile template (https://github.com/huggla/secure_and_minimal/raw/master/Dockerfile-template).
