@@ -1,4 +1,4 @@
-# secure-and-minimal
+# Secure and Minimal (SaM)
 A simple framework for creating minimal and secure Docker images based on Alpine. It consist of a Dockerfile-template, a number of standardized constants, a few helper-images, and structured shell scripts.
 
 # The Dockerfile-template
@@ -226,10 +226,3 @@ ARG STARTUPEXECUTABLES="/usr/sbin/dropbear"
 &emsp;VAR_PID_FILE="/run/dropbear.pid" \\<br>
 &emsp;VAR_FINAL_COMMAND='dropbear -F -p $VAR_PORT -P $VAR_PID_FILE'
 * Build the image.
-
-
-# DOCUMENTATION IN PROGRESS!!!
-...
-
-
-
