@@ -218,10 +218,10 @@ It is very easy to create a SaM-image with Dropbear server, all you need to do i
 ARG STARTUPEXECUTABLES="/usr/sbin/dropbear"
 * Then add the following lines to the Final-block (before the generic template code):
 >ENV VAR_LINUX_USER="dropbear" \\<br>
-&nbsp;&nbsp;&nbsp;VAR_CONFIG_DIR="/etc/dropbear" \\<br>
-&emsp;&emsp;&emsp;VAR_PORT="2222" \\<br>
-   VAR_PID_FILE="/run/dropbear.pid" \\<br>
-   VAR_FINAL_COMMAND='dropbear -F -p $VAR_PORT -P $VAR_PID_FILE'
+&emsp;VAR_CONFIG_DIR="/etc/dropbear" \\<br>
+&emsp;VAR_PORT="2222" \\<br>
+&emsp;VAR_PID_FILE="/run/dropbear.pid" \\<br>
+&emsp;VAR_FINAL_COMMAND='dropbear -F -p $VAR_PORT -P $VAR_PID_FILE'
 * Build the image.
 
 
