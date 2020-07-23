@@ -211,11 +211,16 @@ A number following the group name indicates the configuration order, f ex VAR_pp
 >last_name = Cat<br>
 first_name = Bob
 
-The format of the output can be changed by providing the following VARs: VAR_\<group\>\_uScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_begin, VAR_\<group\>\_end. 
+The format of the output can be changed by the VARs VAR_\<group\>\_uScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_begin and VAR_\<group\>\_end. 
 
-Adding VAR_ppl_uScore=" " and VAR_ppl_begin=":", configFromVarGroup ppl now returns:
->last name : Cat<br>
-first name : Bob
+After setting VAR_ppl_uScore=" ", VAR_ppl_begin=":" and VAR_ppl_end=",", configFromVarGroup ppl now returns:
+>last name : Cat,<br>
+first name : Bob,
+
+And after adding VAR_ppl3_e__mail_address="bob.cat@mail.com" and VAR_ppl_dblUScore="-":
+>last name : Cat,<br>
+first name : Bob,<br>
+e-mail address : bob.cat@mail.com,
 
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
