@@ -202,8 +202,9 @@ Secure and Minimal provides a number of shell script functions, organized in fil
 
 ### configFromVarGroup group
 This function takes a string, representing a group, and returns a configuration constructed by all VAR-parameters beginning with that group. 
->You have two VARS, VAR_ppl_first_name="Bob" and VAR_ppl_last_name="Cat", then configFromVarGroup ppl would return<br>
-first_name = Bob<br>
+
+If you have two VARS, VAR_ppl_first_name="Bob" and VAR_ppl_last_name="Cat", then configFromVarGroup ppl would return:
+>first_name = Bob<br>
 last_name = Cat
 
 
