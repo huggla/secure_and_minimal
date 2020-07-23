@@ -201,12 +201,19 @@ During the start process the Secure and Minimal framework secures and prepares t
 Secure and Minimal provides a number of shell script functions, organized in files located in /start/functions. These functions can be used during the start process and, if exposed with EXPOSEFUNCTIONS, even within the running container. An image can have additional functions put in /finalfs/start/functions. Below is a list of useful SaM-functions.
 
 ### configFromVarGroup group
-This function takes a string, representing a group, and returns a configuration constructed by all VAR-parameters beginning with that group. 
+This function takes a string, representing a group, and returns a configuration constructed by all VAR-parameters beginning with that group.
 
-If you have two VARS, VAR_ppl_first_name="Bob" and VAR_ppl_last_name="Cat", then configFromVarGroup ppl would return:
+If you have two VARS, VAR_ppl_first_name="Bob" and VAR_ppl_last_name="Cat", then configFromVarGroup ppl will return:
 >first_name = Bob<br>
 last_name = Cat
 
+A number following the group name indicates the configuration order, f ex VAR_ppl2_first_name="Bob" and VAR_ppl1_last_name="Cat" will return:
+>last_name = Cat<br>
+first_name = Bob
+
+The format of the output can be changed by providing the following VARs: VAR_\<group\>\_uScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_begin, VAR_\<group\>\_end. Adding VAR_ppl_uScore=" " and VAR_ppl_begin=":" now returns:
+>last name : Cat<br>
+first name : Bob
 
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
