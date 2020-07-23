@@ -211,7 +211,9 @@ A number following the group name indicates the configuration order, f ex VAR_pp
 >last_name = Cat<br>
 first_name = Bob
 
-The format of the output can be changed by providing the following VARs: VAR_\<group\>\_uScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_begin, VAR_\<group\>\_end. Adding VAR_ppl_uScore=" " and VAR_ppl_begin=":" now returns:
+The format of the output can be changed by providing the following VARs: VAR_\<group\>\_uScore, VAR_\<group\>\_dblUScore, VAR_\<group\>\_begin, VAR_\<group\>\_end. 
+
+Adding VAR_ppl_uScore=" " and VAR_ppl_begin=":", configFromVarGroup ppl now returns:
 >last name : Cat<br>
 first name : Bob
 
