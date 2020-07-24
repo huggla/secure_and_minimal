@@ -229,7 +229,7 @@ The startup process uses this function to create the VAR_LUNUX_USER, but it can 
 Returns the string with all single quotes (') removed.
 
 ### makePwFileForUser username
-Creates a secure file, containing a password, for given user, and returns the full path. VAR_password_file_\<userName\> will be used as password file if set, otherwise it picks an unique, random filename.
+Creates a secure file, containing a password, for given user, and returns the full path. VAR_password_file_\<userName\> will be used as password file if set, otherwise it picks an unique, random filename. The function reads VAR_password_\<userName\> and pass it to securePw, before writing to file. Note that it will not overwrite a non-empty file.
 
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
