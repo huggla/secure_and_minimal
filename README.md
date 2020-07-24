@@ -273,6 +273,15 @@ Runs given shell command-string as VAR_LINUX_USER in a clean environment (no env
 ### runBinCmdAsLinuxUser command-string
 VAR_LINUX_USER is only permitted to run files inside /bin and /usr/bin by using this function. 
 
+### isGroupWritable path
+Returns "true" if given file/directory is group writable, else it returns "false".
+
+### replaceDirWithLink dir1 dir2 \[ignored\]
+If dir2 exist and is empty (with the exception of .snapshot and ignored), then the content of dir1 is moved to dir2 and substituted with a symbolic link to dir2.
+
+### replaceFileWithLink file1 file2
+If file2 doesn't exist or are empty, then file1 is copied to file2 and substituted with a symbolic link to file2.
+
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
 
