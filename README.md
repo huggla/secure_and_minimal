@@ -295,10 +295,13 @@ Returns string without preceding and trailing spaces.
 Is given a space-separated string of files and directories. Tries to recursively delete the given files and directories without giving any errors if failing.
 
 ### tryMakeDir directory \[perm\]
-Make directory, with complete path, if it doesn't already exist. Sets permission or changes VAR_LINUX_USER permissions according to perm, which can be set to write, exec or secure.
+Make directory, with complete path, if it doesn't already exist. Sets or changes VAR_LINUX_USER permissions according to perm, which can be set to write, exec or secure.
 
 ### tryMakeFile file \[perm\]
-Creates empty file, with complete path, if it doesn't already exist. Sets permission or changes VAR_LINUX_USER permissions according to perm, which can be set to write, exec or secure.
+Creates empty file, with complete path, if it doesn't already exist. Sets or changes VAR_LINUX_USER permissions according to perm, which can be set to write, exec or secure.
+
+### trySetPermissionsOf path perm \[option\]
+Changes VAR_LINUX_USER permissions for given file or directory according to perm, which can be set to write, exec or secure. When option is set to recursive, then the operation is done recursively.
 
 ## VAR-parameters
 A VAR-parameter is an ENV-variable who's name starts with "VAR_". ENV-variables without the VAR-prefix are discarded during container startup, and is not passed to the final command. Some VAR-parameters are standardized and exists in all or many SaM-images. VAR-parameters can be set in the Final-block and are inherited from given BASEIMAGE, but they can also be set/changed at runtime with docker run -e. VAR-parameters ending with \_DIR(S), \_DIRECTORY, \_DIRECTORIES, \_FILE(S) (all case-insensitive) are interpreted as containing paths, which are automatically created. Path-VARs with names containing conf, sock, storage, data, logfile, logdir, \_pid_, \_log_, \_logs_, temp, tmp, home, cache, \_work_ are made writable by group 0, the primary group for VAR_LINUX_USER. Path-VARs with names containing pass, pw, sec, salt, key are made non-readable by all except owner. Below is a short list of common VAR-paramaters.
