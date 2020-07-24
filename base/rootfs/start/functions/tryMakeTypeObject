@@ -1,22 +1,24 @@
 tryMakeTypeObject(){
+   local type="$1"
    local obj="$(trim "$(removeQuotes $2)")"
+   local perm="$3"
    local -
    if [ ! -e "$obj" ]
    then
       set +e
-      if [ "$1" == "dir" ]
+      if [ "$type" == "dir" ]
       then
          tryMakeDir "$(/usr/bin/dirname "$obj")"
          /bin/mkdir "$obj"
-      elif [ "$1" == "file" ]
+      elif [ "$type" == "file" ]
       then
-         tryMakeDir "$(/usr/bin/dirname "$obj")" $3
+         tryMakeDir "$(/usr/bin/dirname "$obj")" $perm
          >"$obj"
       fi
       set -e
-      trySetPermissionsOf "$obj" $3
-   elif [ "$3" == "write" ] || [ "$3" == "exec" ] || [ "$3" == "secure" ]
+      trySetPermissionsOf "$obj" $perm
+   elif [ "$perm" == "write" ] || [ "$perm" == "exec" ] || [ "$perm" == "secure" ]
    then
-      trySetPermissionsOf "$obj" $3
+      trySetPermissionsOf "$obj" $perm
    fi
 }
