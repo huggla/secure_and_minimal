@@ -226,7 +226,19 @@ e-mail address : bob.cat@mail.com,
 The startup process uses this function to create the VAR_LUNUX_USER, but it can also be used to create additional users. If no uid is given, then the first unused, counting upwards from 102, is used. If no gid is given, then gid=uid. VAR_HOME_DIR decides the home directory. If VAR_HOME_DIR has not been set, then VAR_CONFIG_DIR is set to be the home directory. In neither VAR_HOME_DIR or VAR_CONFIG_DIR has been set, then the home directory will be set to /dev/null.
 
 ### removeSingleQuotes string
-Returns the string with all single quotes (') removed.
+Returns the string with all single-quotes (') removed.
+
+### removeDoubleQuotes string
+Returns the string with all double-quotes (") removed.
+
+### removeQuotes string
+Returns the string with all single and double-quotes (") removed.
+
+### removeUnderscores string
+Returns the string with all underscores (\_) removed.
+
+### removeCharacterFromString character string
+Returns the string with all occurencies of character removed.
 
 ### makePwForUser username
 Returns a secure password. The function reads VAR_password_\<userName\> and pass it to securePw.
