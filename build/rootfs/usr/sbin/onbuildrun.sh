@@ -503,5 +503,5 @@ set +e
 chmod 755 ./ ./lib ./usr ./usr/lib ./usr/local ./usr/local/bin
 chmod 700 ./bin ./sbin ./usr/bin ./usr/sbin
 chmod 750 ./etc ./var ./run ./var/cache ./start ./stop
-setfacl --restore=/tmp/init-permissions.txt
+setfacl --restore=/tmp/init-permissions.txt >/dev/null 2>&1
 exit 0
