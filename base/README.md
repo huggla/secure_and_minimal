@@ -8,3 +8,5 @@ Baseimage based on Alpine, with sudo, argon2 and custom scripts for improved sec
 
 ## Capabilities
 Can drop all but SETPCAP, SETGID and SETUID.
+
+## Secure and Minimal documentation: https://github.com/huggla/secure_and_minimal/blob/master/README.md
