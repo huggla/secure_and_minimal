@@ -44,7 +44,7 @@ FROM ${CONTENTIMAGE3:-scratch} as content3
 FROM ${CONTENTIMAGE4:-scratch} as content4
 FROM ${CONTENTIMAGE5:-scratch} as content5
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/secure_and_minimal:$SaM_VERSION-base}} as init
-RUN mkdir -p /environment /tmp/onbuild
+RUN mkdir -p /environment
 # Generic template (don't edit) </END>
 
 # =========================================================================
