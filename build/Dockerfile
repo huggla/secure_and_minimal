@@ -2,7 +2,7 @@
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 ARG SaM_IMAGE="build"
-ARG SaM_VERSION="2.0.5"
+ARG SaM_VERSION="dev"
 
 FROM huggla/secure_and_minimal:$SaM_VERSION-alpine as image
 COPY ./rootfs /
@@ -165,7 +165,7 @@ RUN exec 2>&1 \
     # ---------------------------------------------------------------------
     # COPY
     # ---------------------------------------------------------------------
-        ONBUILD COPY --from=init / /finalfs/
+        ONBUILD COPY --from=init / /tmp/initfs/
         ONBUILD COPY --from=init /environment /environment/
         ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
         ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
