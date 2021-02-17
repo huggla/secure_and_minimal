@@ -82,6 +82,7 @@ then
    echo '----------------------------------'
    set -x
 fi
+find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \;
 apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --quiet add --initdb
 apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --force-broken-world --force-non-repository --force-old-apk --root /finalfs --quiet fix --depends --upgrade --xattr
 if [ -n "$RUNDEPS" ] || [ -n "$RUNDEPS_UNTRUSTED" ]
