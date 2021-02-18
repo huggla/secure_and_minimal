@@ -133,6 +133,7 @@ do
       find "$contentdest" -type f -perm /010 -exec chmod g-x "{}" \;
    fi
 done
+mkdir -p ./usr/local/bin
 find ./usr/local/bin -type f -exec chmod u=rx,go= "{}" \;
 find / -path "/usr/local/bin/*" -type f -mindepth 3 -maxdepth 3 -exec chmod u=rx,go= "{}" \;
 if [ -n "$BUILDCMDS" ]
