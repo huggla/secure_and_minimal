@@ -34,7 +34,7 @@ then
    unset IFS
 fi
 cd /finalfs
-rm -rf environment
+rm -rf environment dev sys proc etc/apk
 getfacl -R . > /tmp/init-permissions.txt
 if [ -s "/environment/onbuild.tar.gz" ]
 then
@@ -67,7 +67,9 @@ then
    sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
    cd /finalfs
 fi
-rm -rf /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk
+rm -rf /tmp/initfs/environment /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk
+find / -path "/finalfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
+rm -rf /finalfs/*
 find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
 if [ -n "$INITCMDS" ]
 then
