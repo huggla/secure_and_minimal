@@ -34,7 +34,8 @@ then
    unset IFS
 fi
 cd /finalfs
-rm -rf environment dev sys proc etc/apk
+mv environment /
+rm -rf dev sys proc etc/apk
 getfacl -R . > /tmp/init-permissions.txt
 if [ -s "/environment/onbuild.tar.gz" ]
 then
