@@ -67,7 +67,8 @@ then
    sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
    cd /finalfs
 fi
-find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -au "{}" / \;
+rm -rf /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk
+find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
 if [ -n "$INITCMDS" ]
 then
    set +x
