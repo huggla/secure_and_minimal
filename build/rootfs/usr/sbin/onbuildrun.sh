@@ -68,7 +68,8 @@ then
    sort -u -o /tmp/onbuild/exclude.filelist /tmp/onbuild/exclude.filelist
    cd /finalfs
 fi
-rm -rf /tmp/initfs/environment /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk/arch /tmp/initfs/etc/apk/keys /tmp/initfs/etc/apk/protected_paths.d /tmp/initfs/etc/apk/repositories
+#rm -rf /tmp/initfs/environment /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk/arch /tmp/initfs/etc/apk/keys /tmp/initfs/etc/apk/protected_paths.d /tmp/initfs/etc/apk/repositories
+rm -rf /tmp/initfs/environment
 find / -path "/finalfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
 rm -rf /finalfs/*
 find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
