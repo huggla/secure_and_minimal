@@ -165,8 +165,9 @@ RUN exec 2>&1 \
     # ---------------------------------------------------------------------
     # COPY
     # ---------------------------------------------------------------------
+        ONBUILD COPY --from=base / /finalfs/
+        ONBUILD COPY --from=base /environment /environment/
         ONBUILD COPY --from=init / /tmp/initfs/
-        ONBUILD COPY --from=init /environment /environment/
         ONBUILD COPY --from=content1 "$CONTENTSOURCE1" "$CONTENTDESTINATION1"
         ONBUILD COPY --from=content2 "$CONTENTSOURCE2" "$CONTENTDESTINATION2"
         ONBUILD COPY --from=content3 "$CONTENTSOURCE3" "$CONTENTDESTINATION3"
