@@ -69,10 +69,7 @@ then
    cd /finalfs
 fi
 #rm -rf /tmp/initfs/environment /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc /tmp/initfs/etc/apk/arch /tmp/initfs/etc/apk/keys /tmp/initfs/etc/apk/protected_paths.d /tmp/initfs/etc/apk/repositories
-rm -rf /tmp/initfs/environment
-find / -path "/finalfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
-rm -rf /finalfs/*
-find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
+rm -rf /tmp/initfs/environment /tmp/initfs/dev /tmp/initfs/sys /tmp/initfs/proc
 if [ -n "$INITCMDS" ]
 then
    set +x
@@ -87,6 +84,9 @@ then
    echo '----------------------------------'
    set -x
 fi
+find / -path "/finalfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
+rm -rf /finalfs/*
+find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" / \;
 #find /tmp -path "/tmp/initfs/*" -mindepth 2 -maxdepth 2 -exec cp -a "{}" ./ \;
 apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --initramfs-diskless-boot --clean-protected --root /finalfs --quiet add --initdb
 apk --repositories-file /etc/apk/repositories --keys-dir /etc/apk/keys --no-cache --force-broken-world --force-non-repository --force-old-apk --root /finalfs --quiet fix --depends --upgrade --xattr
