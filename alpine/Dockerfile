@@ -2,9 +2,10 @@
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 ARG SaM_IMAGE="alpine"
-ARG SaM_VERSION="dev"
+ARG ALPINE_VERSION="3.14"
+ARG SaM_VERSION="2.0.5-$ALPINE_VERSION"
 
-FROM alpine:edge as alpine
+FROM alpine:$ALPINE_VERSION as alpine
 
 RUN exec 2>&1 \
  && set -x \
