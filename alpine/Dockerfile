@@ -4,7 +4,7 @@
 ARG SaM_IMAGE="alpine"
 ARG SaM_VERSION="2.0.6"
 
-FROM alpine:edge as alpine
+FROM alpine:3.15 as alpine
 
 RUN exec 2>&1 \
  && set -x \
