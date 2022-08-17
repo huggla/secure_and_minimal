@@ -2,7 +2,7 @@
 # https://hub.docker.com/repository/docker/huggla/secure_and_minimal
 
 ARG SaM_IMAGE="busybox"
-ARG SaM_VERSION="2.0.6"
+ARG SaM_VERSION="2.0.6-3.16"
 
 FROM huggla/secure_and_minimal:$SaM_VERSION-alpine as alpine
 
