@@ -336,10 +336,10 @@ fi
 set -f
 while read file
 do
-   set +f
+   set +fe
    find ".$(dirname "$file")" -name "$(basename "$file")" -maxdepth 1 -exec chmod g+w "{}" \;
 done </environment/gid0writables
-set -f
+set -fe
 for dir in $GID0WRITABLESRECURSIVE
 do
    set +f
@@ -352,10 +352,10 @@ fi
 set -f
 while read dir
 do
-   set +f
+   set +fe
    find ".$(dirname "$dir")" -name "$(basename "$dir")" -maxdepth 1 -exec chmod -R g+w "{}" \;
 done </environment/gid0writablesrecursive
-set -f
+set -fe
 for file in $LINUXUSEROWNED
 do
    set +f
