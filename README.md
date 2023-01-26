@@ -1,3 +1,5 @@
+# NOTICE! This project has moved here: https://github.com/Kristianstad/secure_and_minimal/pkgs/container/secure_and_minimal
+
 # Secure and Minimal (SaM)
 A simple framework for creating minimal and secure Docker images based on Alpine. It consist of a Dockerfile-template, a number of standardized constants, a few helper-images, and structured shell scripts.
 
